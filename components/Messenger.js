@@ -94,7 +94,7 @@ class Messenger extends React.Component {
 		let allMessages = this.props.messages.concat(this.state.messages);
 		allMessages.sort((a, b) => b.createdAt - a.createdAt);
 		return (
-			<>
+			<React.Fragment>
 
         <input type="text" onChange={this.handleChange} placeholder={"enter username"}/>
 
@@ -108,7 +108,7 @@ class Messenger extends React.Component {
 					))}
 					<div ref={el => { this.el = el;}} />
 				</ul>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.handleSubmit} autoComplete="off">
             <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input
                 type="text"
@@ -127,7 +127,6 @@ class Messenger extends React.Component {
 						#message-input {
 						border-bottom: lightgray solid 1px;
 						border-top: lightgray solid 1px;
-						padding: 10px;
 						height: 20px;
 						}
 						form {
@@ -155,8 +154,7 @@ class Messenger extends React.Component {
 						}
 					`}</style>
 			</div>
-
-				</>
+				</React.Fragment>
 		)
 	}
 }

@@ -7,13 +7,6 @@ export default ({ message, username, firstMessage }) => (
       <div className={username === message.username ?
         'my-message' : 'your-message'}
       >
-    {/* <button */}
-    {/* className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored mdl-js-ripple-effect" */}
-    {/* onClick={_ => remove(message)} */}
-    {/* style={{ fontSize: 12 }} */}
-    {/* > */}
-    {/* x */}
-    {/* </button>{' '} */}
     {message.text}
 
     <style>
