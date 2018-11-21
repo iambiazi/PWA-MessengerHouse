@@ -4,13 +4,15 @@
 /*!**************************!*\
   !*** ./actions/index.js ***!
   \**************************/
-/*! exports provided: ADD_MESSAGE */
+/*! exports provided: ADD_MESSAGE, ADD_HOUSE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_MESSAGE", function() { return ADD_MESSAGE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_HOUSE", function() { return ADD_HOUSE; });
 var ADD_MESSAGE = 'ADD_MESSAGE';
+var ADD_HOUSE = 'ADD_HOUSE';
 
 /***/ }),
 
@@ -10923,7 +10925,7 @@ __webpack_require__.r(__webpack_exports__);
   selectorFactory, which has the signature:
 
     (dispatch, options) => (nextState, nextOwnProps) => nextFinalProps
-
+  
   connect passes its args to connectAdvanced as options, which will in turn pass them to
   selectorFactory each time a Connect component instance is instantiated or hot reloaded.
 
@@ -11288,7 +11290,7 @@ function wrapMapToPropsConstant(getConstant) {
 } // dependsOnOwnProps is used by createMapToPropsProxy to determine whether to pass props as args
 // to the mapToProps function being wrapped. It is also used by makePurePropsSelector to determine
 // whether mapToProps needs to be invoked when props have changed.
-//
+// 
 // A length of one signals that mapToProps does not depend on props from the parent component.
 // A length of zero is assumed to mean mapToProps is getting args via arguments or ...args and
 // therefore not reporting its length accurately..
@@ -11297,16 +11299,16 @@ function getDependsOnOwnProps(mapToProps) {
   return mapToProps.dependsOnOwnProps !== null && mapToProps.dependsOnOwnProps !== undefined ? Boolean(mapToProps.dependsOnOwnProps) : mapToProps.length !== 1;
 } // Used by whenMapStateToPropsIsFunction and whenMapDispatchToPropsIsFunction,
 // this function wraps mapToProps in a proxy function which does several things:
-//
+// 
 //  * Detects whether the mapToProps function being called depends on props, which
 //    is used by selectorFactory to decide if it should reinvoke on props changes.
-//
+//    
 //  * On first call, handles mapToProps if returns another function, and treats that
 //    new function as the true mapToProps for subsequent calls.
-//
+//    
 //  * On first call, verifies the first result is a plain object, in order to warn
 //    the developer that their mapToProps function is not returning a valid result.
-//
+//    
 
 function wrapMapToPropsFunc(mapToProps, methodName) {
   return function initProxySelector(dispatch, _ref) {
@@ -15062,7 +15064,7 @@ function (_App) {
           Component = _this$props.Component,
           pageProps = _this$props.pageProps,
           store = _this$props.store;
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_app__WEBPACK_IMPORTED_MODULE_4__["Container"], null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_head__WEBPACK_IMPORTED_MODULE_2___default.a, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("title", null, "Messenger")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_3__["Provider"], {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_app__WEBPACK_IMPORTED_MODULE_4__["Container"], null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_head__WEBPACK_IMPORTED_MODULE_2___default.a, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("title", null, "MessengerHouse")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_3__["Provider"], {
         store: store
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Component, pageProps)));
     }
@@ -15137,8 +15139,51 @@ function (_App) {
         }
       }
     })(typeof __webpack_exports__ !== 'undefined' ? __webpack_exports__.default : (module.exports.default || module.exports), "/_app")
-
+  
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node_modules/webpack/buildin/harmony-module.js */ "./node_modules/webpack/buildin/harmony-module.js")(module)))
+
+/***/ }),
+
+/***/ "./reducers/houseReducer.js":
+/*!**********************************!*\
+  !*** ./reducers/houseReducer.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions */ "./actions/index.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  var house_id = action.house_id,
+      type = action.type,
+      username = action.username,
+      created_at = action.created_at;
+
+  switch (type) {
+    case _actions__WEBPACK_IMPORTED_MODULE_0__["ADD_HOUSE"]:
+      return _toConsumableArray(state).concat([{
+        id: Math.random().toString(36).substring(2),
+        house_id: house_id,
+        username: username,
+        created_at: created_at
+      }]);
+
+    default:
+      return state;
+  }
+});
 
 /***/ }),
 
@@ -15152,19 +15197,22 @@ function (_App) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/index.js");
-/* harmony import */ var _todos__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todos */ "./reducers/messageReducer.js");
+/* harmony import */ var _messageReducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./messageReducer */ "./reducers/messageReducer.js");
+/* harmony import */ var _houseReducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./houseReducer */ "./reducers/houseReducer.js");
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
-  messages: _todos__WEBPACK_IMPORTED_MODULE_1__["default"]
+  messages: _messageReducer__WEBPACK_IMPORTED_MODULE_1__["default"],
+  houses: _houseReducer__WEBPACK_IMPORTED_MODULE_2__["default"]
 }));
 
 /***/ }),
 
-/***/ "./reducers/todos.js":
-/*!***************************!*\
+/***/ "./reducers/messageReducer.js":
+/*!************************************!*\
   !*** ./reducers/messageReducer.js ***!
-  \***************************/
+  \************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -15185,14 +15233,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   var action = arguments.length > 1 ? arguments[1] : undefined;
   var type = action.type,
       text = action.text,
-      username = action.username;
+      username = action.username,
+      created_at = action.created_at;
 
   switch (type) {
     case _actions__WEBPACK_IMPORTED_MODULE_0__["ADD_MESSAGE"]:
       return _toConsumableArray(state).concat([{
         id: Math.random().toString(36).substring(2),
         text: text,
-        username: username
+        username: username,
+        created_at: created_at
       }]);
 
     default:

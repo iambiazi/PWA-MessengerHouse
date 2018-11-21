@@ -1,11 +1,10 @@
-import 'isomorphic-fetch';
-import React from 'react';
-import { connect } from 'react-redux';
+import 'isomorphic-fetch'
+import React from 'react'
+import { connect } from 'react-redux'
 
-import Messenger from '../components/Messenger';
+import Messenger from '../components/Messenger'
 
 class Index extends React.Component {
-
   render() {
     return (
       <div>
@@ -13,8 +12,8 @@ class Index extends React.Component {
           <Messenger />
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default connect()(Index);
+export default connect()(Index)

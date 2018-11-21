@@ -97,13 +97,15 @@ module.exports =
 /*!**************************!*\
   !*** ./actions/index.js ***!
   \**************************/
-/*! exports provided: ADD_MESSAGE */
+/*! exports provided: ADD_MESSAGE, ADD_HOUSE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_MESSAGE", function() { return ADD_MESSAGE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_HOUSE", function() { return ADD_HOUSE; });
 var ADD_MESSAGE = 'ADD_MESSAGE';
+var ADD_HOUSE = 'ADD_HOUSE';
 
 /***/ }),
 
@@ -111,19 +113,30 @@ var ADD_MESSAGE = 'ADD_MESSAGE';
 /*!****************************!*\
   !*** ./actions/message.js ***!
   \****************************/
-/*! exports provided: addMessage */
+/*! exports provided: addMessage, addHouse */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addMessage", function() { return addMessage; });
-/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ */ "./actions/index.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addHouse", function() { return addHouse; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "./actions/index.js");
 
-function addMessage(text, username) {
+
+function addMessage(text, username, created_at) {
   return {
     type: ___WEBPACK_IMPORTED_MODULE_0__["ADD_MESSAGE"],
     text: text,
-    username: username
+    username: username,
+    created_at: created_at
+  };
+}
+function addHouse(house_id, username, created_at) {
+  return {
+    type: ___WEBPACK_IMPORTED_MODULE_0__["ADD_HOUSE"],
+    house_id: house_id,
+    username: username,
+    created_at: created_at
   };
 }
 
@@ -140,48 +153,32 @@ function addMessage(text, username) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-var _jsxFileName = "/Users/brianlouie/Workspace/Side-Projects/PWA-MessengerHouse/components/Message.js";
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dayjs */ "dayjs");
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_1__);
+
 
 /* harmony default export */ __webpack_exports__["default"] = (function (_ref) {
   var message = _ref.message,
       username = _ref.username,
       firstMessage = _ref.firstMessage;
+  var ownMessage = username === message.username;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
     style: {
       listStyle: 'none'
-    },
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 4
-    },
-    __self: this
+    }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 5
-    },
-    __self: this
-  }, !firstMessage && username !== message.username && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "message-username",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 6
-    },
-    __self: this
+    className: "message-container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: ownMessage ? 'my-subcontainer' : 'your-subcontainer'
+  }, ownMessage && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "timestamp"
+  }, dayjs__WEBPACK_IMPORTED_MODULE_1___default()(message.created_at).format('h:mma'), '  '), !firstMessage && !ownMessage && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "message-username"
   }, message.username), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: username === message.username ? 'my-message' : 'your-message',
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 7
-    },
-    __self: this
-  }, message.text, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 19
-    },
-    __self: this
-  }, "\n        .my-message {\n        background: #00e34d;\n        color: white;\n        border-radius: 10px;\n        margin-bottom: 0.1em;\n        padding: 1px 8px;\n        max-width: 60%;\n        word-break: break-all;\n        width: fit-content;\n        }\n        .your-message {\n        background: #EEF6FF;\n        border-radius: 10px;\n        margin-bottom: 0.1em;\n        padding: 1px 8px;\n        max-width: 60%;\n        word-break: break-all;\n        width: fit-content;\n        }\n        li .my-message {\n        float: right;\n        }\n        li {\n        clear: right;\n        }\n        .message-username {\n          display: block;\n          font-size: 0.8em;\n          font-weight: bold;\n          line-height: 1.5;\n          margin-left: 0.6em;\n        }\n      "))));
+    className: ownMessage ? 'my-message' : 'your-message'
+  }, message.text), !ownMessage && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "timestamp"
+  }, '  ', dayjs__WEBPACK_IMPORTED_MODULE_1___default()(message.created_at).format('h:mma')))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", null, "\n        .my-subcontainer {\n        text-align: right;\n        }\n          .timestamp{\n          font-size:10px;\n          font-weight: 300;\n          color: transparent;\n          margin: 3px;\n          }\n          li:hover .my-timestamp {\n          color: black;\n          transition: color .8s;\n          }\n          li:hover .timestamp {\n          color: black;\n          transition: color .8s;\n          }\n        .my-message {\n        background: #00e34d;\n        color: white;\n        border-radius: 10px;\n        margin-bottom: 0.1em;\n        padding: 2px 8px;\n        max-width: 60%;\n        word-break: break-all;\n        width: fit-content;\n        }\n        .your-message {\n        display: inline;\n        background: #E5E5EA;\n        border-radius: 10px;\n        margin-bottom: 0.1em;\n        padding: 2px 8px;\n        max-width: 60%;\n        word-break: break-all;\n        width: fit-content;\n        }\n        .my-message {\n        clear: right;\n        display: inline;\n        }\n        .message-username {\n          display: block;\n          font-size: 0.8em;\n          font-weight: bold;\n          line-height: 1.5;\n          margin-left: 0.6em;\n        }\n\n      "));
 });
 
 /***/ }),
@@ -229,30 +226,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+var generateName = function generateName() {
+  var getRandomInt = function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
+  var firstName = ['Jack', 'Steven', 'Brian', 'Marc', 'Drew', 'Stephanie', 'Daniel', 'James', 'Spencer', 'Caitlin', 'Jackie', 'Julius', 'Patrick'];
+  var lastName = ['Li', 'Chung', 'Tiosejo', 'Louie', 'Curtis', 'Sockwell', 'Jiang', 'Bykowsky', 'Detro', 'Chen', 'Sea', 'Doyle'];
+  var name = firstName[getRandomInt(0, firstName.length)] + ' ' + lastName[getRandomInt(0, lastName.length)];
+  return name;
+};
+
 var Messenger =
 /*#__PURE__*/
 function (_React$Component) {
   _inherits(Messenger, _React$Component);
 
-  function Messenger() {
-    var _getPrototypeOf2;
-
+  function Messenger(props) {
     var _this;
 
     _classCallCheck(this, Messenger);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Messenger)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
-      text: '',
-      messages: [],
-      username: Math.floor(Math.random() * 1000).toString() //TODO need to load props from redux
-
-    });
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Messenger).call(this, props));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleMessage", function (message) {
       _this.setState(function (state) {
@@ -260,25 +256,33 @@ function (_React$Component) {
           messages: state.messages.concat(message)
         };
       });
+
+      _this.props.addMessage(message.text, message.username, message.created_at);
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSubmit", function (e) {
       e.preventDefault();
       var message = {
-        id: new Date().getTime(),
+        created_at: new Date().getTime(),
         username: _this.state.username,
         text: _this.state.text
       };
 
       _this.socket.emit('message', message);
 
-      _this.props.addMessage(_this.state.text, _this.state.username);
+      _this.props.addMessage(_this.state.text, _this.state.username, message.created_at);
 
       _this.setState(function (state) {
         return {
-          text: '' // messages: state.messages.concat(message)
-
+          text: '',
+          messages: _this.state.messages.concat(message)
         };
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "scrollToBottom", function () {
+      _this.el.scrollIntoView({
+        behavior: 'instant'
       });
     });
 
@@ -288,14 +292,33 @@ function (_React$Component) {
       });
     });
 
+    _this.state = {
+      text: '',
+      messages: [],
+      username: generateName(),
+      updated: false
+    };
     return _this;
   }
 
   _createClass(Messenger, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      this.scrollToBottom();
+
+      if (!this.state.messages.length && !this.state.updated) {
+        this.setState({
+          messages: this.props.messages,
+          updated: true
+        });
+      }
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_2___default()('http://localhost:3000');
       this.socket.on('message', this.handleMessage);
+      setTimeout(this.scrollToBottom, 100);
     }
   }, {
     key: "componentWillUnmount",
@@ -310,34 +333,31 @@ function (_React$Component) {
 
       var sameUser = function sameUser(msg, i, arr) {
         return i > 0 && msg.username === arr[i - 1].username;
-      };
+      }; // let allMessages = this.props.messages.concat(this.state.messages);
+      // allMessages.sort((a, b) => b.createdAt - a.createdAt);
 
-      var allMessages = this.props.messages.concat(this.state.messages);
-      allMessages.sort(function (a, b) {
-        return a.id - b.id;
-      });
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         onChange: this.handleChange,
-        placeholder: "enter username"
+        placeholder: 'enter username'
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "mdl-card mdl-shadow--2dp"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, this.props.messages.map(function (message, i, array) {
+        className: "mdl-card mdl-shadow--2dp",
+        id: "chatview"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, this.state.messages.map(function (message, i, array) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Message__WEBPACK_IMPORTED_MODULE_4__["default"], {
           key: i,
           message: message,
           username: _this2.state.username,
           firstMessage: sameUser(message, i, array)
         });
-      }), this.state.messages.map(function (message, i, array) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Message__WEBPACK_IMPORTED_MODULE_4__["default"], {
-          key: i,
-          message: message,
-          username: _this2.state.username,
-          firstMessage: sameUser(message, i, array)
-        });
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        ref: function ref(el) {
+          _this2.el = el;
+        }
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        onSubmit: this.handleSubmit
+        onSubmit: this.handleSubmit,
+        autoComplete: "off"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
@@ -349,12 +369,12 @@ function (_React$Component) {
           });
         },
         className: "mdl-textfield__input",
-        id: "input",
-        placeholder: "Send a message"
+        id: "message-input",
+        placeholder: 'Send a message'
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "mdl-textfield__label",
-        htmlFor: "input"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", null, "\n\t\t\t\t\t\tform {\n\t\t\t\t\t\t\tbackground: #fff;\n\t\t\t\t\t\t\tpadding: 10px;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul {\n\t\t\t\t\t\t\tmin-height: 100px;\n\t\t\t\t\t\t\tmargin: 0;\n\t\t\t\t\t\t\tpadding: 0;\n\t\t\t\t\t\t\ttext-align: left;\n\t\t\t\t\t\t\tlist-style: none;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul li {\n\t\t\t\t\t\t\tpadding: 3px;\n\t\t\t\t\t\t\tbackground: #FFF;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.mdl-card {\n\t\t\t\t\t\t\tmargin: auto;\n\t\t\t\t\t\t\ttransition: all .3s;\n\t\t\t\t\t\t\ttransform: translateY(100px);\n\t\t\t\t\t\t}\n\t\t\t\t\t")));
+        htmlFor: "message-input"
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", null, "\n\t\t\t\t\t\t#message-input {\n\t\t\t\t\t\tborder-bottom: lightgray solid 1px;\n\t\t\t\t\t\tborder-top: lightgray solid 1px;\n\t\t\t\t\t\theight: 20px;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tform {\n\t\t\t\t\t\t\tbackground: #fff;\n\t\t\t\t\t\t\tpadding: 0px 10px 0px 10px;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul {\n\t\t\t\t\t\t\tmin-height: 100px;\n\t\t\t\t\t\t\tmargin: 0;\n\t\t\t\t\t\t\tpadding: 0;\n\t\t\t\t\t\t\ttext-align: left;\n\t\t\t\t\t\t\tlist-style: none;\n\t\t\t\t\t\t\toverflow-y: scroll;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul li {\n\t\t\t\t\t\t\tpadding: 1px;\n\t\t\t\t\t\t\tbackground: #FFF;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.mdl-card {\n\t\t\t\t\t\t\tmargin: auto;\n\t\t\t\t\t\t\ttransition: all .3s;\n\t\t\t\t\t\t\ttransform: translateY(100px);\n\t\t\t\t\t\t\tmin-height: 500px;\n\t\t\t\t\t\t\tmax-height: 500px;\n\t\t\t\t\t\t}\n\t\t\t\t\t")));
     }
   }]);
 
@@ -362,12 +382,15 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(function (_ref) {
-  var messages = _ref.messages;
+  var messages = _ref.messages,
+      houses = _ref.houses;
   return {
-    messages: messages
+    messages: messages,
+    houses: houses
   };
 }, {
-  addMessage: _actions_message__WEBPACK_IMPORTED_MODULE_3__["addMessage"]
+  addMessage: _actions_message__WEBPACK_IMPORTED_MODULE_3__["addMessage"],
+  addHouse: _actions_message__WEBPACK_IMPORTED_MODULE_3__["addHouse"]
 })(Messenger));
 
 /***/ }),
@@ -381,22 +404,14 @@ function (_React$Component) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! isomorphic-fetch */ "isomorphic-fetch");
-/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(isomorphic_fetch__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "react-redux");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _components_Messenger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Messenger */ "./components/Messenger.js");
-
-
+/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! isomorphic-fetch */ "isomorphic-fetch");
+/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(isomorphic_fetch__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "react-redux");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_Messenger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Messenger */ "./components/Messenger.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -433,53 +448,14 @@ function (_React$Component) {
   _createClass(Index, [{
     key: "render",
     value: function render() {
-      var stars = this.props.stars;
-      return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_components_Messenger__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_Messenger__WEBPACK_IMPORTED_MODULE_3__["default"], null)));
     }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref) {
-        var store, res, json;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                store = _ref.store;
-                _context.next = 3;
-                return fetch('https://api.github.com/repos/ooade/NextSimpleStarter');
-
-              case 3:
-                res = _context.sent;
-                _context.next = 6;
-                return res.json();
-
-              case 6:
-                json = _context.sent;
-                return _context.abrupt("return", {
-                  stars: json.stargazers_count
-                });
-
-              case 8:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      return function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      };
-    }()
   }]);
 
   return Index;
-}(react__WEBPACK_IMPORTED_MODULE_2___default.a.Component);
+}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["connect"])()(Index));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])()(Index));
 
 /***/ }),
 
@@ -495,14 +471,14 @@ module.exports = __webpack_require__(/*! ./pages/index.js */"./pages/index.js");
 
 /***/ }),
 
-/***/ "@babel/runtime/regenerator":
-/*!*********************************************!*\
-  !*** external "@babel/runtime/regenerator" ***!
-  \*********************************************/
+/***/ "dayjs":
+/*!************************!*\
+  !*** external "dayjs" ***!
+  \************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/regenerator");
+module.exports = require("dayjs");
 
 /***/ }),
 
