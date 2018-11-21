@@ -47,19 +47,48 @@ function addMessage(text, username) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var _jsxFileName = "/Users/brianlouie/Workspace/Side-Projects/PWA-MessengerHouse/components/Message.js";
 
 /* harmony default export */ __webpack_exports__["default"] = (function (_ref) {
   var message = _ref.message,
       username = _ref.username,
       firstMessage = _ref.firstMessage;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-    className: !firstMessage ? 'first-message-' : 'another-message',
     style: {
       listStyle: 'none'
-    }
+    },
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 4
+    },
+    __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: username === message.username ? 'my-message' : 'your-message'
-  }, message.text, ' ' + message.username, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", null, "\n      .my-message {\n      background: #00e34d;\n      color: white;\n      border-radius: 10px;\n      margin-bottom: 0.1em;\n      padding: 1px 8px;\n      max-width: 60%;\n      word-break: break-all;\n      width: fit-content;\n      }\n      .your-message {\n      background: #EEF6FF;\n      border-radius: 10px;\n      margin-bottom: 0.1em;\n      padding: 1px 8px;\n      max-width: 60%;\n      word-break: break-all;\n      width: fit-content;\n      }\n      li .my-message {\n      float: right;\n      }\n      li {\n      clear: right;\n      }\n    ")));
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 5
+    },
+    __self: this
+  }, !firstMessage && username !== message.username && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "message-username",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 6
+    },
+    __self: this
+  }, message.username), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: username === message.username ? 'my-message' : 'your-message',
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 7
+    },
+    __self: this
+  }, message.text, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 19
+    },
+    __self: this
+  }, "\n        .my-message {\n        background: #00e34d;\n        color: white;\n        border-radius: 10px;\n        margin-bottom: 0.1em;\n        padding: 1px 8px;\n        max-width: 60%;\n        word-break: break-all;\n        width: fit-content;\n        }\n        .your-message {\n        background: #EEF6FF;\n        border-radius: 10px;\n        margin-bottom: 0.1em;\n        padding: 1px 8px;\n        max-width: 60%;\n        word-break: break-all;\n        width: fit-content;\n        }\n        li .my-message {\n        float: right;\n        }\n        li {\n        clear: right;\n        }\n        .message-username {\n          display: block;\n          font-size: 0.8em;\n          font-weight: bold;\n          line-height: 1.5;\n          margin-left: 0.6em;\n        }\n      "))));
 });
 
 /***/ }),
@@ -151,8 +180,11 @@ function (_React$Component) {
 
       _this.props.addMessage(_this.state.text, _this.state.username);
 
-      _this.setState({
-        text: ''
+      _this.setState(function (state) {
+        return {
+          text: '' // messages: state.messages.concat(message)
+
+        };
       });
     });
 
@@ -186,6 +218,10 @@ function (_React$Component) {
         return i > 0 && msg.username === arr[i - 1].username;
       };
 
+      var allMessages = this.props.messages.concat(this.state.messages);
+      allMessages.sort(function (a, b) {
+        return a.id - b.id;
+      });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         onChange: this.handleChange,
@@ -199,7 +235,7 @@ function (_React$Component) {
           username: _this2.state.username,
           firstMessage: sameUser(message, i, array)
         });
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, this.state.username), this.state.messages.map(function (message, i, array) {
+      }), this.state.messages.map(function (message, i, array) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Message__WEBPACK_IMPORTED_MODULE_4__["default"], {
           key: i,
           message: message,

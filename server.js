@@ -10,7 +10,7 @@ const handle = app.getRequestHandler();
 
 const PORT = process.env.PORT || 3000;
 
-const messages = [];
+
 
 
 
@@ -30,14 +30,17 @@ app.prepare().then((_) => {
     console.log(`> App running on port ${PORT}`);
   });
 
-  const io = require('socket.io').listen(server);
+  const io = require('socket.io')(server);
 
   io.on('connection', socket => {
     console.log('a user connected');
     socket.on('message', data => {
       console.log('this is the data', data);
-      messages.push(data);
+      // messages.push(data);
       socket.broadcast.emit('message', data);
+    });
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
     })
   });
 });

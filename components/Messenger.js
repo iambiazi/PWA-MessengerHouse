@@ -1,18 +1,27 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import io from 'socket.io-client';
+import store from 'utils/store.js';
 
 import { addMessage } from '../actions/message'
 import Message from './Message'
 
+const generateName = () => {
+  const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
+	const firstName = ["Jack", "Steven", "Brian", "Marc", "Drew", "Stephanie", "Daniel", "James"];
+	const lastName = ['Li', "Chung", "Tiosejo", "Louie", "Curtis", "Sockwell", "Jiang"];
+	const name = firstName[getRandomInt(0, firstName.length)] + ' ' + lastName[getRandomInt(0, lastName.length)]
+	return name;
+}
 
 class Messenger extends React.Component {
+
 
 	state = {
 		text: '',
 		messages: [],
-		username: Math.floor(Math.random() * 1000).toString(),
+		username: generateName(),
 	}
 
 	//TODO need to load props from redux
@@ -20,6 +29,7 @@ class Messenger extends React.Component {
 	componentDidMount() {
 		this.socket = io('http://localhost:3000');
 		this.socket.on('message', this.handleMessage);
+		this.setState({messages: this.props.messages})
 	}
 
 	componentWillUnmount() {
@@ -35,14 +45,14 @@ class Messenger extends React.Component {
 		e.preventDefault()
 
 		const message = {
-			id: (new Date()).getTime(),
+			created_at: (new Date()).getTime(),
 			username: this.state.username,
 			text: this.state.text,
 		}
 
 		this.socket.emit('message', message);
 
-		this.props.addMessage(this.state.text, this.state.username);
+		this.props.addMessage(this.state.text, this.state.username, message.created_at);
 		this.setState(state => ({
 			text: '',
 			messages: state.messages.concat(message)
@@ -57,6 +67,9 @@ class Messenger extends React.Component {
 		const sameUser = (msg, i, arr) => {
 			return i > 0 && msg.username === arr[i - 1].username;
 		};
+
+		let allMessages = this.props.messages.concat(this.state.messages);
+		allMessages.sort((a, b) => b.createdAt - a.createdAt);
 		return (
 			<>
 
@@ -64,9 +77,9 @@ class Messenger extends React.Component {
 
 				<div className="mdl-card mdl-shadow--2dp">
 				<ul>
-					{this.props.messages.map((message, i, array) => (
-          <Message key={i} message={message} username={this.state.username} firstMessage={sameUser(message, i, array)}/>
-        ))}
+					{/*{this.props.messages.map((message, i, array) => (*/}
+          {/*<Message key={i} message={message} username={this.state.username} firstMessage={sameUser(message, i, array)}/>*/}
+        {/*))} */}
 					{this.state.messages.map((message, i, array) => (
             <Message key={i} message={message} username={this.state.username} firstMessage={sameUser(message, i, array)}/>
 					))}

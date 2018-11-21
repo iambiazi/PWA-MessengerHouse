@@ -1,7 +1,7 @@
 import { ADD_MESSAGE } from '../actions'
 
 export default function(state = [], action) {
-	const { type, text, username } = action
+	const { type, text, username, created_at } = action
 	switch (type) {
 		case ADD_MESSAGE:
 			return [
@@ -11,7 +11,8 @@ export default function(state = [], action) {
 						.toString(36)
 						.substring(2),
 					text,
-					username
+					username,
+					created_at,
 				}
 			]
 		default:
