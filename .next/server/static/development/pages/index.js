@@ -97,50 +97,70 @@ module.exports =
 /*!**************************!*\
   !*** ./actions/index.js ***!
   \**************************/
-/*! exports provided: ADD_TODO, REMOVE_TODO */
+/*! exports provided: ADD_MESSAGE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_TODO", function() { return ADD_TODO; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_TODO", function() { return REMOVE_TODO; });
-var ADD_TODO = 'ADD_TODO';
-var REMOVE_TODO = 'REMOVE_TODO';
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_MESSAGE", function() { return ADD_MESSAGE; });
+var ADD_MESSAGE = 'ADD_MESSAGE';
 
 /***/ }),
 
-/***/ "./actions/todo.js":
-/*!*************************!*\
-  !*** ./actions/todo.js ***!
-  \*************************/
-/*! exports provided: addTodo, removeTodo */
+/***/ "./actions/message.js":
+/*!****************************!*\
+  !*** ./actions/message.js ***!
+  \****************************/
+/*! exports provided: addMessage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addTodo", function() { return addTodo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeTodo", function() { return removeTodo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addMessage", function() { return addMessage; });
 /* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ */ "./actions/index.js");
 
-function addTodo(text) {
+function addMessage(text, username) {
   return {
-    type: ___WEBPACK_IMPORTED_MODULE_0__["ADD_TODO"],
-    text: text
-  };
-}
-function removeTodo(todo) {
-  return {
-    type: ___WEBPACK_IMPORTED_MODULE_0__["REMOVE_TODO"],
-    todo: todo
+    type: ___WEBPACK_IMPORTED_MODULE_0__["ADD_MESSAGE"],
+    text: text,
+    username: username
   };
 }
 
 /***/ }),
 
-/***/ "./components/Todo.js":
-/*!****************************!*\
-  !*** ./components/Todo.js ***!
-  \****************************/
+/***/ "./components/Message.js":
+/*!*******************************!*\
+  !*** ./components/Message.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ __webpack_exports__["default"] = (function (_ref) {
+  var message = _ref.message,
+      username = _ref.username,
+      firstMessage = _ref.firstMessage;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    className: !firstMessage ? 'first-message-' : 'another-message',
+    style: {
+      listStyle: 'none'
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: username === message.username ? 'my-message' : 'your-message'
+  }, message.text, ' ' + message.username, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", null, "\n      .my-message {\n      background: #00e34d;\n      color: white;\n      border-radius: 10px;\n      margin-bottom: 0.1em;\n      padding: 1px 8px;\n      max-width: 60%;\n      word-break: break-all;\n      width: fit-content;\n      }\n      .your-message {\n      background: #EEF6FF;\n      border-radius: 10px;\n      margin-bottom: 0.1em;\n      padding: 1px 8px;\n      max-width: 60%;\n      word-break: break-all;\n      width: fit-content;\n      }\n      li .my-message {\n      float: right;\n      }\n      li {\n      clear: right;\n      }\n    ")));
+});
+
+/***/ }),
+
+/***/ "./components/Messenger.js":
+/*!*********************************!*\
+  !*** ./components/Messenger.js ***!
+  \*********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -152,8 +172,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! socket.io-client */ "socket.io-client");
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _actions_todo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions/todo */ "./actions/todo.js");
-/* harmony import */ var _TodoItem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TodoItem */ "./components/TodoItem.js");
+/* harmony import */ var _actions_message__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions/message */ "./actions/message.js");
+/* harmony import */ var _Message__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Message */ "./components/Message.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -180,27 +200,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var Todo =
+var Messenger =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(Todo, _React$Component);
+  _inherits(Messenger, _React$Component);
 
-  function Todo() {
+  function Messenger() {
     var _getPrototypeOf2;
 
     var _this;
 
-    _classCallCheck(this, Todo);
+    _classCallCheck(this, Messenger);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Todo)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Messenger)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
       text: '',
-      messages: []
+      messages: [],
+      username: Math.floor(Math.random() * 1000).toString() //TODO need to load props from redux
+
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleMessage", function (message) {
@@ -215,29 +237,29 @@ function (_React$Component) {
       e.preventDefault();
       var message = {
         id: new Date().getTime(),
+        username: _this.state.username,
         text: _this.state.text
       };
 
       _this.socket.emit('message', message);
 
-      _this.props.addTodo(_this.state.text);
+      _this.props.addMessage(_this.state.text, _this.state.username);
 
-      _this.setState(function (state) {
-        return {
-          text: '',
-          messages: state.messages.concat(message)
-        };
+      _this.setState({
+        text: ''
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "removeTodo", function (todo) {
-      _this.props.removeTodo(todo);
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleChange", function (e) {
+      _this.setState({
+        username: e.target.value
+      });
     });
 
     return _this;
   }
 
-  _createClass(Todo, [{
+  _createClass(Messenger, [{
     key: "componentDidMount",
     value: function componentDidMount() {
       this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_2___default()('http://localhost:3000');
@@ -254,19 +276,29 @@ function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      var sameUser = function sameUser(msg, i, arr) {
+        return i > 0 && msg.username === arr[i - 1].username;
+      };
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "text",
+        onChange: this.handleChange,
+        placeholder: "enter username"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "mdl-card mdl-shadow--2dp"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, this.props.todos.map(function (todo, i) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TodoItem__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, this.props.messages.map(function (message, i, array) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Message__WEBPACK_IMPORTED_MODULE_4__["default"], {
           key: i,
-          todo: todo,
-          remove: _this2.removeTodo
+          message: message,
+          username: _this2.state.username,
+          firstMessage: sameUser(message, i, array)
         });
-      }), this.state.messages.map(function (message, i) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TodoItem__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, this.state.username), this.state.messages.map(function (message, i, array) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Message__WEBPACK_IMPORTED_MODULE_4__["default"], {
           key: i,
-          todo: message,
-          remove: _this2.removeTodo
+          message: message,
+          username: _this2.state.username,
+          firstMessage: sameUser(message, i, array)
         });
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         onSubmit: this.handleSubmit
@@ -281,58 +313,26 @@ function (_React$Component) {
           });
         },
         className: "mdl-textfield__input",
-        id: "input"
+        id: "input",
+        placeholder: "Send a message"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "mdl-textfield__label",
         htmlFor: "input"
-      }, "Send a message"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", null, "\n\t\t\t\t\t\tform {\n\t\t\t\t\t\t\tbackground: #fff;\n\t\t\t\t\t\t\tpadding: 10px;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul {\n\t\t\t\t\t\t\tmin-height: 100px;\n\t\t\t\t\t\t\tmargin: 0;\n\t\t\t\t\t\t\tpadding: 0;\n\t\t\t\t\t\t\ttext-align: left;\n\t\t\t\t\t\t\tlist-style: none;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul li {\n\t\t\t\t\t\t\tpadding: 10px;\n\t\t\t\t\t\t\tbackground: #FFF;\n\t\t\t\t\t\t\tborder-bottom: 1px solid #EEE;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul li:nth-child(2n) {\n\t\t\t\t\t\t\tbackground: #EEF6FF;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul li:last-child {\n\t\t\t\t\t\t\tborder-bottom: none;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.mdl-card {\n\t\t\t\t\t\t\tmargin: auto;\n\t\t\t\t\t\t\ttransition: all .3s;\n\t\t\t\t\t\t\ttransform: translateY(100px);\n\t\t\t\t\t\t}\n\t\t\t\t\t"));
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", null, "\n\t\t\t\t\t\tform {\n\t\t\t\t\t\t\tbackground: #fff;\n\t\t\t\t\t\t\tpadding: 10px;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul {\n\t\t\t\t\t\t\tmin-height: 100px;\n\t\t\t\t\t\t\tmargin: 0;\n\t\t\t\t\t\t\tpadding: 0;\n\t\t\t\t\t\t\ttext-align: left;\n\t\t\t\t\t\t\tlist-style: none;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul li {\n\t\t\t\t\t\t\tpadding: 3px;\n\t\t\t\t\t\t\tbackground: #FFF;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.mdl-card {\n\t\t\t\t\t\t\tmargin: auto;\n\t\t\t\t\t\t\ttransition: all .3s;\n\t\t\t\t\t\t\ttransform: translateY(100px);\n\t\t\t\t\t\t}\n\t\t\t\t\t")));
     }
   }]);
 
-  return Todo;
+  return Messenger;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(function (_ref) {
-  var todos = _ref.todos;
+  var messages = _ref.messages;
   return {
-    todos: todos
+    messages: messages
   };
 }, {
-  addTodo: _actions_todo__WEBPACK_IMPORTED_MODULE_3__["addTodo"],
-  removeTodo: _actions_todo__WEBPACK_IMPORTED_MODULE_3__["removeTodo"]
-})(Todo));
-
-/***/ }),
-
-/***/ "./components/TodoItem.js":
-/*!********************************!*\
-  !*** ./components/TodoItem.js ***!
-  \********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-/* harmony default export */ __webpack_exports__["default"] = (function (_ref) {
-  var todo = _ref.todo,
-      remove = _ref.remove;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-    style: {
-      listStyle: 'none'
-    }
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    className: "mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored mdl-js-ripple-effect",
-    onClick: function onClick(_) {
-      return remove(todo);
-    },
-    style: {
-      fontSize: 12
-    }
-  }, "x"), ' ', todo.text);
-});
+  addMessage: _actions_message__WEBPACK_IMPORTED_MODULE_3__["addMessage"]
+})(Messenger));
 
 /***/ }),
 
@@ -353,7 +353,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "react-redux");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _components_Todo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Todo */ "./components/Todo.js");
+/* harmony import */ var _components_Messenger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Messenger */ "./components/Messenger.js");
 
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -398,7 +398,7 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var stars = this.props.stars;
-      return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_components_Todo__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
+      return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_components_Messenger__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
     }
   }], [{
     key: "getInitialProps",

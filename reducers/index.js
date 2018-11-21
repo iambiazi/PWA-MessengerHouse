@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
 
-import todos from './todos'
+import messages from './todos'
 
-export default combineReducers({ todos })
+export default combineReducers({ messages })

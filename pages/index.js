@@ -2,12 +2,14 @@ import 'isomorphic-fetch';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Todo from '../components/Todo';
+import Messenger from '../components/Messenger';
+
+
 
 class Index extends React.Component {
   static async getInitialProps({ store }) {
     // Adding a default/initialState can be done as follows:
-    // store.dispatch({ type: 'ADD_TODO', text: 'It works!' });
+    // store.dispatch({ type: 'ADD_MESSAGE', text: 'It works!' });
     const res = await fetch(
       'https://api.github.com/repos/ooade/NextSimpleStarter',
     );
@@ -20,7 +22,7 @@ class Index extends React.Component {
     return (
       <div>
         <div>
-          <Todo />
+          <Messenger />
         </div>
       </div>
     );

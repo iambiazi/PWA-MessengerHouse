@@ -21,6 +21,7 @@
   "scripts": {
     "dev": "node server",
     "build": "next build",
+    "next": "next",
     "start": "NODE_ENV=production node server"
   },
   "devDependencies": {

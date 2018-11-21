@@ -27,7 +27,7 @@ export default withRedux(initStore, {
       return (
         <Container>
           <Head>
-            <title>Todo App</title>
+            <title>Messenger</title>
           </Head>
           <Provider store={store}>
             <Component {...pageProps} />

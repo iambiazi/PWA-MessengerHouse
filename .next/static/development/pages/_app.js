@@ -4,15 +4,13 @@
 /*!**************************!*\
   !*** ./actions/index.js ***!
   \**************************/
-/*! exports provided: ADD_TODO, REMOVE_TODO */
+/*! exports provided: ADD_MESSAGE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_TODO", function() { return ADD_TODO; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_TODO", function() { return REMOVE_TODO; });
-var ADD_TODO = 'ADD_TODO';
-var REMOVE_TODO = 'REMOVE_TODO';
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_MESSAGE", function() { return ADD_MESSAGE; });
+var ADD_MESSAGE = 'ADD_MESSAGE';
 
 /***/ }),
 
@@ -15064,7 +15062,7 @@ function (_App) {
           Component = _this$props.Component,
           pageProps = _this$props.pageProps,
           store = _this$props.store;
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_app__WEBPACK_IMPORTED_MODULE_4__["Container"], null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_head__WEBPACK_IMPORTED_MODULE_2___default.a, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("title", null, "Todo App")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_3__["Provider"], {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_app__WEBPACK_IMPORTED_MODULE_4__["Container"], null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_head__WEBPACK_IMPORTED_MODULE_2___default.a, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("title", null, "Messenger")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_3__["Provider"], {
         store: store
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Component, pageProps)));
     }
@@ -15158,7 +15156,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
-  todos: _todos__WEBPACK_IMPORTED_MODULE_1__["default"]
+  messages: _todos__WEBPACK_IMPORTED_MODULE_1__["default"]
 }));
 
 /***/ }),
@@ -15187,19 +15185,15 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   var action = arguments.length > 1 ? arguments[1] : undefined;
   var type = action.type,
       text = action.text,
-      todo = action.todo;
+      username = action.username;
 
   switch (type) {
-    case _actions__WEBPACK_IMPORTED_MODULE_0__["ADD_TODO"]:
+    case _actions__WEBPACK_IMPORTED_MODULE_0__["ADD_MESSAGE"]:
       return _toConsumableArray(state).concat([{
         id: Math.random().toString(36).substring(2),
-        text: text
+        text: text,
+        username: username
       }]);
-
-    case _actions__WEBPACK_IMPORTED_MODULE_0__["REMOVE_TODO"]:
-      return state.filter(function (i) {
-        return i !== todo;
-      });
 
     default:
       return state;

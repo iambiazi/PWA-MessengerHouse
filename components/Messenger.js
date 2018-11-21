@@ -2,16 +2,20 @@ import React from 'react'
 import { connect } from 'react-redux'
 import io from 'socket.io-client';
 
-import { addTodo, removeTodo } from '../actions/todo'
-import TodoItem from './TodoItem'
+import { addMessage } from '../actions/message'
+import Message from './Message'
 
 
-class Todo extends React.Component {
+
+class Messenger extends React.Component {
 
 	state = {
 		text: '',
 		messages: [],
+		username: Math.floor(Math.random() * 1000).toString(),
 	}
+
+	//TODO need to load props from redux
 
 	componentDidMount() {
 		this.socket = io('http://localhost:3000');
@@ -32,31 +36,39 @@ class Todo extends React.Component {
 
 		const message = {
 			id: (new Date()).getTime(),
+			username: this.state.username,
 			text: this.state.text,
 		}
 
 		this.socket.emit('message', message);
 
-		this.props.addTodo(this.state.text);
+		this.props.addMessage(this.state.text, this.state.username);
 		this.setState(state => ({
 			text: '',
-			messages: state.messages.concat(message),
+			messages: state.messages.concat(message)
 		}))
 	}
 
-	removeTodo = todo => {
-		this.props.removeTodo(todo)
+	handleChange = e => {
+		this.setState({username: e.target.value})
 	}
 
 	render() {
+		const sameUser = (msg, i, arr) => {
+			return i > 0 && msg.username === arr[i - 1].username;
+		};
 		return (
-			<div className="mdl-card mdl-shadow--2dp">
+			<>
+
+        <input type="text" onChange={this.handleChange} placeholder={"enter username"}/>
+
+				<div className="mdl-card mdl-shadow--2dp">
 				<ul>
-					{this.props.todos.map((todo, i) => (
-						<TodoItem key={i} todo={todo} remove={this.removeTodo} />
-					))}
-					{this.state.messages.map((message, i) => (
-            <TodoItem key={i} todo={message} remove={this.removeTodo} />
+					{this.props.messages.map((message, i, array) => (
+          <Message key={i} message={message} username={this.state.username} firstMessage={sameUser(message, i, array)}/>
+        ))}
+					{this.state.messages.map((message, i, array) => (
+            <Message key={i} message={message} username={this.state.username} firstMessage={sameUser(message, i, array)}/>
 					))}
 				</ul>
 				<form onSubmit={this.handleSubmit}>
@@ -67,14 +79,13 @@ class Todo extends React.Component {
 							onChange={e => this.setState({ text: e.target.value })}
 							className="mdl-textfield__input"
 							id="input"
+							placeholder={"Send a message"}
 						/>
 						<label className="mdl-textfield__label" htmlFor="input">
-							Send a message
+
 						</label>
 					</div>
 				</form>
-
-
 				<style>{`
 						form {
 							background: #fff;
@@ -88,15 +99,8 @@ class Todo extends React.Component {
 							list-style: none;
 						}
 						ul li {
-							padding: 10px;
+							padding: 3px;
 							background: #FFF;
-							border-bottom: 1px solid #EEE;
-						}
-						ul li:nth-child(2n) {
-							background: #EEF6FF;
-						}
-						ul li:last-child {
-							border-bottom: none;
 						}
 						.mdl-card {
 							margin: auto;
@@ -105,11 +109,12 @@ class Todo extends React.Component {
 						}
 					`}</style>
 			</div>
+				</>
 		)
 	}
 }
 
 export default connect(
-	({ todos }) => ({ todos }),
-	{ addTodo, removeTodo }
-)(Todo)
+	({ messages }) => ({ messages }),
+	{ addMessage }
+)(Messenger)
