@@ -1,19 +1,47 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import io from 'socket.io-client';
 
 import { addTodo, removeTodo } from '../actions/todo'
 import TodoItem from './TodoItem'
 
+
 class Todo extends React.Component {
+
 	state = {
-		text: ''
+		text: '',
+		messages: [],
 	}
 
-	addTodos = e => {
+	componentDidMount() {
+		this.socket = io('http://localhost:3000');
+		this.socket.on('message', this.handleMessage);
+	}
+
+	componentWillUnmount() {
+		this.socket.off('message', this.handleMessage);
+		this.socket.close();
+	}
+
+	handleMessage = (message) => {
+		this.setState(state => ({ messages: state.messages.concat(message) }))
+	}
+
+	handleSubmit = e => {
 		e.preventDefault()
 
-		this.props.addTodo(this.state.text)
-		this.setState({ text: '' })
+		const message = {
+			id: (new Date()).getTime(),
+			text: this.state.text,
+		}
+
+		this.socket.emit('message', message);
+
+		this.props.addTodo(this.state.text);
+		this.setState(state => ({
+			text: '',
+			messages: state.messages.concat(message),
+		}))
 	}
 
 	removeTodo = todo => {
@@ -27,8 +55,11 @@ class Todo extends React.Component {
 					{this.props.todos.map((todo, i) => (
 						<TodoItem key={i} todo={todo} remove={this.removeTodo} />
 					))}
+					{this.state.messages.map((message, i) => (
+            <TodoItem key={i} todo={message} remove={this.removeTodo} />
+					))}
 				</ul>
-				<form onSubmit={this.addTodos}>
+				<form onSubmit={this.handleSubmit}>
 					<div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 						<input
 							type="text"
@@ -38,7 +69,7 @@ class Todo extends React.Component {
 							id="input"
 						/>
 						<label className="mdl-textfield__label" htmlFor="input">
-							What must be done?
+							Send a message
 						</label>
 					</div>
 				</form>
