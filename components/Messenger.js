@@ -1,14 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import io from 'socket.io-client';
-import store from 'utils/store.js';
 
 import { addMessage } from '../actions/message'
 import Message from './Message'
 
 const generateName = () => {
   const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min;
-
 	const firstName = ["Jack", "Steven", "Brian", "Marc", "Drew", "Stephanie", "Daniel", "James"];
 	const lastName = ['Li', "Chung", "Tiosejo", "Louie", "Curtis", "Sockwell", "Jiang"];
 	const name = firstName[getRandomInt(0, firstName.length)] + ' ' + lastName[getRandomInt(0, lastName.length)]
@@ -17,19 +15,32 @@ const generateName = () => {
 
 class Messenger extends React.Component {
 
+	constructor(props) {
+		super(props);
+    this.state = {
+      text: '',
+      messages: [],
+      username: generateName(),
+			updated: false,
+    }
+  }
 
-	state = {
-		text: '',
-		messages: [],
-		username: generateName(),
-	}
 
 	//TODO need to load props from redux
+	// componentDidUpdate() {
+ //    const objDiv = document.getElementByClassName('mdl-card mdl-shadow--2dp');
+ //    objDiv.scrollTop = objDiv.scrollHeight;
+	// }
+
+	componentDidUpdate() {
+		if (!this.state.messages.length && !this.state.updated) {
+      this.setState({ messages: this.props.messages , updated: true});
+		}
+	}
 
 	componentDidMount() {
 		this.socket = io('http://localhost:3000');
 		this.socket.on('message', this.handleMessage);
-		this.setState({messages: this.props.messages})
 	}
 
 	componentWillUnmount() {
@@ -37,8 +48,10 @@ class Messenger extends React.Component {
 		this.socket.close();
 	}
 
+
 	handleMessage = (message) => {
-		this.setState(state => ({ messages: state.messages.concat(message) }))
+      this.setState(state => ({ messages: state.messages.concat(message) }));
+			this.props.addMessage(message.text, message.username, message.created_at);
 	}
 
 	handleSubmit = e => {
@@ -55,7 +68,7 @@ class Messenger extends React.Component {
 		this.props.addMessage(this.state.text, this.state.username, message.created_at);
 		this.setState(state => ({
 			text: '',
-			messages: state.messages.concat(message)
+			messages: this.state.messages.concat(message)
 		}))
 	}
 
@@ -79,7 +92,7 @@ class Messenger extends React.Component {
 				<ul>
 					{/*{this.props.messages.map((message, i, array) => (*/}
           {/*<Message key={i} message={message} username={this.state.username} firstMessage={sameUser(message, i, array)}/>*/}
-        {/*))} */}
+        {/*))}*/}
 					{this.state.messages.map((message, i, array) => (
             <Message key={i} message={message} username={this.state.username} firstMessage={sameUser(message, i, array)}/>
 					))}

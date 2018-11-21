@@ -10,8 +10,6 @@ const enhancers = compose(
 		: f => f
 )
 
-
-
 export default initialState =>
 createStore(
 	rootReducer,
