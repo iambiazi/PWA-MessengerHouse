@@ -1,8 +1,9 @@
 import React from 'react';
 import dayjs from 'dayjs';
+import { useState } from 'react';
 
 export default ({ message, username, firstMessage }) => {
-  const ownMessage = username === message.username
+  const ownMessage = username === message.username;
   return (
     <li style={{ listStyle: 'none' }}>
       <div className="message-container">
@@ -10,7 +11,7 @@ export default ({ message, username, firstMessage }) => {
           {ownMessage && (
             <span className="timestamp">
               {dayjs(message.created_at).format('h:mma')}{'  '}
-        </span>
+            </span>
           )}
           {!firstMessage &&
             !ownMessage && (
@@ -27,6 +28,7 @@ export default ({ message, username, firstMessage }) => {
           )}
         </div>
       </div>
+
       <style>
         {`
         .my-subcontainer {
@@ -47,28 +49,31 @@ export default ({ message, username, firstMessage }) => {
           transition: color .8s;
           }
         .my-message {
+        display: block;
         background: #00e34d;
         color: white;
         border-radius: 10px;
         margin-bottom: 0.1em;
-        padding: 2px 8px;
+        padding: 2px;
         max-width: 60%;
-        word-break: break-all;
+        white-space: wrap;
+        word-wrap: break-word;
         width: fit-content;
         }
         .your-message {
-        display: inline;
+        display: inline-block;
         background: #E5E5EA;
         border-radius: 10px;
         margin-bottom: 0.1em;
-        padding: 2px 8px;
+        padding: 2px;
         max-width: 60%;
-        word-break: break-all;
+        white-sapce: wrap;
+        word-wrap: break-word;
         width: fit-content;
         }
         .my-message {
         clear: right;
-        display: inline;
+        display: inline-block;
         }
         .message-username {
           display: block;
@@ -83,3 +88,4 @@ export default ({ message, username, firstMessage }) => {
     </li>
   );
 };
+

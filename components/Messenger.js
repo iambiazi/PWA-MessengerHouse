@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
-
 import { addMessage } from '../actions/message';
 import { addHouse } from '../actions/message';
 import Message from './Message';
+import NavBar from './NavBar';
 
 const generateName = () => {
   const getRandomInt = (min, max) =>
@@ -53,20 +53,29 @@ class Messenger extends React.Component {
       messages: [],
       username: generateName(),
       updated: false,
+      currentConvo: '',
+      friends: new Set(),
     }
   }
 
   componentDidUpdate() {
     this.scrollToBottom();
     if (!this.state.messages.length && !this.state.updated) {
-      this.setState({ messages: this.props.messages, updated: true })
+      this.setState(state => {
+        this.props.messages.forEach(msg => {
+          state.friends.add(msg.username);
+        });
+        return state;
+      });
+      const filtered = this.state.currentConvo !== '' ? this.props.messages.filter(message => (message.username === this.state.currentConvo)) : this.props.messages;
+      this.setState({ messages: filtered, updated: true })
     }
   }
 
   componentDidMount() {
     this.socket = io('http://localhost:3000');
     this.socket.on('message', this.handleMessage);
-    setTimeout(this.scrollToBottom, 100)
+    setTimeout(this.scrollToBottom, 100);
   }
 
   componentWillUnmount() {
@@ -75,8 +84,20 @@ class Messenger extends React.Component {
   }
 
   handleMessage = message => {
+    this.setState(state => state.friends.add(message.username));
     this.setState(state => ({ messages: state.messages.concat(message) }));
     this.props.addMessage(message.text, message.username, message.created_at)
+  };
+
+  getCurrentConvo = otherUser => {
+
+    this.setState(state => {
+      const filtered = this.props.messages.filter(message => (message.username === otherUser));
+      return {
+        currentConvo: otherUser,
+        messages: filtered,
+      }
+    });
   };
 
   handleSubmit = e => {
@@ -114,17 +135,17 @@ class Messenger extends React.Component {
       return i > 0 && msg.username === arr[i - 1].username
     };
 
-    // let allMessages = this.props.messages.concat(this.state.messages);
-    // allMessages.sort((a, b) => b.createdAt - a.createdAt);
     return (
       <React.Fragment>
+
         <input
           type="text"
           onChange={this.handleChange}
           placeholder={'enter username'}
         />
-
         <div className="mdl-card mdl-shadow--2dp" id="chatview">
+          <NavBar getConvo={this.getCurrentConvo} friends={[...this.state.friends]}/>
+
           <ul>
             {/*{this.props.messages.map((message, i, array) => (*/}
             {/*<Message key={i} message={message} username={this.state.username} firstMessage={sameUser(message, i, array)}/>*/}
@@ -139,7 +160,7 @@ class Messenger extends React.Component {
             ))}
             <div
               ref={el => {
-                this.el = el
+                this.el = el;
               }}
             />
           </ul>
@@ -167,7 +188,7 @@ class Messenger extends React.Component {
 							padding: 0px 10px 0px 10px;
 						}
 						ul {
-							min-height: 100px;
+							height: 480px;
 							margin: 0;
 							padding: 0;
 							text-align: left;
@@ -184,6 +205,9 @@ class Messenger extends React.Component {
 							transform: translateY(100px);
 							min-height: 500px;
 							max-height: 500px;
+						}
+						.mdl-textfield {
+							padding: 28px 0;
 						}
 					`}</style>
         </div>
