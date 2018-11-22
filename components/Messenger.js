@@ -193,9 +193,9 @@ class Messenger extends React.Component {
                 id="message-input"
                 placeholder={'Send a message'}
               />
+              <span className="send-msg-btn"><i className="fas fa-location-arrow"></i></span>
               <label className="mdl-textfield__label" htmlFor="message-input" />
             </div>
-            <div><button>send</button></div>
           </form>
           <style>{`
 						#message-input {
@@ -225,9 +225,10 @@ class Messenger extends React.Component {
 							transform: translateY(100px);
               height: 500px;
 						}
-						.mdl-textfield {
-							padding: 28px 0;
-						}
+						.mdl-textfield__input {
+              display:inline-block;
+              width: 90%;
+            }
 						.timestamp{
 		          font-size:10px;
 		          font-weight: 300;
@@ -268,6 +269,12 @@ class Messenger extends React.Component {
 	          font-weight: bold;
 	          line-height: 1.5;
 	          margin-left: 0.6em;
+          }
+          .send-msg-btn {
+            cursor:pointer;
+          }
+   				.mdl-textfield__label:after{
+            background-color: #0069E0;
           }
 					`}</style>
         </div>
