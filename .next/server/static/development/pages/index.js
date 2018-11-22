@@ -202,6 +202,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_message__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions/message */ "./actions/message.js");
 /* harmony import */ var _Message__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Message */ "./components/Message.js");
 /* harmony import */ var _NavBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./NavBar */ "./components/NavBar.js");
+/* harmony import */ var lodash_throttle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash.throttle */ "lodash.throttle");
+/* harmony import */ var lodash_throttle__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash_throttle__WEBPACK_IMPORTED_MODULE_6__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -238,6 +240,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var generateName = function generateName() {
   var getRandomInt = function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -264,9 +267,9 @@ function (_React$Component) {
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleMessage", function (message) {
       _this.setState(function (state) {
         return {
-          typingNow: false,
-          typing: state.typing.filter(function (name) {
-            return name !== message.username;
+          typing: state.typing.filter(function (_ref) {
+            var username = _ref.username;
+            return username !== message.username;
           })
         };
       });
@@ -285,27 +288,35 @@ function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "typingStatus", function (data) {
-      var notIncluded = _this.state.typing.filter(function (name) {
-        return name !== data;
+      var notIncluded = _this.state.typing.filter(function (el) {
+        return el.username !== data;
       });
 
-      _this.setState(function (state) {
-        return {
-          typing: _toConsumableArray(notIncluded).concat([data]),
-          typingNow: true
-        };
-      });
+      for (var i = 0, len = _this.state.typing.length; i < len; ++i) {
+        if (_this.state.typing[i].username === data) {
+          clearTimeout(_this.state.typing[i].timeoutId);
+        }
+      }
 
-      setTimeout(function () {
+      var timeoutId = setTimeout(function () {
         _this.setState(function (state) {
           return {
-            typingNow: false,
-            typing: state.typing.filter(function (name) {
-              return name !== data;
+            typing: state.typing.filter(function (el) {
+              return el.username !== data;
             })
           };
         });
-      }, 2200);
+      }, 3000);
+      var status = {
+        username: data,
+        timeoutId: timeoutId
+      };
+
+      _this.setState(function (state) {
+        return {
+          typing: _toConsumableArray(notIncluded).concat([status])
+        };
+      });
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "getCurrentConvo", function (otherUser) {
@@ -322,7 +333,7 @@ function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleTypingStatus", function () {
-      _this.socket.emit('typing', _this.state.username);
+      lodash_throttle__WEBPACK_IMPORTED_MODULE_6___default()(_this.socket.emit('typing', _this.state.username), 2500);
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSubmit", function (e) {
@@ -384,8 +395,7 @@ function (_React$Component) {
       currentConvo: '',
       friends: new Set(),
       currentView: 'messenger',
-      typing: [],
-      typingNow: false
+      typing: []
     };
     return _this;
   }
@@ -417,9 +427,19 @@ function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
+      var _this3 = this;
+
       this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_2___default()('http://localhost:3000');
-      this.socket.on('message', this.handleMessage);
-      this.socket.on('typing', this.typingStatus);
+      this.socket.on('connect', function () {
+        _this3.socket.emit('authentication', {
+          username: 'Brian',
+          password: 'password'
+        });
+
+        _this3.socket.on('message', _this3.handleMessage);
+
+        _this3.socket.on('typing', _this3.typingStatus);
+      });
       setTimeout(this.scrollToBottom, 100);
     }
   }, {
@@ -431,13 +451,13 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       var sameUser = function sameUser(msg, i, arr) {
         return i > 0 && msg.username === arr[i - 1].username;
       };
 
-      var typingStatusMessage = !this.state.typingNow ? '' : this.state.typing.length === 1 ? "".concat(this.state.typing[0], " is typing...") : this.state.typing.length === 2 ? "".concat(this.state.typing[0], " and ").concat(this.state.typing[1], " are typing...") : "multiple people are typing";
+      var typingStatusMessage = !this.state.typing.length ? '' : this.state.typing.length === 1 ? "".concat(this.state.typing[0].username, " is typing...") : this.state.typing.length === 2 ? "".concat(this.state.typing[0].username, " and ").concat(this.state.typing[1].username, " are typing...") : "multiple people are typing";
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         onChange: this.handleChange,
@@ -455,12 +475,12 @@ function (_React$Component) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Message__WEBPACK_IMPORTED_MODULE_4__["default"], {
           key: i,
           message: message,
-          username: _this3.state.username,
+          username: _this4.state.username,
           firstMessage: sameUser(message, i, array)
         });
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         ref: function ref(el) {
-          _this3.el = el;
+          _this4.el = el;
         }
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "typing-status"
@@ -473,9 +493,9 @@ function (_React$Component) {
         type: "text",
         value: this.state.text,
         onChange: function onChange(e) {
-          _this3.socket.emit('typing', _this3.state.username);
+          _this4.socket.emit('typing', _this4.state.username);
 
-          _this3.setState({
+          _this4.setState({
             text: e.target.value
           });
         },
@@ -496,9 +516,9 @@ function (_React$Component) {
   return Messenger;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(function (_ref) {
-  var messages = _ref.messages,
-      houses = _ref.houses;
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(function (_ref2) {
+  var messages = _ref2.messages,
+      houses = _ref2.houses;
   return {
     messages: messages,
     houses: houses
@@ -700,6 +720,17 @@ module.exports = require("dayjs");
 /***/ (function(module, exports) {
 
 module.exports = require("isomorphic-fetch");
+
+/***/ }),
+
+/***/ "lodash.throttle":
+/*!**********************************!*\
+  !*** external "lodash.throttle" ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash.throttle");
 
 /***/ }),
 
