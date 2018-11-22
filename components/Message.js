@@ -10,13 +10,14 @@ export default ({ message, username, firstMessage }) => {
         <div className={ownMessage ? 'my-subcontainer' : 'your-subcontainer'}>
           {ownMessage && (
             <span className="timestamp">
-              {dayjs(message.created_at).format('h:mma')}{'  '}
+              {dayjs(message.created_at).format('h:mma')}
+              {'  '}
             </span>
           )}
-          {!firstMessage &&
-            !ownMessage && (
-              <span className="message-username">{message.username}</span>
-            )}
+          {!firstMessage
+          && !ownMessage && (
+            <span className="message-username">{message.username}</span>
+          )}
           <div className={ownMessage ? 'my-message' : 'your-message'}>
             {message.text}
           </div>
@@ -39,4 +40,3 @@ export default ({ message, username, firstMessage }) => {
     </li>
   );
 };
-

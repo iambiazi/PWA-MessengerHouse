@@ -1,20 +1,31 @@
 import React from 'react';
-const NavBar = ({getConvo, friends, changeHome, changeMessage, currentView}) => {
-  return (
-    <div id='navbar-container'>
-      {currentView === 'messenger' && <a href='/browse' ><img src={'../static/house.png'} id='house-button'/></a>}
-      <div className="dropdown">
-        <button className="dropbtn">Menu</button>
-        <div className="dropdown-content">
 
-          {currentView === 'browse' && <a onClick={changeMessage}>Messenger</a>}
-          {friends.slice(-5).map((friend, i) => (
-            <a key={i} onClick={() => getConvo(`${friend}`)}>{friend}</a>
-          ))}
-
-        </div>
+const NavBar = ({
+  getConvo,
+  friends,
+  changeHome,
+  changeMessage,
+  currentView,
+}) => (
+  <div id="navbar-container">
+    {currentView === 'messenger' && (
+    <a href="/browse">
+      <img src="../static/house.png" id="house-button" />
+    </a>
+    )}
+    <div className="dropdown">
+      <button className="dropbtn">Menu</button>
+      <div className="dropdown-content">
+        {currentView === 'browse' && <a onClick={changeMessage}>Messenger</a>}
+        {friends.slice(-5).map((friend, i) => (
+          <a key={i} onClick={() => getConvo(`${friend}`)}>
+            {friend}
+          </a>
+        ))}
       </div>
-      <style>{`
+    </div>
+    <style>
+      {`
         a {
         font-size: 12px;
         }
@@ -62,9 +73,9 @@ const NavBar = ({getConvo, friends, changeHome, changeMessage, currentView}) => 
         .dropdown:hover .dropbtn {
             background-color: #0069E0;
         }
-      `}</style>
-    </div>
-  );
-};
+      `}
+    </style>
+  </div>
+);
 
 export default NavBar;

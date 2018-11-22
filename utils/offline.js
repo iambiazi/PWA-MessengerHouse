@@ -6,8 +6,8 @@
 
 if (
   process.env.NODE_ENV === 'production'
-	&& typeof window !== 'undefined'
-	&& 'serviceWorker' in navigator
+  && typeof window !== 'undefined'
+  && 'serviceWorker' in navigator
 ) {
   navigator.serviceWorker
     .register('/sw.js')

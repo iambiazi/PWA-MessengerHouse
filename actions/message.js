@@ -1,5 +1,4 @@
-import { ADD_MESSAGE } from '.';
-import { ADD_HOUSE } from '.';
+import { ADD_MESSAGE, ADD_HOUSE } from '.';
 
 export function addMessage(text, username, created_at) {
   return {

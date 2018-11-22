@@ -11,7 +11,8 @@ class Browse extends React.Component {
     return (
       <div id="browse-homes">
         <div id="main" />
-          <style>{`
+        <style>
+          {`
             #main {
               margin-left: 30px;
             }
@@ -27,8 +28,8 @@ class Browse extends React.Component {
             }
 
           `}
-          </style>
-        </div>
+        </style>
+      </div>
      );
   }
   }
