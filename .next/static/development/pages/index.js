@@ -110,6 +110,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NavBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./NavBar */ "./components/NavBar.js");
 /* harmony import */ var lodash_throttle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash.throttle */ "./node_modules/lodash.throttle/index.js");
 /* harmony import */ var lodash_throttle__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash_throttle__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! isomorphic-fetch */ "./node_modules/isomorphic-fetch/fetch-npm-browserify.js");
+/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(isomorphic_fetch__WEBPACK_IMPORTED_MODULE_7__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -147,6 +149,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var generateName = function generateName() {
   var getRandomInt = function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -169,6 +172,21 @@ function (_React$Component) {
     _classCallCheck(this, Messenger);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Messenger).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "connectAuthedUser", function (username, password) {
+      _this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_2___default()('http://localhost:3000');
+
+      _this.socket.on('connect', function () {
+        _this.socket.emit('authentication', {
+          username: username,
+          password: password
+        });
+
+        _this.socket.on('message', _this.handleMessage);
+
+        _this.socket.on('typing', _this.typingStatus);
+      });
+    });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleMessage", function (message) {
       _this.setState(function (state) {
@@ -287,16 +305,34 @@ function (_React$Component) {
       }
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleChange", function (e) {
-      _this.setState({
-        username: e.target.value
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "loginUser", function (e) {
+      e.preventDefault();
+      var userInfo = {
+        username: _this.state.username,
+        password: _this.state.password
+      }; //TODO make it so username in state can't change?
+
+      isomorphic_fetch__WEBPACK_IMPORTED_MODULE_7___default()('/signup', {
+        method: "POST",
+        body: JSON.stringify(userInfo),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
+      }).then(function () {
+        _this.connectAuthedUser(userInfo.username, userInfo.password);
       });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleChange", function (e) {
+      _this.setState(_defineProperty({}, e.target.name, e.target.value));
     });
 
     _this.state = {
       text: '',
       messages: [],
       username: generateName(),
+      password: '',
       updated: false,
       currentConvo: '',
       friends: new Set(),
@@ -333,19 +369,6 @@ function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this3 = this;
-
-      this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_2___default()('http://localhost:3000');
-      this.socket.on('connect', function () {
-        _this3.socket.emit('authentication', {
-          username: 'Brian',
-          password: 'password'
-        });
-
-        _this3.socket.on('message', _this3.handleMessage);
-
-        _this3.socket.on('typing', _this3.typingStatus);
-      });
       setTimeout(this.scrollToBottom, 100);
     }
   }, {
@@ -357,18 +380,27 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this3 = this;
 
       var sameUser = function sameUser(msg, i, arr) {
         return i > 0 && msg.username === arr[i - 1].username;
       };
 
       var typingStatusMessage = !this.state.typing.length ? '' : this.state.typing.length === 1 ? "".concat(this.state.typing[0].username, " is typing...") : this.state.typing.length === 2 ? "".concat(this.state.typing[0].username, " and ").concat(this.state.typing[1].username, " are typing...") : "multiple people are typing";
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        onSubmit: this.loginUser,
+        onChange: this.handleChange
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
-        onChange: this.handleChange,
-        placeholder: 'enter username'
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        placeholder: 'enter username',
+        name: "username"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "password",
+        placeholder: 'enter password',
+        name: "password"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "submit"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "mdl-card mdl-shadow--2dp",
         id: "chatview"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -381,12 +413,12 @@ function (_React$Component) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Message__WEBPACK_IMPORTED_MODULE_4__["default"], {
           key: i,
           message: message,
-          username: _this4.state.username,
+          username: _this3.state.username,
           firstMessage: sameUser(message, i, array)
         });
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         ref: function ref(el) {
-          _this4.el = el;
+          _this3.el = el;
         }
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "typing-status"
@@ -399,9 +431,9 @@ function (_React$Component) {
         type: "text",
         value: this.state.text,
         onChange: function onChange(e) {
-          _this4.socket.emit('typing', _this4.state.username);
+          _this3.socket.emit('typing', _this3.state.username);
 
-          _this4.setState({
+          _this3.setState({
             text: e.target.value
           });
         },

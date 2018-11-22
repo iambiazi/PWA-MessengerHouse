@@ -19,6 +19,18 @@ const server = createServer((req, res) => {
   } else {
     handle(req, res);
   }
+
+  if (req.url === '/signup' && req.method === 'POST') {
+    let body = [];
+    req.on('data', chunk => {
+      body.push(chunk);
+    }).on('end', () => {
+      body = Buffer.concat(body).toString();
+      console.log(body);
+      User.create(JSON.parse(body));
+    });
+
+  }
 });
 
 const io = require('socket.io').listen(server);

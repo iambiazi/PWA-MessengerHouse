@@ -6,6 +6,7 @@ import { addHouse } from '../actions/message';
 import Message from './Message';
 import NavBar from './NavBar';
 import throttle from 'lodash.throttle';
+import isomorphicFetch from 'isomorphic-fetch';
 
 const generateName = () => {
   const getRandomInt = (min, max) =>
@@ -53,6 +54,7 @@ class Messenger extends React.Component {
       text: '',
       messages: [],
       username: generateName(),
+      password: '',
       updated: false,
       currentConvo: '',
       friends: new Set(),
@@ -76,13 +78,6 @@ class Messenger extends React.Component {
   }
 
   componentDidMount() {
-    this.socket = io('http://localhost:3000');
-    this.socket.on('connect', () => {
-      this.socket.emit('authentication', {username: 'Brian', password: 'password'});
-      this.socket.on('message', this.handleMessage);
-      this.socket.on('typing', this.typingStatus);
-    });
-
     setTimeout(this.scrollToBottom, 100);
   }
 
@@ -90,6 +85,15 @@ class Messenger extends React.Component {
     this.socket.off('message', this.handleMessage);
     this.socket.close();
   }
+
+  connectAuthedUser = (username, password) => {
+    this.socket = io('http://localhost:3000');
+    this.socket.on('connect', () => {
+      this.socket.emit('authentication', {username, password});
+      this.socket.on('message', this.handleMessage);
+      this.socket.on('typing', this.typingStatus);
+    });
+  };
 
   handleMessage = message => {
     this.setState(state => ({
@@ -171,8 +175,27 @@ class Messenger extends React.Component {
     }
   };
 
+  loginUser = (e) => {
+    e.preventDefault();
+    const userInfo = {
+      username: this.state.username,
+      password: this.state.password,
+    };
+    //TODO make it so username in state can't change?
+    isomorphicFetch('/signup', {
+      method: "POST",
+      body: JSON.stringify(userInfo),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "same-origin",
+    }).then(() => {
+      this.connectAuthedUser(userInfo.username, userInfo.password);
+    })
+  };
+
   handleChange = e => {
-    this.setState({ username: e.target.value })
+    this.setState({ [e.target.name]: e.target.value })
   };
 
   render() {
@@ -184,12 +207,21 @@ class Messenger extends React.Component {
         : this.state.typing.length === 2 ? `${this.state.typing[0].username} and ${this.state.typing[1].username} are typing...` : `multiple people are typing`;
     return (
       <React.Fragment>
-
+        <form onSubmit={this.loginUser} onChange={this.handleChange}>
         <input
           type="text"
-          onChange={this.handleChange}
           placeholder={'enter username'}
+          name='username'
         />
+          <input
+            type="password"
+            placeholder={'enter password'}
+            name='password'
+          />
+          <input
+            type='submit'
+            />
+        </form>
         <div className="mdl-card mdl-shadow--2dp" id="chatview">
           <NavBar
             getConvo={this.getCurrentConvo}
