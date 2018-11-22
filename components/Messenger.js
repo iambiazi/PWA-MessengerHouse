@@ -55,6 +55,7 @@ class Messenger extends React.Component {
       updated: false,
       currentConvo: '',
       friends: new Set(),
+      currentView: 'messenger'
     }
   }
 
@@ -122,8 +123,20 @@ class Messenger extends React.Component {
     }))
   };
 
+  changeToHomeView = () => {
+    //TODO change this to routing? if so remove currentView from state
+    this.setState({currentView: 'browse'})
+  };
+
+  changeToMessageView = () => {
+    //TODO remove this with above function
+    this.setState({currentView: 'messenger'})
+  };
+
   scrollToBottom = () => {
-    this.el.scrollIntoView({ behavior: 'instant' })
+    if (this.el) {
+      this.el.scrollIntoView({ behavior: 'instant' })
+    }
   };
 
   handleChange = e => {
@@ -144,12 +157,15 @@ class Messenger extends React.Component {
           placeholder={'enter username'}
         />
         <div className="mdl-card mdl-shadow--2dp" id="chatview">
-          <NavBar getConvo={this.getCurrentConvo} friends={[...this.state.friends]}/>
-
-          <ul>
-            {/*{this.props.messages.map((message, i, array) => (*/}
-            {/*<Message key={i} message={message} username={this.state.username} firstMessage={sameUser(message, i, array)}/>*/}
-            {/*))}*/}
+          <NavBar
+            getConvo={this.getCurrentConvo}
+            friends={[...this.state.friends]}
+            changeHome={this.changeToHomeView}
+            changeMessage={this.changeToMessageView}
+            currentView={this.state.currentView}
+          />
+          {this.state.currentView === 'browser' && <ul>Browse Homes</ul>}
+          {this.state.currentView === 'messenger' && <ul>
             {this.state.messages.map((message, i, array) => (
               <Message
                 key={i}
@@ -163,7 +179,7 @@ class Messenger extends React.Component {
                 this.el = el;
               }}
             />
-          </ul>
+          </ul>}
           <form onSubmit={this.handleSubmit} autoComplete="off">
             <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input
@@ -203,12 +219,52 @@ class Messenger extends React.Component {
 							margin: auto;
 							transition: all .3s;
 							transform: translateY(100px);
-							min-height: 500px;
-							max-height: 500px;
+              height: 500px;
 						}
 						.mdl-textfield {
 							padding: 28px 0;
 						}
+						.timestamp{
+		          font-size:10px;
+		          font-weight: 300;
+		          color: transparent;
+		          margin: 3px;
+	          }
+	          li:hover .my-timestamp {
+		          color: black;
+		          transition: color .8s;
+	          }
+	          li:hover .timestamp {
+		          color: black;
+		          transition: color .8s;
+	          }
+	        .my-message {
+		        display: inline-block;
+		        background: #00e34d;
+		        color: white;
+		        border-radius: 10px;
+		        padding: 7px;
+		        max-width: 50%;
+		        word-wrap: break-word;
+		        clear: right;
+		        line-height: 1.25;
+	        }
+	        .your-message {
+		        display: inline-block;
+		        background: #E5E5EA;
+		        border-radius: 10px;
+		        padding: 7px;
+		        word-wrap: break-word;
+		        max-width:70%;
+		        line-height: 1.25;
+	        }
+          .message-username {
+	          display: block;
+	          font-size: 0.8em;
+	          font-weight: bold;
+	          line-height: 1.5;
+	          margin-left: 0.6em;
+          }
 					`}</style>
         </div>
       </React.Fragment>

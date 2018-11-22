@@ -1,11 +1,13 @@
 import React from 'react';
-const NavBar = ({getConvo, friends}) => {
+const NavBar = ({getConvo, friends, changeHome, changeMessage, currentView}) => {
   return (
-    <div>
-
+    <div id='navbar-container'>
+      {currentView === 'messenger' && <a href='/browse' ><img src={'../static/house.png'} id='house-button'/></a>}
       <div className="dropdown">
-        <button className="dropbtn">Dropdown</button>
+        <button className="dropbtn">Menu</button>
         <div className="dropdown-content">
+
+          {currentView === 'browse' && <a onClick={changeMessage}>Messenger</a>}
           {friends.slice(-5).map((friend, i) => (
             <a key={i} onClick={() => getConvo(`${friend}`)}>{friend}</a>
           ))}
@@ -13,13 +15,26 @@ const NavBar = ({getConvo, friends}) => {
         </div>
       </div>
       <style>{`
+        a {
+        font-size: 12px;
+        }
+        #navbar-container {
+        display: flex;
+        justify-content: flex-end;
+        }
+        #house-button {
+        margin-right: 12px;
+        height: 50px;
+        width: auto;
+        }
         .dropbtn {
             background-color: #0069E0;
             color: white;
-            padding: 16px;
+            padding: 10px;
             font-size: 16px;
             border: none;
             cursor: pointer;
+            width: 120px;
         }
         .dropdown {
             position: relative;
@@ -36,7 +51,7 @@ const NavBar = ({getConvo, friends}) => {
         }
         .dropdown-content a {
             color: black;
-            padding: 12px 16px;
+            // padding: 12px 16px;
             text-decoration: none;
             display: block;
         }
