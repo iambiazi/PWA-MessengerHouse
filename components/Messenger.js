@@ -193,7 +193,8 @@ class Messenger extends React.Component {
                 id="message-input"
                 placeholder={'Send a message'}
               />
-              <span className="send-msg-btn"><i className="fas fa-location-arrow"></i></span>
+
+              <span onClick={this.handleSubmit}><i className="far fa-comment"></i></span>
               <label className="mdl-textfield__label" htmlFor="message-input" />
             </div>
           </form>

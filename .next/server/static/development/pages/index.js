@@ -438,9 +438,9 @@ function (_React$Component) {
         id: "message-input",
         placeholder: 'Send a message'
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "send-msg-btn"
+        onClick: this.handleSubmit
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-location-arrow"
+        className: "far fa-comment"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "mdl-textfield__label",
         htmlFor: "message-input"
