@@ -2,6 +2,7 @@
   "name": "messenger-house",
   "version": "1.0.0",
   "license": "MIT",
+  "author": "Brian Louie",
   "dependencies": {
     "@redux-offline/redux-offline": "^2.5.1",
     "@zeit/next-css": "^1.0.1",
@@ -10,6 +11,7 @@
     "eslint-plugin-prettier": "^3.0.0",
     "express": "^4.16.4",
     "isomorphic-fetch": "^2.2.1",
+    "lodash.throttle": "^4.1.1",
     "next": "^7.0.0",
     "next-redux-wrapper": "^2.0.0",
     "react": "^16.5.2",
@@ -22,7 +24,7 @@
     "socket.io-client": "^2.1.1"
   },
   "scripts": {
-    "dev": "node server",
+    "dev": "nodemon -w server.js",
     "build": "next build",
     "next": "next",
     "start": "NODE_ENV=production node server"

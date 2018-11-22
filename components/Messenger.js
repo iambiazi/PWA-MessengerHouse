@@ -5,6 +5,7 @@ import { addMessage } from '../actions/message';
 import { addHouse } from '../actions/message';
 import Message from './Message';
 import NavBar from './NavBar';
+import throttle from 'lodash.throttle';
 
 const generateName = () => {
   const getRandomInt = (min, max) =>
@@ -55,8 +56,9 @@ class Messenger extends React.Component {
       updated: false,
       currentConvo: '',
       friends: new Set(),
-      currentView: 'messenger'
-    }
+      currentView: 'messenger',
+      typing: [],
+    };
   }
 
   componentDidUpdate() {
@@ -76,29 +78,53 @@ class Messenger extends React.Component {
   componentDidMount() {
     this.socket = io('http://localhost:3000');
     this.socket.on('message', this.handleMessage);
+    this.socket.on('typing', this.typingStatus);
     setTimeout(this.scrollToBottom, 100);
   }
 
   componentWillUnmount() {
     this.socket.off('message', this.handleMessage);
-    this.socket.close()
+    this.socket.close();
   }
 
   handleMessage = message => {
+    this.setState(state => ({
+      typing: state.typing.filter(({username}) => username !== message.username),
+    }));
     this.setState(state => state.friends.add(message.username));
     this.setState(state => ({ messages: state.messages.concat(message) }));
-    this.props.addMessage(message.text, message.username, message.created_at)
+    this.props.addMessage(message.text, message.username, message.created_at);
+  };
+
+  typingStatus = data => {
+    const notIncluded = this.state.typing.filter(el => el.username !== data);
+    for (let i = 0, len = this.state.typing.length; i < len; ++i) {
+      if (this.state.typing[i].username === data) {
+        clearTimeout(this.state.typing[i].timeoutId);
+      }
+    }
+    const timeoutId = setTimeout(() => {
+      this.setState(state => ({
+        typing: state.typing.filter(el => el.username !== data),
+      }))
+    }, 3000);
+    const status = {username: data, timeoutId: timeoutId};
+    this.setState(state => ({typing: [...notIncluded, status]}));
+
   };
 
   getCurrentConvo = otherUser => {
-
-    this.setState(state => {
+    this.setState(() => {
       const filtered = this.props.messages.filter(message => (message.username === otherUser));
       return {
         currentConvo: otherUser,
         messages: filtered,
       }
     });
+  };
+
+  handleTypingStatus = () => {
+    throttle(this.socket.emit('typing', this.state.username), 2500);
   };
 
   handleSubmit = e => {
@@ -123,7 +149,6 @@ class Messenger extends React.Component {
         messages: this.state.messages.concat(message),
       }))
     }
-
   };
 
   changeToHomeView = () => {
@@ -150,7 +175,9 @@ class Messenger extends React.Component {
     const sameUser = (msg, i, arr) => {
       return i > 0 && msg.username === arr[i - 1].username
     };
-
+    const typingStatusMessage = !this.state.typing.length ? ''
+        : this.state.typing.length === 1 ? `${this.state.typing[0].username} is typing...`
+        : this.state.typing.length === 2 ? `${this.state.typing[0].username} and ${this.state.typing[1].username} are typing...` : `multiple people are typing`;
     return (
       <React.Fragment>
 
@@ -183,12 +210,16 @@ class Messenger extends React.Component {
               }}
             />
           </ul>}
+          <div id='typing-status'><i>{typingStatusMessage}</i></div>
           <form onSubmit={this.handleSubmit} autoComplete="off">
             <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input
                 type="text"
                 value={this.state.text}
-                onChange={e => this.setState({ text: e.target.value })}
+                onChange={e => {
+                  this.socket.emit('typing', this.state.username);
+                  this.setState({ text: e.target.value })
+                }}
                 className="mdl-textfield__input"
                 id="message-input"
                 placeholder={'Send a message'}
@@ -199,6 +230,10 @@ class Messenger extends React.Component {
             </div>
           </form>
           <style>{`
+            #typing-status {
+            height: 2.4em;
+            font-size: .7em;
+            }
 						#message-input {
 						border-bottom: lightgray solid 1px;
 						border-top: lightgray solid 1px;
@@ -229,6 +264,7 @@ class Messenger extends React.Component {
 						.mdl-textfield__input {
               display:inline-block;
               width: 90%;
+              padding-top: .5em;
             }
 						.timestamp{
 		          font-size:10px;
