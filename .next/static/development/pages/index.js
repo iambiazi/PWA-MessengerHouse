@@ -198,22 +198,25 @@ function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSubmit", function (e) {
       e.preventDefault();
-      var message = {
-        created_at: new Date().getTime(),
-        username: _this.state.username,
-        text: _this.state.text
-      };
 
-      _this.socket.emit('message', message);
-
-      _this.props.addMessage(_this.state.text, _this.state.username, message.created_at);
-
-      _this.setState(function (state) {
-        return {
-          text: '',
-          messages: _this.state.messages.concat(message)
+      if (_this.state.text !== '') {
+        var message = {
+          created_at: new Date().getTime(),
+          username: _this.state.username,
+          text: _this.state.text
         };
-      });
+
+        _this.socket.emit('message', message);
+
+        _this.props.addMessage(_this.state.text, _this.state.username, message.created_at);
+
+        _this.setState(function (state) {
+          return {
+            text: '',
+            messages: _this.state.messages.concat(message)
+          };
+        });
+      }
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "changeToHomeView", function () {
@@ -305,7 +308,7 @@ function (_React$Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 152
+          lineNumber: 155
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
@@ -314,7 +317,7 @@ function (_React$Component) {
         placeholder: 'enter username',
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 154
+          lineNumber: 157
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -322,7 +325,7 @@ function (_React$Component) {
         id: "chatview",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 159
+          lineNumber: 162
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -333,19 +336,19 @@ function (_React$Component) {
         currentView: this.state.currentView,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 160
+          lineNumber: 163
         },
         __self: this
       }), this.state.currentView === 'browser' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 167
+          lineNumber: 170
         },
         __self: this
       }, "Browse Homes"), this.state.currentView === 'messenger' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 168
+          lineNumber: 171
         },
         __self: this
       }, this.state.messages.map(function (message, i, array) {
@@ -356,7 +359,7 @@ function (_React$Component) {
           firstMessage: sameUser(message, i, array),
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 170
+            lineNumber: 173
           },
           __self: this
         });
@@ -366,7 +369,7 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 177
+          lineNumber: 180
         },
         __self: this
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
@@ -374,14 +377,14 @@ function (_React$Component) {
         autoComplete: "off",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 183
+          lineNumber: 186
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "mdl-textfield mdl-js-textfield mdl-textfield--floating-label",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 184
+          lineNumber: 187
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
@@ -397,7 +400,7 @@ function (_React$Component) {
         placeholder: 'Send a message',
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 185
+          lineNumber: 188
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
@@ -405,13 +408,25 @@ function (_React$Component) {
         htmlFor: "message-input",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 193
+          lineNumber: 196
         },
         __self: this
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 196
+          lineNumber: 198
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 198
+        },
+        __self: this
+      }, "send"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 200
         },
         __self: this
       }, "\n\t\t\t\t\t\t#message-input {\n\t\t\t\t\t\tborder-bottom: lightgray solid 1px;\n\t\t\t\t\t\tborder-top: lightgray solid 1px;\n\t\t\t\t\t\theight: 20px;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tform {\n\t\t\t\t\t\t\tbackground: #fff;\n\t\t\t\t\t\t\tpadding: 0px 10px 0px 10px;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul {\n\t\t\t\t\t\t\theight: 480px;\n\t\t\t\t\t\t\tmargin: 0;\n\t\t\t\t\t\t\tpadding: 0;\n\t\t\t\t\t\t\ttext-align: left;\n\t\t\t\t\t\t\tlist-style: none;\n\t\t\t\t\t\t\toverflow-y: scroll;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tul li {\n\t\t\t\t\t\t\tpadding: 1px;\n\t\t\t\t\t\t\tbackground: #FFF;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.mdl-card {\n\t\t\t\t\t\t\tmargin: auto;\n\t\t\t\t\t\t\ttransition: all .3s;\n\t\t\t\t\t\t\ttransform: translateY(100px);\n              height: 500px;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.mdl-textfield {\n\t\t\t\t\t\t\tpadding: 28px 0;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.timestamp{\n\t\t          font-size:10px;\n\t\t          font-weight: 300;\n\t\t          color: transparent;\n\t\t          margin: 3px;\n\t          }\n\t          li:hover .my-timestamp {\n\t\t          color: black;\n\t\t          transition: color .8s;\n\t          }\n\t          li:hover .timestamp {\n\t\t          color: black;\n\t\t          transition: color .8s;\n\t          }\n\t        .my-message {\n\t\t        display: inline-block;\n\t\t        background: #00e34d;\n\t\t        color: white;\n\t\t        border-radius: 10px;\n\t\t        padding: 7px;\n\t\t        max-width: 50%;\n\t\t        word-wrap: break-word;\n\t\t        clear: right;\n\t\t        line-height: 1.25;\n\t        }\n\t        .your-message {\n\t\t        display: inline-block;\n\t\t        background: #E5E5EA;\n\t\t        border-radius: 10px;\n\t\t        padding: 7px;\n\t\t        word-wrap: break-word;\n\t\t        max-width:70%;\n\t\t        line-height: 1.25;\n\t        }\n          .message-username {\n\t          display: block;\n\t          font-size: 0.8em;\n\t          font-weight: bold;\n\t          line-height: 1.5;\n\t          margin-left: 0.6em;\n          }\n\t\t\t\t\t")));

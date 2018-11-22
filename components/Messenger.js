@@ -104,23 +104,26 @@ class Messenger extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    const message = {
-      created_at: new Date().getTime(),
-      username: this.state.username,
-      text: this.state.text,
-    };
+    if (this.state.text !== '') {
+      const message = {
+        created_at: new Date().getTime(),
+        username: this.state.username,
+        text: this.state.text,
+      };
 
-    this.socket.emit('message', message);
+      this.socket.emit('message', message);
 
-    this.props.addMessage(
-      this.state.text,
-      this.state.username,
-      message.created_at,
-    );
-    this.setState(state => ({
-      text: '',
-      messages: this.state.messages.concat(message),
-    }))
+      this.props.addMessage(
+        this.state.text,
+        this.state.username,
+        message.created_at,
+      );
+      this.setState(state => ({
+        text: '',
+        messages: this.state.messages.concat(message),
+      }))
+    }
+
   };
 
   changeToHomeView = () => {
@@ -192,6 +195,7 @@ class Messenger extends React.Component {
               />
               <label className="mdl-textfield__label" htmlFor="message-input" />
             </div>
+            <div><button>send</button></div>
           </form>
           <style>{`
 						#message-input {
