@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Browse extends React.Component {
+class Browser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -10,6 +10,7 @@ class Browse extends React.Component {
   render() {
     return (
       <div id="browse-homes">
+        <a href='/messenger'>Messenger</a>
         <div id="main" />
         <style>
           {`
@@ -35,4 +36,4 @@ class Browse extends React.Component {
   }
 
 
-export default Browse;
+export default Browser;

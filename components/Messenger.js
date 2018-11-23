@@ -81,6 +81,9 @@ class Messenger extends React.Component {
 
   componentDidMount() {
     setTimeout(this.scrollToBottom, 100);
+    if (this.props.username && this.props.password) {
+
+    }
   }
 
   componentWillUnmount() {
@@ -180,29 +183,6 @@ class Messenger extends React.Component {
     }
   };
 
-  loginUser = (e) => {
-    e.preventDefault();
-    const userInfo = {
-      username: this.state.username,
-      password: this.state.password,
-    };
-    // TODO make it so username in state can't change?
-    isomorphicFetch('/signup', {
-      method: 'POST',
-      body: JSON.stringify(userInfo),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'same-origin',
-    }).then(() => {
-      this.connectAuthedUser(userInfo.username, userInfo.password);
-    });
-  };
-
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
   render() {
     const sameUser = (msg, i, arr) => i > 0 && msg.username === arr[i - 1].username;
     const typingStatusMessage = !this.state.typing.length
@@ -215,16 +195,6 @@ class Messenger extends React.Component {
           } are typing...`
           : 'multiple people are typing';
     return (
-      <React.Fragment>
-        <form onSubmit={this.loginUser} onChange={this.handleChange}>
-          <input type="text" placeholder="enter username" name="username" />
-          <input
-            type="password"
-            placeholder="enter password"
-            name="password"
-          />
-          <input type="submit" />
-        </form>
         <div className="mdl-card mdl-shadow--2dp" id="chatview">
           <NavBar
             getConvo={this.getCurrentConvo}
@@ -362,7 +332,6 @@ class Messenger extends React.Component {
 					`}
           </style>
         </div>
-      </React.Fragment>
     );
   }
 }

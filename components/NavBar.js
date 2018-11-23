@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link'
 
 const NavBar = ({
   getConvo,
@@ -9,9 +10,9 @@ const NavBar = ({
 }) => (
   <div id="navbar-container">
     {currentView === 'messenger' && (
-    <a href="/browse">
-      <img src="../static/house.png" id="house-button" />
-    </a>
+      <Link href='/browser'>
+        <a><img src="../static/house.png" id="house-button" /></a>
+      </Link>
     )}
     <div className="dropdown">
       <button className="dropbtn">Menu</button>

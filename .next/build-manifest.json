@@ -6,22 +6,17 @@
     "/_app": [
       "static/runtime/webpack.js",
       "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.fb789338caa49568ef8f.hot-update.js"
+      "static/webpack/static/runtime/main.js.969db33f0727b2486216.hot-update.js"
     ],
     "/_error": [
       "static/runtime/webpack.js",
       "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.fb789338caa49568ef8f.hot-update.js"
+      "static/webpack/static/runtime/main.js.969db33f0727b2486216.hot-update.js"
     ],
-    "/index": [
+    "/messenger": [
       "static/runtime/webpack.js",
       "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.fb789338caa49568ef8f.hot-update.js"
-    ],
-    "/": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.fb789338caa49568ef8f.hot-update.js"
+      "static/webpack/static/runtime/main.js.969db33f0727b2486216.hot-update.js"
     ]
   }
 }
