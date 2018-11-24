@@ -4,7 +4,16 @@ class Browser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      test: '',
     };
+  }
+
+  componentDidMount() {
+    const script = document.createElement("script");
+
+    script.src = "http://hr-fec-otb.us-west-1.elasticbeanstalk.com/bundle.js";
+
+    document.body.appendChild(script);
   }
 
   render() {

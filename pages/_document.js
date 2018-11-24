@@ -19,13 +19,14 @@ export default class MyDocument extends Document {
           />
           <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossOrigin="anonymous" />
           <link rel="stylesheet" href="https://s3-us-west-1.amazonaws.com/housing-hr/style.css" />
-
+          {/*<script src="http://hr-fec-otb.us-west-1.elasticbeanstalk.com/bundle.js" defer/>*/}
         </Head>
         <body>
           <Main />
           <NextScript />
+          <script defer src="static/bundle.js" />
           <script defer src="https://code.getmdl.io/1.3.0/material.min.js" />
-          <script src="http://hr-fec-otb.us-west-1.elasticbeanstalk.com/bundle.js" />
+
         </body>
       </html>
     )

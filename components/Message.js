@@ -1,6 +1,5 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { useState } from 'react';
 
 export default ({ message, username, firstMessage }) => {
   const ownMessage = username === message.username;

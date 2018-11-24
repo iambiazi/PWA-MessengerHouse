@@ -1,4 +1,4 @@
-import { ADD_MESSAGE, ADD_HOUSE } from '.';
+import { ADD_MESSAGE, ADD_HOUSE, ADD_USER } from '.';
 
 export function addMessage(text, username, created_at) {
   return {
@@ -16,4 +16,12 @@ export function addHouse(house_id, username, created_at) {
     username,
     created_at,
   };
+}
+
+export function addUser(username, password) {
+  return {
+    type: ADD_USER,
+    username,
+    password,
+  }
 }

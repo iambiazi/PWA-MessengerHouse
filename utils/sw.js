@@ -53,6 +53,14 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
+  '/browser',
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'browser',
+  }),
+  'GET',
+);
+
+workbox.routing.registerRoute(
   /^http.*/,
   workbox.strategies.networkFirst({
     cacheName: 'http-cache',

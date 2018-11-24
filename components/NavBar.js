@@ -10,8 +10,8 @@ const NavBar = ({
 }) => (
   <div id="navbar-container">
     {currentView === 'messenger' && (
-      <Link href='/browser'>
-        <a><img src="../static/house.png" id="house-button" /></a>
+      <Link href='/browser' prefetch>
+        <a><img src="../static/house.png" id="house-button" alt='' /></a>
       </Link>
     )}
     <div className="dropdown">
