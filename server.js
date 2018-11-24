@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 
 const saltRounds = 10;
 
-
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dir: '.', dev });
 const handle = app.getRequestHandler();
@@ -85,18 +84,19 @@ const socketioAuth = require('socketio-auth');
 const { User } = require('./User');
 
 const authenticate = (client, data, callback) => {
-  // const { username, password } = data;
-  // User.find({ username, password }, (err, user) => {
-  //   if (err || !user) {
-  //     console.log('error finding user');
-  //     return callback((new Error('user not found or dup')));
-  //   }
-    // TODO missing password check conditional logic here
+  const { username } = data;
+  User.find({ username }, (err, user) => {
+    if (err || !user) {
+      console.log('error finding user');
+      return callback((new Error('user not found or dup')));
+    }
+    console.log(client.id);
     return callback(null, true);
-  // });
+  });
 };
 
 io.on('connection', (socket) => {
+  console.log('socketid', socket.id);
   console.log('a user connected');
   socket.on('message', (data) => {
     console.log('this is the data', data);
@@ -112,7 +112,6 @@ io.on('connection', (socket) => {
 });
 
 const postAuthenticate = (socket, data) => {
-  socket.emit('test', data);
   // TODO nothing happening in here currently
 };
 

@@ -51,6 +51,8 @@ class Messenger extends React.Component {
   }
 
   componentWillUnmount() {
+    //TODO do we want this to shut off when you navigate away from messenger?
+    //TODO seems like we want to receive messages still
     this.socket.off('message', this.handleMessage);
     this.socket.close();
   }

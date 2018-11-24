@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -207,11 +207,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! socket.io-client */ "socket.io-client");
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var lodash_throttle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash.throttle */ "lodash.throttle");
-/* harmony import */ var lodash_throttle__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_throttle__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _actions_message__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../actions/message */ "./actions/message.js");
-/* harmony import */ var _Message__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Message */ "./components/Message.js");
-/* harmony import */ var _NavBar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./NavBar */ "./components/NavBar.js");
+/* harmony import */ var _actions_message__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions/message */ "./actions/message.js");
+/* harmony import */ var _Message__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Message */ "./components/Message.js");
+/* harmony import */ var _NavBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./NavBar */ "./components/NavBar.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -246,42 +244,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
- // const generateName = () => {
-//   const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min;
-//   const firstName = [
-//     'Jack',
-//     'Steven',
-//     'Brian',
-//     'Marc',
-//     'Drew',
-//     'Stephanie',
-//     'Daniel',
-//     'James',
-//     'Spencer',
-//     'Caitlin',
-//     'Jackie',
-//     'Julius',
-//     'Patrick',
-//   ];
-//   const lastName = [
-//     'Li',
-//     'Chung',
-//     'Tiosejo',
-//     'Louie',
-//     'Curtis',
-//     'Sockwell',
-//     'Jiang',
-//     'Bykowsky',
-//     'Detro',
-//     'Chen',
-//     'Sea',
-//     'Doyle',
-//   ];
-//   const name = `${firstName[getRandomInt(0, firstName.length)]
-//   } ${
-//     lastName[getRandomInt(0, lastName.length)]}`;
-//   return name;
-// };
 
 var Messenger =
 /*#__PURE__*/
@@ -353,7 +315,7 @@ function (_React$Component) {
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "getCurrentConvo", function (otherUser) {
       _this.setState(function () {
         var filtered = _this.props.messages.filter(function (message) {
-          return message.username === otherUser;
+          return message.username === otherUser || message.username === _this.username;
         });
 
         return {
@@ -363,8 +325,12 @@ function (_React$Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleTypingStatus", function () {
-      lodash_throttle__WEBPACK_IMPORTED_MODULE_3___default()(_this.socket.emit('typing', _this.state.username), 2500);
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "showTypingStatus", function (e) {
+      _this.socket.emit('typing', _this.username);
+
+      _this.setState({
+        text: e.target.value
+      });
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSubmit", function (e) {
@@ -373,13 +339,13 @@ function (_React$Component) {
       if (_this.state.text !== '') {
         var message = {
           created_at: new Date().getTime(),
-          username: _this.state.username,
+          username: _this.username,
           text: _this.state.text
         };
 
         _this.socket.emit('message', message);
 
-        _this.props.addMessage(_this.state.text, _this.state.username, message.created_at);
+        _this.props.addMessage(_this.state.text, _this.username, message.created_at);
 
         _this.setState(function (state) {
           return {
@@ -388,20 +354,6 @@ function (_React$Component) {
           };
         });
       }
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "changeToHomeView", function () {
-      // TODO change this to routing? if so remove currentView from state
-      _this.setState({
-        currentView: 'browse'
-      });
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "changeToMessageView", function () {
-      // TODO remove this with above function
-      _this.setState({
-        currentView: 'messenger'
-      });
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "scrollToBottom", function () {
@@ -429,6 +381,7 @@ function (_React$Component) {
     value: function componentDidUpdate() {
       var _this2 = this;
 
+      this.username = this.props.user.username;
       this.scrollToBottom();
 
       if (!this.state.messages.length && !this.state.updated) {
@@ -457,6 +410,7 @@ function (_React$Component) {
           username = _this$props$user.username,
           password = _this$props$user.password;
       this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_2___default()('http://localhost:3000');
+      this.socket.io.engine.id = 'test';
       this.socket.on('connect', function () {
         _this3.socket.emit('authentication', {
           username: username,
@@ -470,6 +424,8 @@ function (_React$Component) {
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
+      //TODO do we want this to shut off when you navigate away from messenger?
+      //TODO seems like we want to receive messages still
       this.socket.off('message', this.handleMessage);
       this.socket.close();
     }
@@ -482,21 +438,21 @@ function (_React$Component) {
         return i > 0 && msg.username === arr[i - 1].username;
       };
 
-      var typingStatusMessage = !this.state.typing.length ? '' : this.state.typing.length === 1 ? "".concat(this.state.typing[0].username, " is typing...") : this.state.typing.length === 2 ? "".concat(this.state.typing[0].username, " and ").concat(this.state.typing[1].username, " are typing...") : 'multiple people are typing';
+      var typingStatusMessage = !this.state.typing.length ? '' : this.state.typing.length === 1 ? "".concat(this.state.typing[0].username, " is typing...") : this.state.typing.length === 2 ? "".concat(this.state.typing[0].username, " and ").concat(this.state.typing[1].username, " are typing...") : 'several people are typing';
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "mdl-card mdl-shadow--2dp",
         id: "chatview"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_NavBar__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
         getConvo: this.getCurrentConvo,
-        friends: _toConsumableArray(this.state.friends),
-        changeHome: this.changeToHomeView,
-        changeMessage: this.changeToMessageView,
+        friends: _toConsumableArray(this.state.friends).filter(function (notUser) {
+          return notUser !== _this4.username;
+        }),
         currentView: this.state.currentView
       }), this.state.currentView === 'browser' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, "Browse Homes"), this.state.currentView === 'messenger' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, this.state.messages.map(function (message, i, array) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Message__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Message__WEBPACK_IMPORTED_MODULE_4__["default"], {
           key: i,
           message: message,
-          username: _this4.state.username,
+          username: _this4.username,
           firstMessage: sameUser(message, i, array)
         });
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -513,13 +469,7 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         value: this.state.text,
-        onChange: function onChange(e) {
-          _this4.socket.emit('typing', _this4.state.username);
-
-          _this4.setState({
-            text: e.target.value
-          });
-        },
+        onChange: this.showTypingStatus,
         className: "mdl-textfield__input",
         id: "message-input",
         placeholder: "Send a message"
@@ -547,8 +497,8 @@ function (_React$Component) {
     user: user
   };
 }, {
-  addMessage: _actions_message__WEBPACK_IMPORTED_MODULE_4__["addMessage"],
-  addHouse: _actions_message__WEBPACK_IMPORTED_MODULE_4__["addHouse"]
+  addMessage: _actions_message__WEBPACK_IMPORTED_MODULE_3__["addMessage"],
+  addHouse: _actions_message__WEBPACK_IMPORTED_MODULE_3__["addHouse"]
 })(Messenger));
 
 /***/ }),
@@ -629,7 +579,7 @@ var MessengerView = function MessengerView() {
 
 /***/ }),
 
-/***/ 5:
+/***/ 3:
 /*!**********************************!*\
   !*** multi ./pages/messenger.js ***!
   \**********************************/
@@ -649,17 +599,6 @@ module.exports = __webpack_require__(/*! ./pages/messenger.js */"./pages/messeng
 /***/ (function(module, exports) {
 
 module.exports = require("dayjs");
-
-/***/ }),
-
-/***/ "lodash.throttle":
-/*!**********************************!*\
-  !*** external "lodash.throttle" ***!
-  \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("lodash.throttle");
 
 /***/ }),
 
