@@ -340,10 +340,12 @@ function (_React$Component) {
         var message = {
           created_at: new Date().getTime(),
           username: _this.username,
-          text: _this.state.text
+          text: _this.state.text,
+          recipient: _this.state.currentConvo
         };
 
-        _this.socket.emit('message', message);
+        _this.socket.emit('message', message); //TODO THIS ADDS TO PROPS
+
 
         _this.props.addMessage(_this.state.text, _this.username, message.created_at);
 
@@ -406,28 +408,33 @@ function (_React$Component) {
     value: function componentDidMount() {
       var _this3 = this;
 
-      var _this$props$user = this.props.user,
-          username = _this$props$user.username,
-          password = _this$props$user.password;
-      this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_2___default()('http://localhost:3000');
-      this.socket.io.engine.id = 'test';
-      this.socket.on('connect', function () {
-        _this3.socket.emit('authentication', {
-          username: username,
-          password: password
+      var connectSocket = function connectSocket() {
+        var _this3$props$user = _this3.props.user,
+            username = _this3$props$user.username,
+            password = _this3$props$user.password;
+        _this3.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_2___default()('http://localhost:3000');
+
+        _this3.socket.on('connect', function () {
+          _this3.socket.emit('authentication', {
+            username: username,
+            password: password
+          });
         });
-      });
-      this.socket.on('message', this.handleMessage);
-      this.socket.on('typing', this.typingStatus);
+
+        _this3.socket.on('message', _this3.handleMessage);
+
+        _this3.socket.on('typing', _this3.typingStatus);
+      };
+
+      setTimeout(connectSocket, 100);
       setTimeout(this.scrollToBottom, 100);
     }
   }, {
     key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      //TODO do we want this to shut off when you navigate away from messenger?
+    value: function componentWillUnmount() {//TODO do we want this to shut off when you navigate away from messenger?
       //TODO seems like we want to receive messages still
-      this.socket.off('message', this.handleMessage);
-      this.socket.close();
+      // this.socket.off('message', this.handleMessage);
+      // this.socket.close();
     }
   }, {
     key: "render",

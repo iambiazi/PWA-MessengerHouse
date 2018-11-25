@@ -82,6 +82,7 @@ const server = createServer((req, res) => {
 const io = require('socket.io').listen(server);
 const socketioAuth = require('socketio-auth');
 const { User } = require('./User');
+const socketIds = {};
 
 const authenticate = (client, data, callback) => {
   const { username } = data;
@@ -90,22 +91,29 @@ const authenticate = (client, data, callback) => {
       console.log('error finding user');
       return callback((new Error('user not found or dup')));
     }
-    console.log(client.id);
+    socketIds[username] = client.id;
+    console.log('obj key', socketIds);
     return callback(null, true);
   });
 };
 
 io.on('connection', (socket) => {
-  console.log('socketid', socket.id);
   console.log('a user connected');
+
   socket.on('message', (data) => {
     console.log('this is the data', data);
     //TODO CURRENTLY GOES TO EVERYONE
-    socket.broadcast.emit('message', data);
+    data.recipients.forEach(person => {
+      io.to(`${socketIds[person]}`).emit('message', data);
+    });
   });
+
   socket.on('typing', (data) => {
-    socket.broadcast.emit('typing', data);
+    data.recipients.forEach(person => {
+      io.to(`${socketIds[person]}`).emit('typing', data.username);
+    });
   });
+
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
@@ -118,7 +126,6 @@ const postAuthenticate = (socket, data) => {
 socketioAuth(io, { authenticate, postAuthenticate });
 
 app.prepare().then((_) => {
-
 
   server.listen(PORT, (err) => {
     if (err) throw err;

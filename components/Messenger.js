@@ -21,6 +21,7 @@ class Messenger extends React.Component {
   }
 
   componentDidUpdate() {
+
     this.username = this.props.user.username;
     this.scrollToBottom();
     if (!this.state.messages.length && !this.state.updated) {
@@ -40,21 +41,24 @@ class Messenger extends React.Component {
   }
 
   componentDidMount() {
-    const {username, password} = this.props.user;
-    this.socket = io('http://localhost:3000');
-    this.socket.on('connect', () => {
-      this.socket.emit('authentication', { username, password });
-    });
-    this.socket.on('message', this.handleMessage);
-    this.socket.on('typing', this.typingStatus);
+    const connectSocket = () => {
+      const {username, password} = this.props.user;
+      this.socket = io('http://localhost:3000');
+      this.socket.on('connect', () => {
+        this.socket.emit('authentication', { username, password });
+      });
+      this.socket.on('message', this.handleMessage);
+      this.socket.on('typing', this.typingStatus);
+    };
+    setTimeout(connectSocket, 100);
     setTimeout(this.scrollToBottom, 100);
   }
 
   componentWillUnmount() {
     //TODO do we want this to shut off when you navigate away from messenger?
     //TODO seems like we want to receive messages still
-    this.socket.off('message', this.handleMessage);
-    this.socket.close();
+    // this.socket.off('message', this.handleMessage);
+    // this.socket.close();
   }
 
 
@@ -99,7 +103,11 @@ class Messenger extends React.Component {
 
 
   showTypingStatus = (e) => {
-      this.socket.emit('typing', this.username);
+    const typingStatus = {
+      username: this.username,
+      recipients: [this.state.currentConvo],
+    };
+      this.socket.emit('typing', typingStatus);
       this.setState({ text: e.target.value });
   };
 
@@ -111,10 +119,12 @@ class Messenger extends React.Component {
         created_at: new Date().getTime(),
         username: this.username,
         text: this.state.text,
+        recipients: [this.state.currentConvo],
       };
 
       this.socket.emit('message', message);
 
+      //TODO THIS ADDS TO PROPS
       this.props.addMessage(
         this.state.text,
         this.username,

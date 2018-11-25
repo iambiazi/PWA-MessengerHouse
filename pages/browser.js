@@ -5,13 +5,20 @@ class Browser extends React.Component {
     super(props);
     this.state = {
       test: '',
+      propInfo: [1]
     };
   }
 
   componentDidMount() {
+    const script_Top = document.createElement("script");
+    script_Top.src = "http://fec1photogallery.us-east-1.elasticbeanstalk.com/bundle.js";
+    script_Top.async = true;
+    document.body.appendChild(script_Top);
+
     const script = document.createElement("script");
 
     script.src = "http://hr-fec-otb.us-west-1.elasticbeanstalk.com/bundle.js";
+    script.async = true;
 
     document.body.appendChild(script);
   }
@@ -20,6 +27,7 @@ class Browser extends React.Component {
     return (
       <div id="browse-homes">
         <a href='/messenger'>Messenger</a>
+        <div id="app" />
         <div id="main" />
         <style>
           {`

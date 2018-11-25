@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, index: { unique: true }},
   password: String,
   conversations: [String],
+  unread: [String],
 });
 
 const User = mongoose.model('User', userSchema);
