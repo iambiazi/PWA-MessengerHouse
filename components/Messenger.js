@@ -18,6 +18,7 @@ class Messenger extends React.Component {
       friends: new Set(),
       currentView: 'messenger',
       typing: [],
+      otherNewMessage: false,
     };
   }
 
@@ -35,7 +36,7 @@ class Messenger extends React.Component {
         ? this.props.messages.filter(
           message => message.username === this.state.currentConvo,
         )
-        : this.props.messages.filter(message => this.props.messages.slice(-1)[0]);
+        : this.props.messages.filter(message => message.username === this.props.messages.slice(-1)[0]);
       this.setState({
         messages: filtered,
         updated: true
@@ -49,10 +50,10 @@ class Messenger extends React.Component {
       this.socket = io('http://localhost:3000');
       this.socket.on('connect', () => {
         this.socket.emit('authentication', { username, password });
-
       });
       this.socket.on('message', this.handleMessage);
       this.socket.on('typing', this.typingStatus);
+      this.socket.on('noexist', this.noUserExists);
       this.socket.emit('login', username);
     };
     setTimeout(connectSocket, 100);
@@ -61,6 +62,7 @@ class Messenger extends React.Component {
 
   componentWillUnmount() {
     //TODO do we want this to shut off when you navigate away from messenger?
+    //this works current if user goes back to browser
     //TODO seems like we want to receive messages still
     // this.socket.off('message', this.handleMessage);
     // this.socket.close();
@@ -76,30 +78,40 @@ class Messenger extends React.Component {
     this.setState(state => state.friends.add(message.username));
     if (message.username === this.state.currentConvo) {
       this.setState(state => ({ messages: state.messages.concat(message) }));
+    } else {
+      this.setState({otherNewMessage: true});
     }
     this.props.addMessage(message.text, message.username, message.created_at);
   };
 
+  noUserExists = () => {
+    alert('User by that name does not exist');
+  };
+
+
   typingStatus = (data) => {
-    const notIncluded = this.state.typing.filter(el => el.username !== data);
-    for (let i = 0, len = this.state.typing.length; i < len; ++i) {
-      if (this.state.typing[i].username === data) {
-        clearTimeout(this.state.typing[i].timeoutId);
+    if (data === this.state.currentConvo) {
+      const notIncluded = this.state.typing.filter(el => el.username !== data);
+      for (let i = 0, len = this.state.typing.length; i < len; ++i) {
+        if (this.state.typing[i].username === data) {
+          clearTimeout(this.state.typing[i].timeoutId);
+        }
       }
+      const timeoutId = setTimeout(() => {
+        this.setState(state => ({
+          typing: state.typing.filter(el => el.username !== data),
+        }));
+      }, 3000);
+      const status = { username: data, timeoutId };
+      this.setState(state => ({ typing: [...notIncluded, status] }));
     }
-    const timeoutId = setTimeout(() => {
-      this.setState(state => ({
-        typing: state.typing.filter(el => el.username !== data),
-      }));
-    }, 3000);
-    const status = { username: data, timeoutId };
-    this.setState(state => ({ typing: [...notIncluded, status] }));
   };
 
   getCurrentConvo = (otherUser) => {
     this.setState(() => {
       const filtered = this.props.messages.filter(
-        message => message.username === otherUser || message.username === this.username,
+        message => message.username === otherUser
+          || (message.username === this.username && message.recipients.includes(otherUser)),
       );
       return {
         currentConvo: otherUser,
@@ -110,7 +122,9 @@ class Messenger extends React.Component {
 
   addConversation = async () => {
     const username = await prompt('enter a username');
-    this.setState({currentConvo: username})
+    this.setState({currentConvo: username}, () => {
+      this.getCurrentConvo(username);
+    })
   };
 
 
@@ -141,6 +155,7 @@ class Messenger extends React.Component {
         this.state.text,
         this.username,
         message.created_at,
+        [this.state.currentConvo],
       );
       this.setState(state => ({
         text: '',
@@ -170,6 +185,7 @@ class Messenger extends React.Component {
       <div className="mdl-card mdl-shadow--2dp" id="chatview">
         <Favorites />
         <NavBar
+          newMessage={this.state.otherNewMessage}
           currentChat={this.state.currentConvo}
           addConvo={this.addConversation}
           getConvo={this.getCurrentConvo}

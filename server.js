@@ -126,12 +126,16 @@ io.on('connection', (socket) => {
           if (err) {
             return console.error(err);
           }
-          found.unread = [...found.unread, JSON.stringify(data)];
-          found.save(err => {
-            if (err) {
-              return console.error(err);
-            }
-          });
+          if (found) {
+            found.unread = [...found.unread, JSON.stringify(data)];
+            found.save(err => {
+              if (err) {
+                return console.error(err);
+              }
+            });
+          } else {
+            socket.emit('noexist', 'user does not exist');
+          }
         });
 
       }

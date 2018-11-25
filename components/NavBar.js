@@ -4,6 +4,7 @@ import Link from 'next/link'
 const NavBar = ({
   getConvo,
   friends,
+  newMessage,
   changeHome,
   changeMessage,
   currentView,
@@ -19,6 +20,7 @@ const NavBar = ({
     )}
     <span>
       <i className="far fa-heart" />
+      <div>{newMessage ? 'You have a new message' : ''}</div>
     </span>
     <div className="dropdown">
       <button className="dropbtn">Menu</button>

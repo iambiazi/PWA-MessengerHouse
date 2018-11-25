@@ -1,11 +1,12 @@
 import { ADD_MESSAGE, ADD_HOUSE, ADD_USER } from '.';
 
-export function addMessage(text, username, created_at) {
+export function addMessage(text, username, created_at, recipients) {
   return {
     type: ADD_MESSAGE,
     text,
     username,
     created_at,
+    recipients,
   };
 }
 

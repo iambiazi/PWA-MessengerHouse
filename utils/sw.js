@@ -61,6 +61,15 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
+  '/messenger',
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'messenger',
+  }),
+  'GET',
+);
+
+
+workbox.routing.registerRoute(
   /^http.*/,
   workbox.strategies.networkFirst({
     cacheName: 'http-cache',

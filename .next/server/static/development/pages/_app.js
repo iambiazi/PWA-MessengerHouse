@@ -342,7 +342,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   var type = action.type,
       text = action.text,
       username = action.username,
-      created_at = action.created_at;
+      created_at = action.created_at,
+      recipients = action.recipients;
 
   switch (type) {
     case _actions__WEBPACK_IMPORTED_MODULE_0__["ADD_MESSAGE"]:
@@ -350,7 +351,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         id: Math.random().toString(36).substring(2),
         text: text,
         username: username,
-        created_at: created_at
+        created_at: created_at,
+        recipients: recipients
       }]);
 
     default:

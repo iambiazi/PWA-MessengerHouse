@@ -6,32 +6,32 @@
     "/_app": [
       "static/runtime/webpack.js",
       "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.c7ed270f0e26ffa3e295.hot-update.js"
+      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
     ],
     "/_error": [
       "static/runtime/webpack.js",
       "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.c7ed270f0e26ffa3e295.hot-update.js"
+      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
     ],
     "/index": [
       "static/runtime/webpack.js",
       "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.c7ed270f0e26ffa3e295.hot-update.js"
-    ],
-    "/messenger": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.c7ed270f0e26ffa3e295.hot-update.js"
+      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
     ],
     "/browser": [
       "static/runtime/webpack.js",
       "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.c7ed270f0e26ffa3e295.hot-update.js"
+      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
+    ],
+    "/messenger": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js",
+      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
     ],
     "/": [
       "static/runtime/webpack.js",
       "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.c7ed270f0e26ffa3e295.hot-update.js"
+      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
     ]
   }
 }

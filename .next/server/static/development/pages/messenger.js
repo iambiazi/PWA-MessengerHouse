@@ -125,12 +125,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addUser", function() { return addUser; });
 /* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "./actions/index.js");
 
-function addMessage(text, username, created_at) {
+function addMessage(text, username, created_at, recipients) {
   return {
     type: ___WEBPACK_IMPORTED_MODULE_0__["ADD_MESSAGE"],
     text: text,
     username: username,
-    created_at: created_at
+    created_at: created_at,
+    recipients: recipients
   };
 }
 function addHouse(house_id, username, created_at) {
@@ -327,47 +328,57 @@ function (_React$Component) {
             messages: state.messages.concat(message)
           };
         });
+      } else {
+        _this.setState({
+          otherNewMessage: true
+        });
       }
 
       _this.props.addMessage(message.text, message.username, message.created_at);
     });
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "noUserExists", function () {
+      alert('User by that name does not exist');
+    });
+
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "typingStatus", function (data) {
-      var notIncluded = _this.state.typing.filter(function (el) {
-        return el.username !== data;
-      });
+      if (data === _this.state.currentConvo) {
+        var notIncluded = _this.state.typing.filter(function (el) {
+          return el.username !== data;
+        });
 
-      for (var i = 0, len = _this.state.typing.length; i < len; ++i) {
-        if (_this.state.typing[i].username === data) {
-          clearTimeout(_this.state.typing[i].timeoutId);
+        for (var i = 0, len = _this.state.typing.length; i < len; ++i) {
+          if (_this.state.typing[i].username === data) {
+            clearTimeout(_this.state.typing[i].timeoutId);
+          }
         }
-      }
 
-      var timeoutId = setTimeout(function () {
+        var timeoutId = setTimeout(function () {
+          _this.setState(function (state) {
+            return {
+              typing: state.typing.filter(function (el) {
+                return el.username !== data;
+              })
+            };
+          });
+        }, 3000);
+        var status = {
+          username: data,
+          timeoutId: timeoutId
+        };
+
         _this.setState(function (state) {
           return {
-            typing: state.typing.filter(function (el) {
-              return el.username !== data;
-            })
+            typing: _toConsumableArray(notIncluded).concat([status])
           };
         });
-      }, 3000);
-      var status = {
-        username: data,
-        timeoutId: timeoutId
-      };
-
-      _this.setState(function (state) {
-        return {
-          typing: _toConsumableArray(notIncluded).concat([status])
-        };
-      });
+      }
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "getCurrentConvo", function (otherUser) {
       _this.setState(function () {
         var filtered = _this.props.messages.filter(function (message) {
-          return message.username === otherUser || message.username === _this.username;
+          return message.username === otherUser || message.username === _this.username && message.recipients.includes(otherUser);
         });
 
         return {
@@ -395,6 +406,8 @@ function (_React$Component) {
 
               _this.setState({
                 currentConvo: username
+              }, function () {
+                _this.getCurrentConvo(username);
               });
 
             case 4:
@@ -432,7 +445,7 @@ function (_React$Component) {
         _this.socket.emit('message', message); //TODO THIS ADDS TO PROPS
 
 
-        _this.props.addMessage(_this.state.text, _this.username, message.created_at);
+        _this.props.addMessage(_this.state.text, _this.username, message.created_at, [_this.state.currentConvo]);
 
         _this.setState(function (state) {
           return {
@@ -458,7 +471,8 @@ function (_React$Component) {
       currentConvo: '',
       friends: new Set(),
       currentView: 'messenger',
-      typing: []
+      typing: [],
+      otherNewMessage: false
     };
     return _this;
   }
@@ -482,7 +496,7 @@ function (_React$Component) {
         var filtered = this.state.currentConvo !== '' ? this.props.messages.filter(function (message) {
           return message.username === _this2.state.currentConvo;
         }) : this.props.messages.filter(function (message) {
-          return _this2.props.messages.slice(-1)[0];
+          return message.username === _this2.props.messages.slice(-1)[0];
         });
         this.setState({
           messages: filtered,
@@ -512,6 +526,8 @@ function (_React$Component) {
 
         _this3.socket.on('typing', _this3.typingStatus);
 
+        _this3.socket.on('noexist', _this3.noUserExists);
+
         _this3.socket.emit('login', username);
       };
 
@@ -521,6 +537,7 @@ function (_React$Component) {
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {//TODO do we want this to shut off when you navigate away from messenger?
+      //this works current if user goes back to browser
       //TODO seems like we want to receive messages still
       // this.socket.off('message', this.handleMessage);
       // this.socket.close();
@@ -539,6 +556,7 @@ function (_React$Component) {
         className: "mdl-card mdl-shadow--2dp",
         id: "chatview"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Favorites__WEBPACK_IMPORTED_MODULE_7__["default"], null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_NavBar__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        newMessage: this.state.otherNewMessage,
         currentChat: this.state.currentConvo,
         addConvo: this.addConversation,
         getConvo: this.getCurrentConvo,
@@ -620,6 +638,7 @@ __webpack_require__.r(__webpack_exports__);
 var NavBar = function NavBar(_ref) {
   var getConvo = _ref.getConvo,
       friends = _ref.friends,
+      newMessage = _ref.newMessage,
       changeHome = _ref.changeHome,
       changeMessage = _ref.changeMessage,
       currentView = _ref.currentView,
@@ -636,7 +655,7 @@ var NavBar = function NavBar(_ref) {
     alt: ""
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "far fa-heart"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, newMessage ? 'You have a new message' : '')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "dropdown"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "dropbtn"

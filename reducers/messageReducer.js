@@ -2,7 +2,7 @@ import { ADD_MESSAGE } from '../actions';
 
 export default function (state = [], action) {
   const {
-    type, text, username, created_at,
+    type, text, username, created_at, recipients,
   } = action;
   switch (type) {
     case ADD_MESSAGE:
@@ -15,6 +15,7 @@ export default function (state = [], action) {
           text,
           username,
           created_at,
+          recipients
         },
       ];
     default:
