@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import { addMessage, addHouse } from '../actions/message';
 import Message from './Message';
 import NavBar from './NavBar';
+import Favorites from './Favorites';
 
 
 class Messenger extends React.Component {
@@ -21,7 +22,6 @@ class Messenger extends React.Component {
   }
 
   componentDidUpdate() {
-
     this.username = this.props.user.username;
     this.scrollToBottom();
     if (!this.state.messages.length && !this.state.updated) {
@@ -35,8 +35,11 @@ class Messenger extends React.Component {
         ? this.props.messages.filter(
           message => message.username === this.state.currentConvo,
         )
-        : this.props.messages;
-      this.setState({ messages: filtered, updated: true });
+        : this.props.messages.filter(message => this.props.messages.slice(-1)[0]);
+      this.setState({
+        messages: filtered,
+        updated: true
+      });
     }
   }
 
@@ -69,7 +72,9 @@ class Messenger extends React.Component {
       ),
     }));
     this.setState(state => state.friends.add(message.username));
-    this.setState(state => ({ messages: state.messages.concat(message) }));
+    if (message.username === this.state.currentConvo) {
+      this.setState(state => ({ messages: state.messages.concat(message) }));
+    }
     this.props.addMessage(message.text, message.username, message.created_at);
   };
 
@@ -99,6 +104,11 @@ class Messenger extends React.Component {
         messages: filtered,
       };
     });
+  };
+
+  addConversation = async () => {
+    const username = await prompt('enter a username');
+    this.setState({currentConvo: username})
   };
 
 
@@ -156,9 +166,12 @@ class Messenger extends React.Component {
           : 'several people are typing';
     return (
       <div className="mdl-card mdl-shadow--2dp" id="chatview">
+        <Favorites />
         <NavBar
+          currentChat={this.state.currentConvo}
+          addConvo={this.addConversation}
           getConvo={this.getCurrentConvo}
-          friends={[...this.state.friends].filter(notUser => notUser !== this.username)}
+          friends={[...this.state.friends].filter(notUser => notUser !== this.username && notUser !== this.state.currentConvo)}
           currentView={this.state.currentView}
         />
         {this.state.currentView === 'browser' && <ul>Browse Homes</ul>}
@@ -196,19 +209,24 @@ class Messenger extends React.Component {
             <span onClick={this.handleSubmit}>
               <i className="far fa-comment" />
             </span>
+
             <label className="mdl-textfield__label" htmlFor="message-input" />
           </div>
         </form>
         <style>
           {`
+            #chatview {
+              width: 320px;
+              height: 568px;
+            }
             #typing-status {
-            height: 2.4em;
-            font-size: .7em;
+              height: 2.4em;
+              font-size: .7em;
             }
 						#message-input {
-						border-bottom: lightgray solid 1px;
-						border-top: lightgray solid 1px;
-						height: 20px;
+              border-bottom: lightgray solid 1px;
+              border-top: lightgray solid 1px;
+              height: 20px;
 						}
 						form {
 							background: #fff;
@@ -230,7 +248,6 @@ class Messenger extends React.Component {
 							margin: auto;
 							transition: all .3s;
 							transform: translateY(100px);
-              height: 500px;
 						}
 						.mdl-textfield__input {
               display:inline-block;

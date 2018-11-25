@@ -7,17 +7,23 @@ const NavBar = ({
   changeHome,
   changeMessage,
   currentView,
+  addConvo,
+  currentChat
 }) => (
   <div id="navbar-container">
+    <div>Chatting with {currentChat}</div>
     {currentView === 'messenger' && (
       <Link href='/browser' prefetch>
         <a><img src="../static/house.png" id="house-button" alt='' /></a>
       </Link>
     )}
+    <span>
+      <i className="far fa-heart" />
+    </span>
     <div className="dropdown">
       <button className="dropbtn">Menu</button>
       <div className="dropdown-content">
-        {currentView === 'browse' && <a onClick={changeMessage}>Messenger</a>}
+        <a onClick={addConvo}>Start a new conversation</a>
         {friends.slice(-5).map((friend, i) => (
           <a key={i} onClick={() => getConvo(`${friend}`)}>
             {friend}
