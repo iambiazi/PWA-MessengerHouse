@@ -49,9 +49,11 @@ class Messenger extends React.Component {
       this.socket = io('http://localhost:3000');
       this.socket.on('connect', () => {
         this.socket.emit('authentication', { username, password });
+
       });
       this.socket.on('message', this.handleMessage);
       this.socket.on('typing', this.typingStatus);
+      this.socket.emit('login', username);
     };
     setTimeout(connectSocket, 100);
     setTimeout(this.scrollToBottom, 100);

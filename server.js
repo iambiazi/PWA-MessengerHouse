@@ -58,8 +58,6 @@ const server = createServer((req, res) => {
             res.end(JSON.stringify('error with login. Incorrect username/password combo'));
             return console.error(err);
           }
-          console.log('jack says label this', parsed);
-          console.log('another', record);
           bcrypt.compare(parsed.password, record[0].password, (err, result) => {
             if (err || !result) {
               res.statusCode = 422;
@@ -82,6 +80,7 @@ const server = createServer((req, res) => {
 const io = require('socket.io').listen(server);
 const socketioAuth = require('socketio-auth');
 const { User } = require('./User');
+//TODO temporary solution, obv not best practices
 const socketIds = {};
 
 const authenticate = (client, data, callback) => {
@@ -100,21 +99,59 @@ const authenticate = (client, data, callback) => {
 io.on('connection', (socket) => {
   console.log('a user connected');
 
+  socket.on('login', (data) => {
+    User.findOne({username: data}, (err, found) => {
+      const parsed = found.unread;
+      parsed.forEach(message => {
+        console.log('unread message', message);
+        io.to(`${socketIds[data]}`).emit('message', JSON.parse(message));
+      });
+      found.unread = [];
+      found.save(err => {
+        if (err) {
+          return console.error(err);
+        }
+      })
+    });
+  });
+
   socket.on('message', (data) => {
     console.log('this is the data', data);
-    //TODO CURRENTLY GOES TO EVERYONE
     data.recipients.forEach(person => {
-      io.to(`${socketIds[person]}`).emit('message', data);
+      if (socketIds[person] !== undefined) {
+        io.to(`${socketIds[person]}`).emit('message', data);
+      } else {
+        console.log('this is person', person);
+        User.findOne({username: person}, (err, found) => {
+          if (err) {
+            return console.error(err);
+          }
+          found.unread = [...found.unread, JSON.stringify(data)];
+          found.save(err => {
+            if (err) {
+              return console.error(err);
+            }
+          });
+        });
+
+      }
     });
   });
 
   socket.on('typing', (data) => {
     data.recipients.forEach(person => {
-      io.to(`${socketIds[person]}`).emit('typing', data.username);
+      if (socketIds[person] !== undefined) {
+        io.to(`${socketIds[person]}`).emit('typing', data.username);
+      }
     });
   });
 
   socket.on('disconnect', () => {
+    for (let key in socketIds) {
+      if (socketIds[key] === socket.id) {
+        socketIds[key] = undefined;
+      }
+    }
     console.log('user disconnected');
   });
 });
