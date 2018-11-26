@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
-import { addMessage, addHouse } from '../actions/message';
+import { addMessage } from '../actions/message';
 import Message from './Message';
 import NavBar from './NavBar';
 import Favorites from './Favorites';
+import { DropTarget } from 'react-drag-drop-container';
 
 
 class Messenger extends React.Component {
@@ -16,7 +17,6 @@ class Messenger extends React.Component {
       updated: false,
       currentConvo: '',
       friends: new Set(),
-      currentView: 'messenger',
       typing: [],
       otherNewMessage: false,
     };
@@ -81,7 +81,8 @@ class Messenger extends React.Component {
     } else {
       this.setState({otherNewMessage: true});
     }
-    this.props.addMessage(message.text, message.username, message.created_at);
+    this.props.addMessage(message.text, message.messageType, message.username, message.created_at, message.recipients);
+    this.scrollToBottom();
   };
 
   noUserExists = () => {
@@ -122,7 +123,12 @@ class Messenger extends React.Component {
 
   addConversation = async () => {
     const username = await prompt('enter a username');
-    this.setState({currentConvo: username}, () => {
+    this.setState(state => {
+      //TODO currently no confirmation for friends
+      state.currentConvo = username;
+      state.friends.add(username);
+      return state;
+    }, () => {
       this.getCurrentConvo(username);
     })
   };
@@ -145,6 +151,7 @@ class Messenger extends React.Component {
         created_at: new Date().getTime(),
         username: this.username,
         text: this.state.text,
+        messageType: 'text',
         recipients: [this.state.currentConvo],
       };
 
@@ -153,6 +160,7 @@ class Messenger extends React.Component {
       //TODO THIS ADDS TO PROPS
       this.props.addMessage(
         this.state.text,
+        'text',
         this.username,
         message.created_at,
         [this.state.currentConvo],
@@ -170,6 +178,27 @@ class Messenger extends React.Component {
     }
   };
 
+  shareFavorite = (arrayIdx) => {
+    const message = {
+      created_at: new Date().getTime(),
+      username: this.username,
+      text: [this.props.houses[arrayIdx].house_id, this.props.houses[arrayIdx].imgUrl],
+      messageType: 'link',
+      recipients: [this.state.currentConvo],
+    };
+    this.socket.emit('message', message);
+    this.props.addMessage(
+      message.text,
+      message.messageType,
+      message.username,
+      message.created_at,
+      message.recipients);
+    this.setState(state => {
+      state.messages = [...this.state.messages, message];
+      return state;
+    }, () => this.scrollToBottom())
+  };
+
   render() {
     const sameUser = (msg, i, arr) => i > 0 && msg.username === arr[i - 1].username;
     const typingStatusMessage = !this.state.typing.length
@@ -183,17 +212,19 @@ class Messenger extends React.Component {
           : 'several people are typing';
     return (
       <div className="mdl-card mdl-shadow--2dp" id="chatview">
-        <Favorites />
+        <Favorites
+          shareFavorite={this.shareFavorite}
+        />
         <NavBar
           newMessage={this.state.otherNewMessage}
           currentChat={this.state.currentConvo}
           addConvo={this.addConversation}
           getConvo={this.getCurrentConvo}
           friends={[...this.state.friends].filter(notUser => notUser !== this.username && notUser !== this.state.currentConvo)}
-          currentView={this.state.currentView}
         />
-        {this.state.currentView === 'browser' && <ul>Browse Homes</ul>}
-        {this.state.currentView === 'messenger' && (
+        <DropTarget
+          targetKey='fav'
+        >
         <ul>
           {this.state.messages.map((message, i, array) => (
             <Message
@@ -209,7 +240,7 @@ class Messenger extends React.Component {
                 }}
           />
         </ul>
-          )}
+        </DropTarget>
         <div id="typing-status">
           <i>{typingStatusMessage}</i>
         </div>
@@ -233,6 +264,9 @@ class Messenger extends React.Component {
         </form>
         <style>
           {`
+            .droptarget {
+              height: 440px;
+            }
             #chatview {
               width: 320px;
               height: 568px;
@@ -241,85 +275,88 @@ class Messenger extends React.Component {
               height: 2.4em;
               font-size: .7em;
             }
-						#message-input {
+            #message-input {
               border-bottom: lightgray solid 1px;
               border-top: lightgray solid 1px;
-              height: 20px;
-						}
-						form {
-							background: #fff;
-							padding: 0px 10px 0px 10px;
-						}
-						ul {
-							height: 480px;
-							margin: 0;
-							padding: 0;
-							text-align: left;
-							list-style: none;
-							overflow-y: scroll;
-						}
-						ul li {
-							padding: 1px;
-							background: #FFF;
-						}
-						.mdl-card {
-							margin: auto;
-							transition: all .3s;
-							transform: translateY(100px);
-						}
-						.mdl-textfield__input {
+              height: 3em;
+            }
+            form {
+              background: #fff;
+              padding: 0px 10px 0px 10px;
+            }
+            ul {
+              position: relative;
+              top:0.5em;
+              height: 350px;
+              margin: 0;
+              padding: 0;
+              text-align: left;
+              list-style: none;
+              overflow-y: scroll;
+            }
+            ul li {
+              padding: 1px;
+              background: #FFF;
+            }
+            .mdl-card {
+              margin: auto;
+              transition: all .3s;
+              // transform: translateY(100px);
+            }
+            .mdl-textfield__input {
               display:inline-block;
               width: 90%;
               padding-top: .5em;
             }
-						.timestamp{
-		          font-size:10px;
-		          font-weight: 300;
-		          color: transparent;
-		          margin: 3px;
-	          }
-	          li:hover .my-timestamp {
-		          color: black;
-		          transition: color .8s;
-	          }
-	          li:hover .timestamp {
-		          color: black;
-		          transition: color .8s;
-	          }
-	        .my-message {
-		        display: inline-block;
-		        background: #00e34d;
-		        color: white;
-		        border-radius: 10px;
-		        padding: 7px;
-		        max-width: 50%;
-		        word-wrap: break-word;
-		        clear: right;
-		        line-height: 1.25;
-	        }
-	        .your-message {
-		        display: inline-block;
-		        background: #E5E5EA;
-		        border-radius: 10px;
-		        padding: 7px;
-		        word-wrap: break-word;
-		        max-width:70%;
-		        line-height: 1.25;
-	        }
+            .timestamp{
+              font-size:10px;
+              font-weight: 300;
+              color: transparent;
+              margin: 3px;
+            }
+            li:hover .my-timestamp {
+              color: black;
+              transition: color .8s;
+            }
+            li:hover .timestamp {
+              color: black;
+              transition: color .8s;
+            }
+          .my-message {
+            display: inline-block;
+            font-weight: 400;
+            background: #00e34d;
+            color: white;
+            border-radius: 10px;
+            padding: 7px;
+            max-width: 50%;
+            word-wrap: break-word;
+            clear: right;
+            line-height: 1.25;
+          }
+          .your-message {
+            display: inline-block;
+            background: #E5E5EA;
+            border-radius: 10px;
+            padding: 7px;
+            word-wrap: break-word;
+            max-width:70%;
+            line-height: 1.25;
+          }
           .message-username {
-	          display: block;
-	          font-size: 0.8em;
-	          font-weight: bold;
-	          line-height: 1.5;
-	          margin-left: 0.6em;
+            display: block;
+            font-size: 0.8em;
+            font-weight: bold;
+            line-height: 1.5;
+            margin-left: 0.6em;
           }
           .send-msg-btn {
             cursor:pointer;
           }
-   				.mdl-textfield__label:after{
+          .mdl-textfield__label:after{
             background-color: #0069E0;
           }
-					`}
+          `}
         </style>
       </div>
     );
@@ -328,5 +365,5 @@ class Messenger extends React.Component {
 
 export default connect(
   ({ messages, houses, user }) => ({ messages, houses, user }),
-  { addMessage, addHouse },
+  { addMessage },
 )(Messenger);

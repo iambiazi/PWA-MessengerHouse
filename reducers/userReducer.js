@@ -8,9 +8,6 @@ export default function (state = [], action) {
     case ADD_USER:
       return (
         {
-          id: Math.random()
-            .toString(36)
-            .substring(2),
           username,
           password,
         });

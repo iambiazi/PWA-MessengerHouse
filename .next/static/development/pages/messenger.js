@@ -41,12 +41,12 @@ function addMessage(text, username, created_at, recipients) {
     recipients: recipients
   };
 }
-function addHouse(house_id, username, created_at) {
+function addHouse(house_id, username, imgUrl) {
   return {
     type: ___WEBPACK_IMPORTED_MODULE_0__["ADD_HOUSE"],
     house_id: house_id,
     username: username,
-    created_at: created_at
+    imgUrl: imgUrl
   };
 }
 function addUser(username, password) {
@@ -71,22 +71,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_2__);
 
 
-var images = ['https://s3-us-west-1.amazonaws.com/fechomephotos/FwJhPat9rhI.jpg', 'https://s3-us-west-1.amazonaws.com/fechomephotos/FwJhPat9rhI.jpg', 'https://s3-us-west-1.amazonaws.com/fechomephotos/FwJhPat9rhI.jpg', 'https://s3-us-west-1.amazonaws.com/fechomephotos/FwJhPat9rhI.jpg'];
 
-var Favorites = function Favorites() {
+
+var Favorites = function Favorites(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "favorites-container"
-  }, images.map(function (img, i) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+  }, props.houses.map(function (obj, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
+      href: "/browser/".concat(obj.house_id),
+      prefetch: true
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
       className: "fav-image-prev",
       key: i,
-      src: img,
-      alt: "house-image" // onClick={}
-
-    });
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", null, "\n      #favorites-container {\n        display: flex;\n        margin: 0 .3em 0 .3em;\n        background-color: white;\n        height: 6em;\n        justify-content: space-around;\n      }\n      .fav-image-prev {\n        width: 5em;\n        height: auto;\n        margin: .5em 1em;\n        border-radius: 50%;\n        border: 3px solid #BADA55;\n      }\n      "));
+      src: obj.imgUrl,
+      alt: "house-image"
+    }));
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", null, "\n      img {\n        cursor: pointer;\n      }\n      #favorites-container {\n        display: flex;\n        margin: 0 .3em 0 .3em;\n        background-color: white;\n        height: 6em;\n        justify-content: space-around;\n      }\n      .fav-image-prev {\n        width: 5em;\n        height: auto;\n        margin: .5em 1em;\n        border-radius: 50%;\n        border: 3px solid #BADA55;\n      }\n      "));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(function (_ref) {
@@ -518,8 +522,7 @@ function (_React$Component) {
     user: user
   };
 }, {
-  addMessage: _actions_message__WEBPACK_IMPORTED_MODULE_4__["addMessage"],
-  addHouse: _actions_message__WEBPACK_IMPORTED_MODULE_4__["addHouse"]
+  addMessage: _actions_message__WEBPACK_IMPORTED_MODULE_4__["addMessage"]
 })(Messenger));
 
 /***/ }),
@@ -9459,7 +9462,7 @@ var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
 var NodeWebSocket;
 if (typeof window === 'undefined') {
   try {
-    NodeWebSocket = __webpack_require__(/*! ws */ 5);
+    NodeWebSocket = __webpack_require__(/*! ws */ 6);
   } catch (e) { }
 }
 
@@ -25317,7 +25320,7 @@ var MessengerView = function MessengerView() {
 
 /***/ }),
 
-/***/ 4:
+/***/ 5:
 /*!**********************************!*\
   !*** multi ./pages/messenger.js ***!
   \**********************************/
@@ -25331,7 +25334,7 @@ return { page: module.exports.default }});
 
 /***/ }),
 
-/***/ 5:
+/***/ 6:
 /*!********************!*\
   !*** ws (ignored) ***!
   \********************/
@@ -25342,5 +25345,5 @@ return { page: module.exports.default }});
 
 /***/ })
 
-},[[4,"static/runtime/webpack.js"]]]));;
+},[[5,"static/runtime/webpack.js"]]]));;
 //# sourceMappingURL=messenger.js.map

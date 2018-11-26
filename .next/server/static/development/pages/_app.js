@@ -273,16 +273,15 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   var house_id = action.house_id,
       type = action.type,
       username = action.username,
-      created_at = action.created_at;
+      imgUrl = action.imgUrl;
 
   switch (type) {
     case _actions__WEBPACK_IMPORTED_MODULE_0__["ADD_HOUSE"]:
-      return _toConsumableArray(state).concat([{
-        id: Math.random().toString(36).substring(2),
+      return [{
         house_id: house_id,
         username: username,
-        created_at: created_at
-      }]);
+        imgUrl: imgUrl
+      }].concat(_toConsumableArray(state));
 
     default:
       return state;
@@ -348,7 +347,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   switch (type) {
     case _actions__WEBPACK_IMPORTED_MODULE_0__["ADD_MESSAGE"]:
       return _toConsumableArray(state).concat([{
-        id: Math.random().toString(36).substring(2),
         text: text,
         username: username,
         created_at: created_at,
@@ -383,7 +381,6 @@ __webpack_require__.r(__webpack_exports__);
   switch (type) {
     case _actions__WEBPACK_IMPORTED_MODULE_0__["ADD_USER"]:
       return {
-        id: Math.random().toString(36).substring(2),
         username: username,
         password: password
       };

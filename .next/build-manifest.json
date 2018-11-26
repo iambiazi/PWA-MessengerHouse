@@ -1,37 +1,35 @@
 {
-  "devFiles": [
-    "static/development/dll/dll_18db509a7b96dc9c530a.js"
-  ],
+  "devFiles": [],
   "pages": {
     "/_app": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
-    ],
-    "/_error": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
-    ],
-    "/index": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.39c4f648082e2f53552d.js",
+      "static/runtime/main-3abf118f53f4c0b9b852.js"
     ],
     "/browser": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.39c4f648082e2f53552d.js",
+      "static/runtime/main-3abf118f53f4c0b9b852.js"
+    ],
+    "/index": [
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.39c4f648082e2f53552d.js",
+      "static/runtime/main-3abf118f53f4c0b9b852.js"
     ],
     "/messenger": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.39c4f648082e2f53552d.js",
+      "static/runtime/main-3abf118f53f4c0b9b852.js"
+    ],
+    "/_error": [
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.39c4f648082e2f53552d.js",
+      "static/runtime/main-3abf118f53f4c0b9b852.js"
     ],
     "/": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js",
-      "static/webpack/static/runtime/main.js.d2a61aa2b89b9283600c.hot-update.js"
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.39c4f648082e2f53552d.js",
+      "static/runtime/main-3abf118f53f4c0b9b852.js"
     ]
   }
 }
