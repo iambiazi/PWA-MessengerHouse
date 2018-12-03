@@ -342,7 +342,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       text = action.text,
       username = action.username,
       created_at = action.created_at,
-      recipients = action.recipients;
+      recipients = action.recipients,
+      messageType = action.messageType;
 
   switch (type) {
     case _actions__WEBPACK_IMPORTED_MODULE_0__["ADD_MESSAGE"]:
@@ -350,6 +351,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         text: text,
         username: username,
         created_at: created_at,
+        messageType: messageType,
         recipients: recipients
       }]);
 

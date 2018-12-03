@@ -17,6 +17,7 @@ const NavBar = ({
       </Link>
     <span>
       {/*<i className="far fa-heart" />*/}
+      {/*TODO NEED TO MAKE THIS DISAPPEAR AFTER USER READS MESSAGE */}
       <div>{newMessage ? 'You have a new message' : ''}</div>
     </span>
     <div className="dropdown">

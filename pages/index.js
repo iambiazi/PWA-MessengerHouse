@@ -4,6 +4,9 @@ import isomorphicFetch from "isomorphic-fetch";
 import Router from 'next/router'
 import { addUser } from '../actions/message'
 
+
+
+
 class Index extends React.Component {
   state = {
     username: '',

@@ -9,17 +9,19 @@ class Browser extends React.Component {
   }
 
   componentDidMount() {
-    const script_Top = document.createElement("script");
-    script_Top.src = "https://s3-us-west-1.amazonaws.com/img-gallery-hr/PWAbundle.js";
-    script_Top.async = true;
-    document.body.appendChild(script_Top);
 
-    const script = document.createElement("script");
 
-    script.src = "https://s3-us-west-1.amazonaws.com/housing-hr/PWAbundle.js";
-    script.async = true;
+    // const script_Top = document.createElement("script");
+    // script_Top.src = "https://s3-us-west-1.amazonaws.com/img-gallery-hr/PWAbundle.js";
+    // script_Top.async = true;
+    // document.body.appendChild(script_Top);
 
-    document.body.appendChild(script);
+    // const script = document.createElement("script");
+    //
+    // script.src = "https://s3-us-west-1.amazonaws.com/housing-hr/PWAbundle.js";
+    // script.async = true;
+    //
+    // document.body.appendChild(script);
 
     const delayForRender = () => {
       const favoriteButton = document.getElementById('add-favorites');
