@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addHouse } from '../actions/message';
+import offerNotifications from '../utils/notification';
+
 
 class Browser extends React.Component {
   constructor(props) {
@@ -9,7 +11,9 @@ class Browser extends React.Component {
   }
 
   componentDidMount() {
+    offerNotifications();
 
+    // commented because temporarily shut down the hosting for these aspects of the messenger
 
     // const script_Top = document.createElement("script");
     // script_Top.src = "https://s3-us-west-1.amazonaws.com/img-gallery-hr/PWAbundle.js";
@@ -23,12 +27,13 @@ class Browser extends React.Component {
     //
     // document.body.appendChild(script);
 
-    const delayForRender = () => {
-      const favoriteButton = document.getElementById('add-favorites');
-      favoriteButton.addEventListener('click', this.addFavorite);
-    };
+    // const delayForRender = () => {
+    //   const favoriteButton = document.getElementById('add-favorites');
+    //   favoriteButton.addEventListener('click', this.addFavorite);
+    // };
+    //
+    // setTimeout(delayForRender, 2000);
 
-    setTimeout(delayForRender, 2000);
   }
 
   componentWillUnmount() {

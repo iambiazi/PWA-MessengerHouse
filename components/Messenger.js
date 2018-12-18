@@ -6,7 +6,7 @@ import Message from './Message';
 import NavBar from './NavBar';
 import Favorites from './Favorites';
 import { DropTarget } from 'react-drag-drop-container';
-
+import {testNotification } from '../utils/notification'
 
 class Messenger extends React.Component {
   constructor(props) {
@@ -45,6 +45,7 @@ class Messenger extends React.Component {
   }
 
   componentDidMount() {
+    testNotification();
     const connectSocket = () => {
       const {username, password} = this.props.user;
       this.socket = io('http://localhost:3000');

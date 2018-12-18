@@ -2,6 +2,11 @@
 # Project Ignores                       #
 #---------------------------------------#
 
+rootCA.key
+rootCA.pem
+server.csr.cnf
+v3.ext
+
 # output
 /.temp
 /.tmp

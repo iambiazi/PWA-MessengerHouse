@@ -1,3 +1,5 @@
+//***THESE NOTES WERE MADE BECAUSE I GAVE A PRESENTATION ON SERVICE WORKERS***
+
 //sets name of the cache, can be useful if using Workbox for multiple projects that use the same
 // localhost for each project
 workbox.core.setCacheNameDetails({ prefix: 'next-ss' });
@@ -71,13 +73,13 @@ workbox.routing.registerRoute(
   'GET',
 );
 
-workbox.routing.registerRoute(
-  '/browser',
-  workbox.strategies.staleWhileRevalidate({
-    cacheName: 'browser',
-  }),
-  'GET',
-);
+// workbox.routing.registerRoute(
+//   '/browser',
+//   workbox.strategies.staleWhileRevalidate({
+//     cacheName: 'browser',
+//   }),
+//   'GET',
+// );
 
 workbox.routing.registerRoute(
   '/messenger',
@@ -116,6 +118,23 @@ workbox.routing.registerRoute(
       Interaction API
         Controls what happens when user engages with the notification
  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

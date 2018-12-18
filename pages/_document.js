@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
             content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui"
           />
           <meta name="theme-color" content="#673ab7" />
-          <link rel="manifest" href="static/manifest.json" />
+          <link rel="manifest" href="/static/manifest.json" />
           <link rel="icon" href="static/img/favicon.ico" />
           <link
             rel="stylesheet"
@@ -21,6 +21,7 @@ export default class MyDocument extends Document {
           <link rel="stylesheet" href="https://s3-us-west-1.amazonaws.com/housing-hr/style.css" />
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous"/>
           <link rel="stylesheet" href="https://s3-us-west-1.amazonaws.com/img-gallery-hr/style.css" />
+
         </Head>
         <body>
           <Main />

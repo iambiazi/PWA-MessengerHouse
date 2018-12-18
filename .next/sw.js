@@ -1,4 +1,4 @@
-importScripts("precache-manifest.d7e6d004fcacb9c5f4807b059697edde.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("precache-manifest.7eafc30cbd7a8dc8b3e458f4b8f33262.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 //sets name of the cache, can be useful if using Workbox for multiple projects that use the same
 // localhost for each project
@@ -73,13 +73,13 @@ workbox.routing.registerRoute(
   'GET',
 );
 
-workbox.routing.registerRoute(
-  '/browser',
-  workbox.strategies.staleWhileRevalidate({
-    cacheName: 'browser',
-  }),
-  'GET',
-);
+// workbox.routing.registerRoute(
+//   '/browser',
+//   workbox.strategies.staleWhileRevalidate({
+//     cacheName: 'browser',
+//   }),
+//   'GET',
+// );
 
 workbox.routing.registerRoute(
   '/messenger',
@@ -118,6 +118,30 @@ workbox.routing.registerRoute(
       Interaction API
         Controls what happens when user engages with the notification
  */
+
+
+self.addEventListener('push', (event) => {
+  const title = 'Get Started With Workbox';
+  const options = {
+    body: event.data.text()
+  };
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
