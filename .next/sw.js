@@ -1,4 +1,6 @@
-importScripts("precache-manifest.7eafc30cbd7a8dc8b3e458f4b8f33262.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("precache-manifest.9184205f82f6482a9b27754b29936479.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+
+//***THESE NOTES WERE MADE BECAUSE I GAVE A PRESENTATION ON SERVICE WORKERS***
 
 //sets name of the cache, can be useful if using Workbox for multiple projects that use the same
 // localhost for each project
@@ -73,6 +75,8 @@ workbox.routing.registerRoute(
   'GET',
 );
 
+// browser portion currently not hosted
+
 // workbox.routing.registerRoute(
 //   '/browser',
 //   workbox.strategies.staleWhileRevalidate({
@@ -120,13 +124,6 @@ workbox.routing.registerRoute(
  */
 
 
-self.addEventListener('push', (event) => {
-  const title = 'Get Started With Workbox';
-  const options = {
-    body: event.data.text()
-  };
-  event.waitUntil(self.registration.showNotification(title, options));
-});
 
 
 

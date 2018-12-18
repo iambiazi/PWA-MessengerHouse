@@ -73,6 +73,8 @@ workbox.routing.registerRoute(
   'GET',
 );
 
+// browser portion currently not hosted
+
 // workbox.routing.registerRoute(
 //   '/browser',
 //   workbox.strategies.staleWhileRevalidate({

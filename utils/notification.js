@@ -18,7 +18,7 @@ export const testNotification = () => {
     if (Notification.permission === 'granted') {
         navigator.serviceWorker.getRegistration().then(reg => {
           const options = {
-            body: 'First notification!',
+            body: 'Notification test!',
             tag: 'id1',
             icon: 'static/img/apple-touch-icon-120x120.png',
             vibrate: [100, 50, 100],
