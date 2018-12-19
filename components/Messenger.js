@@ -87,6 +87,7 @@ class Messenger extends React.Component {
   };
 
   noUserExists = () => {
+    //TODO placeholder, not for actual use
     alert('User by that name does not exist');
   };
 
