@@ -13,12 +13,12 @@ export default function () {
   }
 }
 
-export const testNotification = () => {
+export const messageAlert = (msgBody, sender = 'MessengerHouse App') => {
   if ('Notification' in window) {
     if (Notification.permission === 'granted') {
         navigator.serviceWorker.getRegistration().then(reg => {
           const options = {
-            body: 'Notification test!',
+            body: msgBody,
             tag: 'id1',
             icon: 'static/img/apple-touch-icon-120x120.png',
             vibrate: [100, 50, 100],
@@ -35,7 +35,7 @@ export const testNotification = () => {
               },
             ]
           };
-          reg.showNotification('Hello world!', options)
+          reg.showNotification(`New message from ${sender}`, options)
 
           }).catch(err => console.error(err));
     }

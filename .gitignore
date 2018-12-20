@@ -36,6 +36,8 @@ v3.ext
 /reports/
 .sass-cache/
 *.log
+.flooignore
+.floo
 
 
 #---------------------------------------#

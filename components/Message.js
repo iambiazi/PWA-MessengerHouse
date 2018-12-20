@@ -1,6 +1,6 @@
-import React from 'react';
-import dayjs from 'dayjs';
-import Link from 'next/link';
+import React from 'react'
+import dayjs from 'dayjs'
+import Link from 'next/link'
 
 export default ({ message, username, firstMessage }) => {
   const ownMessage = username === message.username;
@@ -14,16 +14,22 @@ export default ({ message, username, firstMessage }) => {
               {'  '}
             </span>
           )}
-          {!firstMessage
-          && !ownMessage && (
-            <span className="message-username">{message.username}</span>
-          )}
+          {!firstMessage &&
+            !ownMessage && (
+              <span className="message-username">{message.username}</span>
+            )}
           <div className={ownMessage ? 'my-message' : 'your-message'}>
-            {message.messageType === 'text' ? message.text
-            : (<Link href={`/browser/${message.text[0]}`}>
-                <img className='shared-fav' src={message.text[1]} alt='house-preview'/>
-              </Link>)
-            }
+            {message.messageType === 'text' ? (
+              message.text
+            ) : (
+              <Link href={`/browser/${message.text[0]}`}>
+                <img
+                  className="shared-fav"
+                  src={message.text[1]}
+                  alt="house-preview"
+                />
+              </Link>
+            )}
             <br />
             {message.messageType === 'text' ? '' : 'Check out this house!'}
           </div>
@@ -50,5 +56,5 @@ export default ({ message, username, firstMessage }) => {
         `}
       </style>
     </li>
-  );
-};
+  )
+}

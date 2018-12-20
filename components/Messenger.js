@@ -1,16 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import io from 'socket.io-client';
-import { addMessage } from '../actions/message';
-import Message from './Message';
-import NavBar from './NavBar';
-import Favorites from './Favorites';
-import { DropTarget } from 'react-drag-drop-container';
-import {testNotification } from '../utils/notification'
+import React from 'react'
+import { connect } from 'react-redux'
+import io from 'socket.io-client'
+import { DropTarget } from 'react-drag-drop-container'
+import { addMessage } from '../actions/message'
+import Message from './Message'
+import NavBar from './NavBar'
+import Favorites from './Favorites'
+import { messageAlert } from '../utils/notification'
 
 class Messenger extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       text: '',
       messages: [],
@@ -19,58 +19,61 @@ class Messenger extends React.Component {
       friends: new Set(),
       typing: [],
       otherNewMessage: false,
-    };
+    }
   }
 
   componentDidUpdate() {
-    this.username = this.props.user.username;
-    this.scrollToBottom();
+    this.username = this.props.user.username
+    this.scrollToBottom()
     if (!this.state.messages.length && !this.state.updated) {
-      this.setState((state) => {
-        this.props.messages.forEach((msg) => {
-          state.friends.add(msg.username);
+      this.setState(state => {
+        this.props.messages.forEach(msg => {
+          state.friends.add(msg.username)
         });
-        return state;
+        return state
       });
-      const filtered = this.state.currentConvo !== ''
-        ? this.props.messages.filter(
-          message => message.username === this.state.currentConvo,
-        )
-        : this.props.messages.filter(message => message.username === this.props.messages.slice(-1)[0]);
+      const filtered =
+        this.state.currentConvo !== ''
+          ? this.props.messages.filter(
+              message => message.username === this.state.currentConvo,
+            )
+          : this.props.messages.filter(
+              message => message.username === this.props.messages.slice(-1)[0],
+            );
       this.setState({
         messages: filtered,
-        updated: true
-      });
+        updated: true,
+      })
     }
   }
 
   componentDidMount() {
-    testNotification();
     const connectSocket = () => {
-      const {username, password} = this.props.user;
+      const { username, password } = this.props.user;
       this.socket = io('http://localhost:3000');
       this.socket.on('connect', () => {
-        this.socket.emit('authentication', { username, password });
+        this.socket.emit('authentication', { username, password })
       });
       this.socket.on('message', this.handleMessage);
       this.socket.on('typing', this.typingStatus);
       this.socket.on('noexist', this.noUserExists);
-      this.socket.emit('login', username);
+      this.socket.emit('login', username)
     };
     setTimeout(connectSocket, 100);
-    setTimeout(this.scrollToBottom, 100);
+    setTimeout(this.scrollToBottom, 100)
   }
 
   componentWillUnmount() {
-    //TODO do we want this to shut off when you navigate away from messenger?
-    //this works current if user goes back to browser
-    //TODO seems like we want to receive messages still
+    // TODO do I want this to shut off when you navigate away from messenger?
+    // this works current if user goes back to browser
+    // TODO seems like I want to receive messages still
     // this.socket.off('message', this.handleMessage);
     // this.socket.close();
   }
 
-
-  handleMessage = (message) => {
+  handleMessage = message => {
+    messageAlert(message.text, message.username);
+    console.log(message.username);
     this.setState(state => ({
       typing: state.typing.filter(
         ({ username }) => username !== message.username,
@@ -78,74 +81,83 @@ class Messenger extends React.Component {
     }));
     this.setState(state => state.friends.add(message.username));
     if (message.username === this.state.currentConvo) {
-      this.setState(state => ({ messages: state.messages.concat(message) }));
+      this.setState(state => ({ messages: state.messages.concat(message) }))
     } else {
-      this.setState({otherNewMessage: true});
+      this.setState({ otherNewMessage: true })
     }
-    this.props.addMessage(message.text, message.messageType, message.username, message.created_at, message.recipients);
-    this.scrollToBottom();
+    this.props.addMessage(
+      message.text,
+      message.messageType,
+      message.username,
+      message.created_at,
+      message.recipients,
+    );
+    this.scrollToBottom()
   };
 
   noUserExists = () => {
-    //TODO placeholder, not for actual use
-    alert('User by that name does not exist');
+    // TODO placeholder, not for actual use
+    alert('User by that name does not exist')
   };
 
-
-  typingStatus = (data) => {
+  typingStatus = data => {
     if (data === this.state.currentConvo) {
-      const notIncluded = this.state.typing.filter(el => el.username !== data);
+      const notIncluded = this.state.typing.filter(el => el.username !== data)
       for (let i = 0, len = this.state.typing.length; i < len; ++i) {
         if (this.state.typing[i].username === data) {
-          clearTimeout(this.state.typing[i].timeoutId);
+          clearTimeout(this.state.typing[i].timeoutId)
         }
       }
       const timeoutId = setTimeout(() => {
         this.setState(state => ({
           typing: state.typing.filter(el => el.username !== data),
-        }));
+        }))
       }, 3000);
       const status = { username: data, timeoutId };
-      this.setState(state => ({ typing: [...notIncluded, status] }));
+      this.setState(state => ({ typing: [...notIncluded, status] }))
     }
   };
 
-  getCurrentConvo = (otherUser) => {
+  getCurrentConvo = otherUser => {
     this.setState(() => {
       const filtered = this.props.messages.filter(
-        message => message.username === otherUser
-          || (message.username === this.username && message.recipients.includes(otherUser)),
+        message =>
+          message.username === otherUser ||
+          (message.username === this.username &&
+            message.recipients.includes(otherUser)),
       );
       return {
         currentConvo: otherUser,
         messages: filtered,
-      };
-    });
+      }
+    })
   };
 
   addConversation = async () => {
     const username = await prompt('enter a username');
-    this.setState(state => {
-      //TODO currently no confirmation for friends
-      state.currentConvo = username;
-      state.friends.add(username);
-      return state;
-    }, () => {
-      this.getCurrentConvo(username);
-    })
+    this.setState(
+      state => {
+        // TODO currently no confirmation for friends
+        state.currentConvo = username;
+        state.friends.add(username);
+        return state
+      },
+      () => {
+        this.getCurrentConvo(username)
+      },
+    )
   };
 
-
-  showTypingStatus = (e) => {
+  showTypingStatus = e => {
     const typingStatus = {
       username: this.username,
       recipients: [this.state.currentConvo],
     };
-      this.socket.emit('typing', typingStatus);
-      this.setState({ text: e.target.value });
+    this.socket.emit('typing', typingStatus);
+    this.setState({ text: e.target.value })
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
 
     if (this.state.text !== '') {
@@ -159,7 +171,7 @@ class Messenger extends React.Component {
 
       this.socket.emit('message', message);
 
-      //TODO THIS ADDS TO PROPS
+      // TODO THIS ADDS TO PROPS
       this.props.addMessage(
         this.state.text,
         'text',
@@ -170,21 +182,24 @@ class Messenger extends React.Component {
       this.setState(state => ({
         text: '',
         messages: this.state.messages.concat(message),
-      }));
+      }))
     }
   };
 
   scrollToBottom = () => {
     if (this.el) {
-      this.el.scrollIntoView({ behavior: 'instant' });
+      this.el.scrollIntoView({ behavior: 'instant' })
     }
   };
 
-  shareFavorite = (arrayIdx) => {
+  shareFavorite = arrayIdx => {
     const message = {
       created_at: new Date().getTime(),
       username: this.username,
-      text: [this.props.houses[arrayIdx].house_id, this.props.houses[arrayIdx].imgUrl],
+      text: [
+        this.props.houses[arrayIdx].house_id,
+        this.props.houses[arrayIdx].imgUrl,
+      ],
       messageType: 'link',
       recipients: [this.state.currentConvo],
     };
@@ -194,54 +209,58 @@ class Messenger extends React.Component {
       message.messageType,
       message.username,
       message.created_at,
-      message.recipients);
-    this.setState(state => {
-      state.messages = [...this.state.messages, message];
-      return state;
-    }, () => this.scrollToBottom())
+      message.recipients,
+    );
+    this.setState(
+      state => {
+        state.messages = [...this.state.messages, message];
+        return state
+      },
+      () => this.scrollToBottom(),
+    )
   };
 
   render() {
-    const sameUser = (msg, i, arr) => i > 0 && msg.username === arr[i - 1].username;
+    const sameUser = (msg, i, arr) =>
+      i > 0 && msg.username === arr[i - 1].username;
     const typingStatusMessage = !this.state.typing.length
       ? ''
       : this.state.typing.length === 1
         ? `${this.state.typing[0].username} is typing...`
         : this.state.typing.length === 2
           ? `${this.state.typing[0].username} and ${
-            this.state.typing[1].username
-          } are typing...`
+              this.state.typing[1].username
+            } are typing...`
           : 'several people are typing';
     return (
       <div className="mdl-card mdl-shadow--2dp" id="chatview">
-        <Favorites
-          shareFavorite={this.shareFavorite}
-        />
+        <Favorites shareFavorite={this.shareFavorite} />
         <NavBar
           newMessage={this.state.otherNewMessage}
           currentChat={this.state.currentConvo}
           addConvo={this.addConversation}
           getConvo={this.getCurrentConvo}
-          friends={[...this.state.friends].filter(notUser => notUser !== this.username && notUser !== this.state.currentConvo)}
+          friends={[...this.state.friends].filter(
+            notUser =>
+              notUser !== this.username && notUser !== this.state.currentConvo,
+          )}
         />
-        <DropTarget
-          targetKey='fav'
-        >
-        <ul>
-          {this.state.messages.map((message, i, array) => (
-            <Message
-              key={i}
-              message={message}
-              username={this.username}
-              firstMessage={sameUser(message, i, array)}
+        <DropTarget targetKey="fav">
+          <ul>
+            {this.state.messages.map((message, i, array) => (
+              <Message
+                key={i}
+                message={message}
+                username={this.username}
+                firstMessage={sameUser(message, i, array)}
+              />
+            ))}
+            <div
+              ref={el => {
+                this.el = el
+              }}
             />
-              ))}
-          <div
-            ref={(el) => {
-                  this.el = el;
-                }}
-          />
-        </ul>
+          </ul>
         </DropTarget>
         <div id="typing-status">
           <i>{typingStatusMessage}</i>
@@ -303,7 +322,6 @@ class Messenger extends React.Component {
             .mdl-card {
               margin: auto;
               transition: all .3s;
-              // transform: translateY(100px);
             }
             .mdl-textfield__input {
               display:inline-block;
@@ -361,11 +379,11 @@ class Messenger extends React.Component {
           `}
         </style>
       </div>
-    );
+    )
   }
 }
 
 export default connect(
   ({ messages, houses, user }) => ({ messages, houses, user }),
   { addMessage },
-)(Messenger);
+)(Messenger)

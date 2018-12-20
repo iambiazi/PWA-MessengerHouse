@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { addHouse } from '../actions/message';
 import offerNotifications from '../utils/notification';
 
-
 class Browser extends React.Component {
   constructor(props) {
     super(props);

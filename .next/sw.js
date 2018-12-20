@@ -1,4 +1,4 @@
-importScripts("precache-manifest.9184205f82f6482a9b27754b29936479.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("precache-manifest.1e11bd3e5a9a00463d54511b3c4d060e.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 //***THESE NOTES WERE MADE BECAUSE I GAVE A PRESENTATION ON SERVICE WORKERS***
 
@@ -125,9 +125,35 @@ workbox.routing.registerRoute(
 
 
 
+self.addEventListener('notificationclick', event => {
+  const notification = event.notification;
+  const primaryKey = notification.data.primaryKey;
+  const action = event.action;
 
+  if (action === 'close') {
+    notification.close();
+  } else {
+    event.waitUntil(
+      clients.matchAll().then(clis => {
+        const client = clis.find(c => {
+          return c.visibilityState === 'visible';
+        });
+        if (client !== undefined) {
+          client.focus();
+        } else {
+          clients.openWindow('/messenger');
+          notification.close();
+        }
+      })
+    );
+  }
 
-
+  self.registration.getNotifications().then(notifications => {
+    notifications.forEach(notification => {
+      notification.close();
+    });
+  });
+});
 
 
 
