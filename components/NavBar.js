@@ -9,30 +9,39 @@ const NavBar = ({
   changeMessage,
   addConvo,
   currentChat
-}) => (
-  <div id="navbar-container">
-    <div id='convo-status'>Chatting with {currentChat}</div>
+}) => {
+  return (
+    <div id="navbar-container">
+      <div id='convo-status'>Chatting with {currentChat}</div>
       <Link href='/browser' prefetch>
         <a><img src="../static/house.png" id="house-button" alt='' /></a>
       </Link>
-    <span>
+      <span>
       {/*<i className="far fa-heart" />*/}
-      {/*TODO NEED TO MAKE THIS DISAPPEAR AFTER USER READS MESSAGE */}
-      <div>{newMessage ? 'You have a new message' : ''}</div>
+        {/*TODO NEED TO MAKE THIS DISAPPEAR AFTER USER READS MESSAGE */}
+        <div id='new-message-badge'>{newMessage ? 'New message' : ''}</div>
     </span>
-    <div className="dropdown">
-      <button className="dropbtn"><i className="fas fa-bars"></i></button>
-      <div className="dropdown-content">
-        <a onClick={addConvo}>Start a new convo</a>
-        {friends.slice(-5).map((friend, i) => (
-          <a key={i} onClick={() => getConvo(`${friend}`)}>
-            {friend}
-          </a>
-        ))}
+      <div className="dropdown">
+        <button className="dropbtn"><i className="fas fa-bars"></i></button>
+        <div className="dropdown-content">
+          <a onClick={addConvo}>Start a new convo</a>
+          {friends.slice(-5).map((friend, i) => (
+            <a key={i} onClick={() => getConvo(`${friend}`)}>
+              {friend}
+            </a>
+          ))}
+        </div>
       </div>
-    </div>
-    <style>
-      {`
+      <style>
+        {`
+        #new-message-badge {
+          background: red;
+          color: white;
+          position: absolute;
+          font-size: .75em;
+          z-index: 1;
+          left: 18em;
+        }
         #convo-status {
           color: white;
           font-size: .8em;
@@ -87,8 +96,9 @@ const NavBar = ({
             background-color: #0069E0;
         }
       `}
-    </style>
-  </div>
-);
+      </style>
+    </div>
+  );
+};
 
 export default NavBar;

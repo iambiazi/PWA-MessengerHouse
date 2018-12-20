@@ -10,7 +10,7 @@ import { messageAlert } from '../utils/notification'
 
 class Messenger extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       text: '',
       messages: [],
@@ -23,14 +23,15 @@ class Messenger extends React.Component {
   }
 
   componentDidUpdate() {
-    this.username = this.props.user.username
-    this.scrollToBottom()
+    this.username = this.props.user.username;
+    this.scrollToBottom();
     if (!this.state.messages.length && !this.state.updated) {
       this.setState(state => {
+        const setCopy = new Set(state.friends);
         this.props.messages.forEach(msg => {
-          state.friends.add(msg.username)
+          setCopy.add(msg.username)
         });
-        return state
+        return {friends: setCopy};
       });
       const filtered =
         this.state.currentConvo !== ''
@@ -73,13 +74,16 @@ class Messenger extends React.Component {
 
   handleMessage = message => {
     messageAlert(message.text, message.username);
-    console.log(message.username);
     this.setState(state => ({
       typing: state.typing.filter(
         ({ username }) => username !== message.username,
       ),
     }));
-    this.setState(state => state.friends.add(message.username));
+    this.setState(state => {
+      const setCopy = new Set(state.friends);
+      setCopy.add(message.username)
+      return {friends: setCopy};
+    });
     if (message.username === this.state.currentConvo) {
       this.setState(state => ({ messages: state.messages.concat(message) }))
     } else {
@@ -92,7 +96,7 @@ class Messenger extends React.Component {
       message.created_at,
       message.recipients,
     );
-    this.scrollToBottom()
+    this.scrollToBottom();
   };
 
   noUserExists = () => {
@@ -102,7 +106,7 @@ class Messenger extends React.Component {
 
   typingStatus = data => {
     if (data === this.state.currentConvo) {
-      const notIncluded = this.state.typing.filter(el => el.username !== data)
+      const notIncluded = this.state.typing.filter(el => el.username !== data);
       for (let i = 0, len = this.state.typing.length; i < len; ++i) {
         if (this.state.typing[i].username === data) {
           clearTimeout(this.state.typing[i].timeoutId)
@@ -138,9 +142,12 @@ class Messenger extends React.Component {
     this.setState(
       state => {
         // TODO currently no confirmation for friends
-        state.currentConvo = username;
-        state.friends.add(username);
-        return state
+        const setCopy = new Set(state.friends);
+        setCopy.add(username);
+        return {
+          currentConvo: username,
+          friends: setCopy,
+        }
       },
       () => {
         this.getCurrentConvo(username)
@@ -213,8 +220,7 @@ class Messenger extends React.Component {
     );
     this.setState(
       state => {
-        state.messages = [...this.state.messages, message];
-        return state
+        return {messages: [...this.state.messages, message]};
       },
       () => this.scrollToBottom(),
     )
