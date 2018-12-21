@@ -22,7 +22,8 @@ const NavBar = ({
         <div id='new-message-badge'>{newMessage ? 'New message' : ''}</div>
     </span>
       <div className="dropdown">
-        <button className="dropbtn"><i className="fas fa-bars"></i></button>
+        <button className="dropbtn"
+        ><i className="fas fa-bars"></i></button>
         <div className="dropdown-content">
           <a onClick={addConvo}>Start a new convo</a>
           {friends.slice(-5).map((friend, i) => (

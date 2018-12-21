@@ -100,11 +100,12 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 
   socket.on('unread', (username) => {
-    console.log('unread ran');
-    User.findOne({_id: username}, (err, result) => {
+    User.findById({_id: username}, (err, result) => {
       result.unread.forEach(msg => {
         io.to(`${socketIds[username]}`).emit('message', JSON.parse(msg));
       });
+      result.unread = [];
+      result.save(result);
     });
   });
 
@@ -114,9 +115,7 @@ io.on('connection', (socket) => {
         io.to(`${socketIds[person]}`).emit('message', data);
       } else {
         User.findById({_id: person}, (err, result) => {
-          console.log('this is result', result);
           result.unread = [...result.unread, JSON.stringify(data)];
-          console.log('new mongo', result);
           result.save(result);
         });
       }

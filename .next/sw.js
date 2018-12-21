@@ -1,4 +1,4 @@
-importScripts("precache-manifest.732cbb119854df384bf140ac577f11e4.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("precache-manifest.c6ddbf823182d8d423c9c3fc55669ae6.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 //***THESE NOTES WERE MADE BECAUSE I GAVE A PRESENTATION ON SERVICE WORKERS***
 

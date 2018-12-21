@@ -38,7 +38,7 @@ v3.ext
 *.log
 .flooignore
 .floo
-
+.next
 
 #---------------------------------------#
 # IDEs & Editors Ignores                #

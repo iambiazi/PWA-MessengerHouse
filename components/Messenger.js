@@ -131,11 +131,12 @@ class Messenger extends React.Component {
         message =>
           message.username === otherUser ||
           (message.username === this.username &&
-            message.recipients.includes(otherUser)),
+            message.recipients.includes(otherUser))
       );
       return {
         currentConvo: otherUser,
         messages: filtered,
+        otherNewMessage: false,
       }
     })
   };
@@ -227,6 +228,7 @@ class Messenger extends React.Component {
     )
   };
 
+
   render() {
     const sameUser = (msg, i, arr) =>
       i > 0 && msg.username === arr[i - 1].username;
@@ -300,6 +302,7 @@ class Messenger extends React.Component {
               height: 568px;
             }
             #typing-status {
+              margin-top: .5em;
               height: 2.4em;
               font-size: .7em;
             }
