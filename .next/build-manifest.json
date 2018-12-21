@@ -3,33 +3,33 @@
   "pages": {
     "/_app": [
       "static/runtime/webpack-89179faa512dd01fbb62.js",
-      "static/chunks/commons.5fde10f1cf6625bec41a.js",
-      "static/runtime/main-4c8557e2b3227f824cef.js"
+      "static/chunks/commons.55e7c6680238e15df167.js",
+      "static/runtime/main-f737eced95345f5e7903.js"
     ],
     "/browser": [
       "static/runtime/webpack-89179faa512dd01fbb62.js",
-      "static/chunks/commons.5fde10f1cf6625bec41a.js",
-      "static/runtime/main-4c8557e2b3227f824cef.js"
+      "static/chunks/commons.55e7c6680238e15df167.js",
+      "static/runtime/main-f737eced95345f5e7903.js"
     ],
     "/index": [
       "static/runtime/webpack-89179faa512dd01fbb62.js",
-      "static/chunks/commons.5fde10f1cf6625bec41a.js",
-      "static/runtime/main-4c8557e2b3227f824cef.js"
+      "static/chunks/commons.55e7c6680238e15df167.js",
+      "static/runtime/main-f737eced95345f5e7903.js"
     ],
     "/messenger": [
       "static/runtime/webpack-89179faa512dd01fbb62.js",
-      "static/chunks/commons.5fde10f1cf6625bec41a.js",
-      "static/runtime/main-4c8557e2b3227f824cef.js"
+      "static/chunks/commons.55e7c6680238e15df167.js",
+      "static/runtime/main-f737eced95345f5e7903.js"
     ],
     "/_error": [
       "static/runtime/webpack-89179faa512dd01fbb62.js",
-      "static/chunks/commons.5fde10f1cf6625bec41a.js",
-      "static/runtime/main-4c8557e2b3227f824cef.js"
+      "static/chunks/commons.55e7c6680238e15df167.js",
+      "static/runtime/main-f737eced95345f5e7903.js"
     ],
     "/": [
       "static/runtime/webpack-89179faa512dd01fbb62.js",
-      "static/chunks/commons.5fde10f1cf6625bec41a.js",
-      "static/runtime/main-4c8557e2b3227f824cef.js"
+      "static/chunks/commons.55e7c6680238e15df167.js",
+      "static/runtime/main-f737eced95345f5e7903.js"
     ]
   }
 }

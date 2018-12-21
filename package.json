@@ -28,11 +28,9 @@
   },
   "scripts": {
     "dev": "node server.js",
-    "eslint-plugin-prettier": "^3.0.0",
     "build": "next build",
     "next": "next",
-    "start": "NODE_ENV=production node server",
-    "seed:db": "node seed.js"
+    "start": "NODE_ENV=production node server"
   },
   "devDependencies": {
     "eslint": "^5.9.0",

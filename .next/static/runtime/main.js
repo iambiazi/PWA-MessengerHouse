@@ -17966,23 +17966,17 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/**
- * Registers our Service Worker on the site
- * Need more? check out:
- * https://github.com/GoogleChrome/sw-precache/blob/master/demo/app/js/service-worker-registration.js
- */
 if (false) {}
 
 /***/ }),
 
 /***/ 0:
-/*!**********************************************************************************************************************!*\
-  !*** multi ./utils/offline ./utils/offline ./utils/offline ./utils/offline ./node_modules/next/dist/client/next-dev ***!
-  \**********************************************************************************************************************/
+/*!******************************************************************************************************!*\
+  !*** multi ./utils/offline ./utils/offline ./utils/offline ./node_modules/next/dist/client/next-dev ***!
+  \******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/brianlouie/Workspace/Side-Projects/PWA-MessengerHouse/utils/offline */"./utils/offline.js");
 __webpack_require__(/*! /Users/brianlouie/Workspace/Side-Projects/PWA-MessengerHouse/utils/offline */"./utils/offline.js");
 __webpack_require__(/*! /Users/brianlouie/Workspace/Side-Projects/PWA-MessengerHouse/utils/offline */"./utils/offline.js");
 __webpack_require__(/*! /Users/brianlouie/Workspace/Side-Projects/PWA-MessengerHouse/utils/offline */"./utils/offline.js");

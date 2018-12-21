@@ -58,8 +58,11 @@ class Messenger extends React.Component {
       this.socket.on('message', this.handleMessage);
       this.socket.on('typing', this.typingStatus);
       this.socket.on('noexist', this.noUserExists);
-      this.socket.emit('login', username)
+      this.socket.emit('login', username);
+      this.socket.emit('unread', username);
     };
+
+
     setTimeout(connectSocket, 100);
     setTimeout(this.scrollToBottom, 100)
   }
@@ -81,7 +84,7 @@ class Messenger extends React.Component {
     }));
     this.setState(state => {
       const setCopy = new Set(state.friends);
-      setCopy.add(message.username)
+      setCopy.add(message.username);
       return {friends: setCopy};
     });
     if (message.username === this.state.currentConvo) {
@@ -219,9 +222,7 @@ class Messenger extends React.Component {
       message.recipients,
     );
     this.setState(
-      state => {
-        return {messages: [...this.state.messages, message]};
-      },
+      state => ({messages: [...this.state.messages, message]}),
       () => this.scrollToBottom(),
     )
   };
@@ -263,7 +264,7 @@ class Messenger extends React.Component {
             ))}
             <div
               ref={el => {
-                this.el = el
+                this.el = el;
               }}
             />
           </ul>
@@ -348,40 +349,40 @@ class Messenger extends React.Component {
               color: black;
               transition: color .8s;
             }
-          .my-message {
-            display: inline-block;
-            font-weight: 400;
-            background: #00e34d;
-            color: white;
-            border-radius: 10px;
-            padding: 7px;
-            max-width: 50%;
-            word-wrap: break-word;
-            clear: right;
-            line-height: 1.25;
-          }
-          .your-message {
-            display: inline-block;
-            background: #E5E5EA;
-            border-radius: 10px;
-            padding: 7px;
-            word-wrap: break-word;
-            max-width:70%;
-            line-height: 1.25;
-          }
-          .message-username {
-            display: block;
-            font-size: 0.8em;
-            font-weight: bold;
-            line-height: 1.5;
-            margin-left: 0.6em;
-          }
-          .send-msg-btn {
-            cursor:pointer;
-          }
-          .mdl-textfield__label:after{
-            background-color: #0069E0;
-          }
+            .my-message {
+              display: inline-block;
+              font-weight: 400;
+              background: #00e34d;
+              color: white;
+              border-radius: 10px;
+              padding: 7px;
+              max-width: 50%;
+              word-wrap: break-word;
+              clear: right;
+              line-height: 1.25;
+            }
+            .your-message {
+              display: inline-block;
+              background: #E5E5EA;
+              border-radius: 10px;
+              padding: 7px;
+              word-wrap: break-word;
+              max-width:70%;
+              line-height: 1.25;
+            }
+            .message-username {
+              display: block;
+              font-size: 0.8em;
+              font-weight: bold;
+              line-height: 1.5;
+              margin-left: 0.6em;
+            }
+            .send-msg-btn {
+              cursor:pointer;
+            }
+            .mdl-textfield__label:after{
+              background-color: #0069E0;
+            }
           `}
         </style>
       </div>

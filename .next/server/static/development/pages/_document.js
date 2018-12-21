@@ -155,7 +155,7 @@ function (_Document) {
         content: "#673ab7"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("link", {
         rel: "manifest",
-        href: "static/manifest.json"
+        href: "/static/manifest.json"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("link", {
         rel: "icon",
         href: "static/img/favicon.ico"

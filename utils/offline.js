@@ -7,7 +7,6 @@ if (
     .register('/sw.js')
     .then((reg) => {
       console.log('Service worker registered (0-0) ');
-      console.log('offline', reg);
       reg.pushManager.subscribe({userVisibleOnly: true});
     })
     .catch((e) => {

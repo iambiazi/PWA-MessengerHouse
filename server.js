@@ -26,6 +26,7 @@ const server = createServer((req, res) => {
         bcrypt.genSalt(saltRounds, function(err, salt) {
           bcrypt.hash(parsed.password, salt, function(err, hash) {
             parsed.password = hash;
+            parsed._id = parsed.username;
             User.create(parsed, (err, data) => {
               if (err) {
                 res.statusCode = 422;
@@ -98,9 +99,27 @@ const authenticate = (client, data, callback) => {
 io.on('connection', (socket) => {
   console.log('a user connected');
 
+  socket.on('unread', (username) => {
+    console.log('unread ran');
+    User.findOne({_id: username}, (err, result) => {
+      result.unread.forEach(msg => {
+        io.to(`${socketIds[username]}`).emit('message', JSON.parse(msg));
+      });
+    });
+  });
+
   socket.on('message', (data) => {
     data.recipients.forEach(person => {
-      io.to(`${socketIds[person]}`).emit('message', data);
+      if (socketIds[person]) {
+        io.to(`${socketIds[person]}`).emit('message', data);
+      } else {
+        User.findById({_id: person}, (err, result) => {
+          console.log('this is result', result);
+          result.unread = [...result.unread, JSON.stringify(data)];
+          console.log('new mongo', result);
+          result.save(result);
+        });
+      }
     });
 });
 
@@ -111,6 +130,13 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
+    //can create another storage object so we can have constant lookup, depennds if we want to
+    // prioritize time or space
+    for (let key in socketIds) {
+      if (socketIds[key] === socket.id) {
+        delete socketIds[key];
+      }
+    }
     console.log('user disconnected');
   });
 });
