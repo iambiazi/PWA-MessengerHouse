@@ -1,4 +1,4 @@
-importScripts("precache-manifest.ee40574457f07084392f753beec8660f.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("precache-manifest.45b513afb0ac66f53516f4410166add5.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 workbox.core.setCacheNameDetails({ prefix: 'next-ss' });
 
@@ -90,6 +90,9 @@ self.addEventListener('notificationclick', event => {
         if (client !== undefined) {
           client.focus();
           client.navigate(`/messenger/${notification.data.sender}`);
+          client.postMessage({
+            msg: notification.data.sender,
+          })
         } else {
           clients.openWindow(`/messenger/${notification.data.sender}`);
           notification.close();

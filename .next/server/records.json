@@ -274,16 +274,22 @@
       "static/lb~4r~yqVKfWd00hyuQn0/pages/browser.js": 8,
       "static/lb~4r~yqVKfWd00hyuQn0/pages/index.js": 9,
       "static/lb~4r~yqVKfWd00hyuQn0/pages/messenger.js": 10,
-      "static/lb~4r~yqVKfWd00hyuQn0/pages/_error.js": 11
+      "static/lb~4r~yqVKfWd00hyuQn0/pages/_error.js": 11,
+      "static/ZHXS7ZjH3YMNbxVeL3B8~/pages/_app.js": 0,
+      "static/ZHXS7ZjH3YMNbxVeL3B8~/pages/_document.js": 1,
+      "static/ZHXS7ZjH3YMNbxVeL3B8~/pages/browser.js": 2,
+      "static/ZHXS7ZjH3YMNbxVeL3B8~/pages/index.js": 3,
+      "static/ZHXS7ZjH3YMNbxVeL3B8~/pages/messenger.js": 4,
+      "static/ZHXS7ZjH3YMNbxVeL3B8~/pages/_error.js": 5
     },
     "bySource": {},
     "usedIds": [
-      10,
-      11,
-      6,
-      7,
-      8,
-      9
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
     ]
   }
 }
