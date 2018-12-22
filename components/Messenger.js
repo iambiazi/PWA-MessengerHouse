@@ -15,7 +15,7 @@ class Messenger extends React.Component {
       text: '',
       messages: [],
       updated: false,
-      currentConvo: '',
+      currentConvo: this.props.sender || '',
       friends: new Set(),
       typing: [],
       otherNewMessage: false,
@@ -183,7 +183,6 @@ class Messenger extends React.Component {
 
       this.socket.emit('message', message);
 
-      // TODO THIS ADDS TO PROPS
       this.props.addMessage(
         this.state.text,
         'text',

@@ -12,7 +12,11 @@ const NavBar = ({
 }) => {
   return (
     <div id="navbar-container">
-      <div id='convo-status'>Chatting with {currentChat}</div>
+      <div id='convo-status'>
+        Chatting with <br />
+        {currentChat}
+      </div>
+
       <Link href='/browser' prefetch>
         <a><img src="../static/house.png" id="house-button" alt='' /></a>
       </Link>
@@ -25,7 +29,7 @@ const NavBar = ({
         <button className="dropbtn"
         ><i className="fas fa-bars"></i></button>
         <div className="dropdown-content">
-          <a onClick={addConvo}>Start a new convo</a>
+          <a onClick={addConvo}>New Message</a>
           {friends.slice(-5).map((friend, i) => (
             <a key={i} onClick={() => getConvo(`${friend}`)}>
               {friend}
@@ -56,17 +60,16 @@ const NavBar = ({
           background-color: #0069E0;
         }
         #house-button {
-          margin-right: 12px;
-          height: 50px;
+          height: 4em;
           width: auto;
         }
         .dropbtn {
             background-color: #0069E0;
             color: white;
-            font-size: 16px;
+            font-size: 1em;
             border: none;
             cursor: pointer;
-            width: 120px;
+            width: 6em;
             margin: .5em .2em;
             text-align: end;
         }
@@ -79,7 +82,7 @@ const NavBar = ({
             display: none;
             position: absolute;
             background-color: #f9f9f9;
-            min-width: 160px;
+            min-width: auto;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
         }

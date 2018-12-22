@@ -1,5 +1,7 @@
 workbox.core.setCacheNameDetails({ prefix: 'next-ss' });
 
+workbox.core.setLogLevel(workbox.core.LOG_LEVELS.silent);
+
 workbox.skipWaiting();
 
 workbox.clientsClaim();
@@ -74,6 +76,7 @@ self.addEventListener('notificationclick', event => {
   const notification = event.notification;
   const action = event.action;
 
+
   if (action === 'close') {
     notification.close();
   } else {
@@ -84,8 +87,9 @@ self.addEventListener('notificationclick', event => {
         });
         if (client !== undefined) {
           client.focus();
+          client.navigate(`/messenger/${notification.data.sender}`);
         } else {
-          clients.openWindow('/messenger');
+          clients.openWindow(`/messenger/${notification.data.sender}`);
           notification.close();
         }
       })

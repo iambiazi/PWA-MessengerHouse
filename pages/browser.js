@@ -36,8 +36,8 @@ class Browser extends React.Component {
   }
 
   componentWillUnmount() {
-    const favoriteButton = document.getElementById('add-favorites');
-    favoriteButton.removeEventListener('click', this.addFavorite);
+    // const favoriteButton = document.getElementById('add-favorites');
+    // favoriteButton.removeEventListener('click', this.addFavorite);
   }
 
   addFavorite = () => {

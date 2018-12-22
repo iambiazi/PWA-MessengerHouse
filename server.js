@@ -74,6 +74,8 @@ const server = createServer((req, res) => {
   } else {
     if (req.url.startsWith('/browser')) {
       req.url = '/browser';
+    } else if (req.url.startsWith('/messenger')) {
+      req.url = '/messenger';
     }
     handle(req, res);
   }

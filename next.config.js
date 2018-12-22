@@ -12,10 +12,7 @@ module.exports = withCSS({
       return entry;
     });
 
-    /* Enable only in Production */
     if (!dev) {
-      //there is also a webpack plugin that can generate the service worker for you
-      //GenerateSW
       config.plugins.push(
         new WorkboxPlugin.InjectManifest({
           swSrc: path.join(__dirname, 'utils', 'sw.js'),

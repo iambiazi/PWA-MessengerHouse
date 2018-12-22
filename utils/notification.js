@@ -20,7 +20,8 @@ export const messageAlert = (msgBody, sender = 'MessengerHouse App') => {
             vibrate: [100, 50, 100],
             data: {
               dateOfArrival: Date.now(),
-              primaryKey: 1
+              primaryKey: 1,
+              sender: sender,
             },
             actions: [
               {action: 'explore', title: 'Go to the site',
