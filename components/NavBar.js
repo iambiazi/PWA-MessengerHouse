@@ -13,23 +13,24 @@ const NavBar = ({
   return (
     <div id="navbar-container">
       <div id='convo-status'>
-        Chatting with <br />
+        Chatting with <br/>
         {currentChat}
       </div>
-
       <Link href='/browser' prefetch>
-        <a><img src="../static/house.png" id="house-button" alt='' /></a>
+        {/* <a><img src="../static/house.png" id="house-button" alt='' /></a> */}
+        <a id="house-button2"><i className="fa fa-home"> Home</i></a>
+
       </Link>
       <span>
-      {/*<i className="far fa-heart" />*/}
+      {/* <i className="far fa-heart" /> */}
         {/*TODO NEED TO MAKE THIS DISAPPEAR AFTER USER READS MESSAGE */}
         <div id='new-message-badge'>{newMessage ? 'New message' : ''}</div>
     </span>
       <div className="dropdown">
         <button className="dropbtn"
-        ><i className="fas fa-bars"></i></button>
+        ><i className="fas fa-bars"> Menu</i></button>
         <div className="dropdown-content">
-          <a onClick={addConvo}>New Message</a>
+          <a onClick={addConvo}>Start a new convo</a>
           {friends.slice(-5).map((friend, i) => (
             <a key={i} onClick={() => getConvo(`${friend}`)}>
               {friend}
@@ -50,30 +51,43 @@ const NavBar = ({
         #convo-status {
           color: white;
           font-size: .8em;
+          position: relative; /*  */
         }
         a {
           font-size: 12px;
         }
         #navbar-container {
           display: flex;
-          justify-content: flex-end;
+          justify-content: space-around; /* changed to space-around from flex-end */
           background-color: #0069E0;
+          height: 3em; /*  */
         }
         #house-button {
-          height: 4em;
-          width: auto;
+          margin-right: 12px;
+          width: auto; /* deleted height */
+        }
+        #house-button:hover {
+          transform: scale(1.2); /* added zoom */
+        }
+        #house-button2 {
+          color: white;
+          position: relative;
+          left: 1.5em;
+          top: 20%;
+          font-size:1em;
         }
         .dropbtn {
             background-color: #0069E0;
             color: white;
-            font-size: 1em;
+            font-size: 1em; /* changed to 1em from 16px */
             border: none;
             cursor: pointer;
-            width: 6em;
+            width: 120px;
             margin: .5em .2em;
             text-align: end;
         }
         .dropdown {
+            margin-top: -.2em;
             position: relative;
             display: inline-block;
             float: right;
@@ -82,7 +96,7 @@ const NavBar = ({
             display: none;
             position: absolute;
             background-color: #f9f9f9;
-            min-width: auto;
+            min-width: 160px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
         }

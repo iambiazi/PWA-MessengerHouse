@@ -27,6 +27,7 @@ const server = createServer((req, res) => {
           bcrypt.hash(parsed.password, salt, function(err, hash) {
             parsed.password = hash;
             parsed._id = parsed.username;
+            parsed.unread = [];
             User.create(parsed, (err, data) => {
               if (err) {
                 res.statusCode = 422;
@@ -103,6 +104,9 @@ io.on('connection', (socket) => {
 
   socket.on('unread', (username) => {
     User.findById({_id: username}, (err, result) => {
+      if (err) {
+        console.error(err);
+      }
       result.unread.forEach(msg => {
         io.to(`${socketIds[username]}`).emit('message', JSON.parse(msg));
       });
@@ -155,5 +159,5 @@ app.prepare().then((_) => {
 
     console.log(`> App running on port ${PORT}`);
   });
-});
+}).catch(err => console.error(err));
 

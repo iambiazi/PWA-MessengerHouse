@@ -64,14 +64,6 @@ class Messenger extends React.Component {
 
     setTimeout(connectSocket, 100);
     setTimeout(this.scrollToBottom, 100);
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.addEventListener('message', (event) => {
-        console.log(event.data);
-        this.setState({currentConvo: event.data})
-      })
-    }
-
   }
 
   componentWillUnmount() {
@@ -179,7 +171,7 @@ class Messenger extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    if (this.state.text !== '') {
+    if (this.state.text !== '' && this.state.currentConvo !== '') {
       const message = {
         created_at: new Date().getTime(),
         username: this.username,

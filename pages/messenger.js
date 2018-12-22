@@ -11,7 +11,6 @@ const MessengerView = () => {
   } else {
     return (<Messenger />);
   }
-
 };
 
 export default MessengerView;
