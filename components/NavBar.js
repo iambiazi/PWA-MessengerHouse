@@ -17,13 +17,10 @@ const NavBar = ({
         {currentChat}
       </div>
       <Link href='/browser' prefetch>
-        {/* <a><img src="../static/house.png" id="house-button" alt='' /></a> */}
         <a id="house-button2"><i className="fa fa-home"> Home</i></a>
 
       </Link>
       <span>
-      {/* <i className="far fa-heart" /> */}
-        {/*TODO NEED TO MAKE THIS DISAPPEAR AFTER USER READS MESSAGE */}
         <div id='new-message-badge'>{newMessage ? 'New message' : ''}</div>
     </span>
       <div className="dropdown">
@@ -93,6 +90,7 @@ const NavBar = ({
             float: right;
         }
         .dropdown-content {
+            margin-top: -.15em;
             display: none;
             position: absolute;
             background-color: #f9f9f9;

@@ -39,6 +39,7 @@ v3.ext
 .flooignore
 .floo
 .next
+config.js
 
 #---------------------------------------#
 # IDEs & Editors Ignores                #
