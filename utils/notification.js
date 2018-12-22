@@ -1,7 +1,3 @@
-//Displays pop up message from the browser to request permission to allow notifications
-//response is stored along with the app (calling again returns user's last choice)
-
-//check if supported by browser
 export default function () {
   if (!('Notification' in window)) {
     console.log('Notifications not supported in this browser');

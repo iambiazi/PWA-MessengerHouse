@@ -142,6 +142,7 @@ class Messenger extends React.Component {
   };
 
   addConversation = async () => {
+    //TODO placeholder prompt
     const username = await prompt('enter a username');
     this.setState(
       state => {

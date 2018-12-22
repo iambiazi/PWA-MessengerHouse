@@ -12,7 +12,7 @@ class Browser extends React.Component {
   componentDidMount() {
     offerNotifications();
 
-    // commented because temporarily shut down the hosting for these aspects of the messenger
+    // temporarily shut down the hosting for these aspects of the app
 
     // const script_Top = document.createElement("script");
     // script_Top.src = "https://s3-us-west-1.amazonaws.com/img-gallery-hr/PWAbundle.js";
