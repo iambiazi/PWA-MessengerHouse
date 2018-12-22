@@ -88,6 +88,9 @@ self.addEventListener('notificationclick', event => {
         if (client !== undefined) {
           client.focus();
           client.navigate(`/messenger/${notification.data.sender}`);
+          client.postMessage({
+            msg: notification.data.sender,
+          })
         } else {
           clients.openWindow(`/messenger/${notification.data.sender}`);
           notification.close();
