@@ -84,7 +84,6 @@ const NavBar = ({
             text-align: end;
         }
         .dropdown {
-            margin-top: -.2em;
             position: relative;
             display: inline-block;
             float: right;

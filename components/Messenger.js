@@ -51,7 +51,7 @@ class Messenger extends React.Component {
   componentDidMount() {
     const connectSocket = () => {
       const { username, password } = this.props.user;
-      this.socket = io('http://localhost:3000');
+      this.socket = io('https://www.brian-louie.online');
       this.socket.on('connect', () => {
         this.socket.emit('authentication', { username, password })
       });
@@ -362,6 +362,7 @@ class Messenger extends React.Component {
               word-wrap: break-word;
               clear: right;
               line-height: 1.25;
+              text-align: left; /*  */
             }
             .your-message {
               display: inline-block;

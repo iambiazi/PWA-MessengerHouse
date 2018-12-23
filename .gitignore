@@ -40,6 +40,11 @@ v3.ext
 .floo
 .next
 config.js
+Archive.zip
+privatekey.pem
+csr.pem
+server.crt
+ssl.ca-bundle
 
 #---------------------------------------#
 # IDEs & Editors Ignores                #
