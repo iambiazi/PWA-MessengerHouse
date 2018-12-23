@@ -1,12 +1,13 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import io from 'socket.io-client'
-import { DropTarget } from 'react-drag-drop-container'
-import { addMessage } from '../actions/message'
-import Message from './Message'
-import NavBar from './NavBar'
-import Favorites from './Favorites'
-import { messageAlert } from '../utils/notification'
+import React from 'react';
+import { connect } from 'react-redux';
+import io from 'socket.io-client';
+import { DropTarget } from 'react-drag-drop-container';
+import { addMessage } from '../actions/message';
+import Message from './Message';
+import NavBar from './NavBar';
+import Favorites from './Favorites';
+import { messageAlert } from '../utils/notification';
+import isomorphicFetch from "isomorphic-fetch";
 
 class Messenger extends React.Component {
   constructor(props) {
@@ -49,6 +50,16 @@ class Messenger extends React.Component {
   }
 
   componentDidMount() {
+    // isomorphicFetch('/verify', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Accept': 'application/json'
+    //   },
+    //   credentials: 'same-origin',
+    // }).then(res => res.json())
+    //   .then(stringified => {
+    //     this.username = stringified.username;
+    //   });
     const connectSocket = () => {
       const { username, password } = this.props.user;
       this.socket = io('https://www.brian-louie.online');

@@ -14,13 +14,14 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-User.create({
-  _id: 'admin1',
-  username: 'admin1',
-  password: 'password',
-  conversations: [],
-  unread: [],
-}).catch(err => console.error(err));
+//this doesn't work because bcrypt
+// User.create({
+//   _id: 'admin1',
+//   username: 'admin1',
+//   password: 'password',
+//   conversations: [],
+//   unread: [],
+// }).catch(err => console.error(err));
 
 module.exports.db = db;
 module.exports.User = User;

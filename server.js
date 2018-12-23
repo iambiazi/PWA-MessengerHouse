@@ -3,6 +3,8 @@ const path = require('path');
 const next = require('next');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
+const jwtKey = require('./jwtpw');
 
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -32,10 +34,19 @@ const server = createServer((req, res) => {
               if (err) {
                 res.statusCode = 422;
                 res.setHeader("Content-Type", "application/json");
-                res.end(JSON.stringify('user already exists'));
+                res.end(JSON.stringify({status: 'user already exists'}));
               } else {
-                res.statusCode = 201;
-                res.setHeader("Content-Type", "application/json");
+                const token = {
+                  jwt: jwt.sign({
+                    username: parsed.username,
+                    status: 'logged in',
+                  }, jwtKey),
+                };
+                res.writeHead(201, {
+                  //TODO removed 'Secure;' for development
+                  'Set-Cookie': `jwt=${JSON.stringify(token)}; HttpOnly`,
+                  "Content-Type": "application/json",
+                });
                 res.end(JSON.stringify({status: 'logged in'}));
               }
             });
@@ -58,25 +69,65 @@ const server = createServer((req, res) => {
             res.end(JSON.stringify('error with login. Incorrect username/password combo'));
             return console.error(err);
           }
-          bcrypt.compare(parsed.password, record[0].password, (err, result) => {
-            if (err || !result) {
-              res.statusCode = 422;
-              res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify('error with login. Incorrect username/password combo'));
-              return console.error(err);
-            }
-            res.statusCode = 201;
+          if (record.length) {
+            bcrypt.compare(parsed.password, record[0].password, (err, result) => {
+              if (err || !result) {
+                res.statusCode = 422;
+                res.setHeader("Content-Type", "application/json");
+                res.end(JSON.stringify('error with login. Incorrect username/password combo'));
+                return console.error(err);
+              }
+              const token = {
+                jwt: jwt.sign({
+                  username: parsed.username,
+                  status: 'logged in',
+                }, jwtKey),
+              };
+              res.writeHead(201, {
+                //TODO removed 'Secure;' for development
+                'Set-Cookie': `jwt=${JSON.stringify(token)}; HttpOnly`,
+                "Content-Type": "application/json",
+              });
+              res.end(JSON.stringify({status: 'logged in'}));
+            });
+          } else {
+            res.statusCode = 422;
             res.setHeader("Content-Type", "application/json");
-            res.end(JSON.stringify({status: 'logged in'}));
-          });
+            res.end(JSON.stringify('error with login. Incorrect username/password combo'));
+          }
         });
       });
 
+  } else if (req.url === '/verify') {
+    if (req.headers.cookie) {
+      const jwtCookie = req.headers.cookie.match(/jwt={"jwt":"(.*)"/);
+      if (jwtCookie) {
+        const decoded = jwt.verify(jwtCookie[1], jwtKey);
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({username: decoded.username}));
+      }
+    } else {
+      req.url = '/';
+      handle(req, res);
+    }
   } else {
-    if (req.url.startsWith('/browser')) {
-      req.url = '/browser';
-    } else if (req.url.startsWith('/messenger')) {
-      req.url = '/messenger';
+    if (req.url.startsWith('/browser') || req.url.startsWith('/messenger')) {
+      if (req.headers.cookie) {
+        const jwtCookie = req.headers.cookie.match(/jwt={"jwt":"(.*)"/);
+        if (jwtCookie) {
+          const decoded = jwt.verify(jwtCookie[1], jwtKey);
+          if (decoded.status === 'logged in') {
+            req.url = req.url.startsWith('/browser') ? '/browser' : '/messenger';
+          } else {
+            req.url = '/';
+          }
+        } else {
+          req.url = '/';
+        }
+      } else {
+        req.url = '/';
+      }
     }
     handle(req, res);
   }
@@ -103,16 +154,18 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 
   socket.on('unread', (username) => {
-    User.findById({_id: username}, (err, result) => {
-      if (err) {
-        console.error(err);
-      }
-      result.unread.forEach(msg => {
-        io.to(`${socketIds[username]}`).emit('message', JSON.parse(msg));
+    if (username !== undefined) {
+      User.findById({_id: username}, (err, result) => {
+        if (err) {
+          console.error(err);
+        }
+        result.unread.forEach(msg => {
+          io.to(`${socketIds[username]}`).emit('message', JSON.parse(msg));
+        });
+        result.unread = [];
+        result.save(result);
       });
-      result.unread = [];
-      result.save(result);
-    });
+    }
   });
 
   socket.on('message', (data) => {
