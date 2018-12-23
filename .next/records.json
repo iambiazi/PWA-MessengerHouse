@@ -1288,18 +1288,23 @@
       "static/w2M8Fy9A8WLxEaoU3W1tF/pages/browser.js": 4,
       "static/w2M8Fy9A8WLxEaoU3W1tF/pages/index.js": 5,
       "static/w2M8Fy9A8WLxEaoU3W1tF/pages/messenger.js": 6,
-      "static/w2M8Fy9A8WLxEaoU3W1tF/pages/_error.js": 7
+      "static/w2M8Fy9A8WLxEaoU3W1tF/pages/_error.js": 7,
+      "static/s0tmzcdjUV8DIviSUgsGP/pages/_app.js": 8,
+      "static/s0tmzcdjUV8DIviSUgsGP/pages/browser.js": 9,
+      "static/s0tmzcdjUV8DIviSUgsGP/pages/index.js": 10,
+      "static/s0tmzcdjUV8DIviSUgsGP/pages/messenger.js": 11,
+      "static/s0tmzcdjUV8DIviSUgsGP/pages/_error.js": 12
     },
     "bySource": {},
     "usedIds": [
       0,
       1,
+      10,
+      11,
+      12,
       2,
-      3,
-      4,
-      5,
-      6,
-      7
+      8,
+      9
     ]
   }
 }

@@ -71,6 +71,7 @@ class Messenger extends React.Component {
       this.socket.on('noexist', this.noUserExists);
       this.socket.emit('login', username);
       this.socket.emit('unread', username);
+      console.log('this is username', username);
     };
 
     setTimeout(connectSocket, 100);
