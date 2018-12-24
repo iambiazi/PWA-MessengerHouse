@@ -46,15 +46,13 @@ workbox.routing.registerRoute(
   'GET',
 );
 
-// browser portion currently not hosted
-
-// workbox.routing.registerRoute(
-//   '/browser',
-//   workbox.strategies.staleWhileRevalidate({
-//     cacheName: 'browser',
-//   }),
-//   'GET',
-// );
+workbox.routing.registerRoute(
+  '/browser',
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'browser',
+  }),
+  'GET',
+);
 
 workbox.routing.registerRoute(
   '/messenger',
@@ -90,7 +88,8 @@ self.addEventListener('notificationclick', event => {
           client.navigate(`/messenger/${notification.data.sender}`);
           client.postMessage({
             msg: notification.data.sender,
-          })
+          });
+          notification.close();
         } else {
           clients.openWindow(`/messenger/${notification.data.sender}`);
           notification.close();
@@ -99,14 +98,22 @@ self.addEventListener('notificationclick', event => {
     );
   }
 
+
+
   self.registration.getNotifications().then(notifications => {
+    console.log(notifications);
     notifications.forEach(notification => {
       notification.close();
     });
   });
 });
 
+self.addEventListener('notificationclose', event => {
+  const notification = event.notification;
+  const primaryKey = notification.data.primaryKey;
 
+  console.log('Closed notification: ' + primaryKey);
+});
 
 
 

@@ -20,6 +20,7 @@ class Messenger extends React.Component {
       friends: new Set(),
       typing: [],
       otherNewMessage: false,
+      unread: {},
     }
   }
 
@@ -50,19 +51,9 @@ class Messenger extends React.Component {
   }
 
   componentDidMount() {
-    // isomorphicFetch('/verify', {
-    //   method: 'GET',
-    //   headers: {
-    //     'Accept': 'application/json'
-    //   },
-    //   credentials: 'same-origin',
-    // }).then(res => res.json())
-    //   .then(stringified => {
-    //     this.username = stringified.username;
-    //   });
     const connectSocket = () => {
       const { username, password } = this.props.user;
-      this.socket = io('https://www.brian-louie.online');
+      this.socket = io('http://localhost:3000');
       this.socket.on('connect', () => {
         this.socket.emit('authentication', { username, password })
       });
@@ -71,7 +62,6 @@ class Messenger extends React.Component {
       this.socket.on('noexist', this.noUserExists);
       this.socket.emit('login', username);
       this.socket.emit('unread', username);
-      console.log('this is username', username);
     };
 
     setTimeout(connectSocket, 100);
@@ -101,7 +91,18 @@ class Messenger extends React.Component {
     if (message.username === this.state.currentConvo) {
       this.setState(state => ({ messages: state.messages.concat(message) }))
     } else {
-      this.setState({ otherNewMessage: true })
+      this.setState(state => {
+        const updated = {...state.unread};
+        if (updated[message.username]) {
+          updated[message.username] += 1;
+        } else {
+          updated[message.username] = 1;
+        }
+        return {
+          otherNewMessage: true,
+          unread: updated,
+        }
+      })
     }
     this.props.addMessage(
       message.text,
@@ -136,17 +137,20 @@ class Messenger extends React.Component {
     }
   };
 
-  getCurrentConvo = otherUser => {
-    this.setState(() => {
+  getCurrentConvo = newConvo => {
+    this.setState(state => {
       const filtered = this.props.messages.filter(
         message =>
-          message.username === otherUser ||
+          message.username === newConvo ||
           (message.username === this.username &&
-            message.recipients.includes(otherUser))
+            message.recipients.includes(newConvo))
       );
+      const newUnread = {...state.unread};
+      delete newUnread[newConvo];
       return {
-        currentConvo: otherUser,
+        currentConvo: newConvo,
         messages: filtered,
+        unread: newUnread,
         otherNewMessage: false,
       }
     })
@@ -257,9 +261,10 @@ class Messenger extends React.Component {
         <Favorites shareFavorite={this.shareFavorite} />
         <NavBar
           newMessage={this.state.otherNewMessage}
+          newMessageCount={this.state.unread}
           currentChat={this.state.currentConvo}
           addConvo={this.addConversation}
-          getConvo={this.getCurrentConvo}
+          switchConvo={this.getCurrentConvo}
           friends={[...this.state.friends].filter(
             notUser =>
               notUser !== this.username && notUser !== this.state.currentConvo,
@@ -370,7 +375,7 @@ class Messenger extends React.Component {
               color: white;
               border-radius: 10px;
               padding: 7px;
-              max-width: 50%;
+              max-width: 80%;
               word-wrap: break-word;
               clear: right;
               line-height: 1.25;
@@ -382,7 +387,7 @@ class Messenger extends React.Component {
               border-radius: 10px;
               padding: 7px;
               word-wrap: break-word;
-              max-width:70%;
+              max-width:80%;
               line-height: 1.25;
             }
             .message-username {

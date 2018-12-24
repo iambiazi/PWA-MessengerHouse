@@ -98,19 +98,6 @@ const server = createServer((req, res) => {
         });
       });
 
-  } else if (req.url === '/verify') {
-    if (req.headers.cookie) {
-      const jwtCookie = req.headers.cookie.match(/jwt={"jwt":"(.*)"/);
-      if (jwtCookie) {
-        const decoded = jwt.verify(jwtCookie[1], jwtKey);
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "application/json");
-        res.end(JSON.stringify({username: decoded.username}));
-      }
-    } else {
-      req.url = '/';
-      handle(req, res);
-    }
   } else {
     if (req.url.startsWith('/browser') || req.url.startsWith('/messenger')) {
       if (req.headers.cookie) {

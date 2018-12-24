@@ -66,6 +66,15 @@ class Index extends React.Component {
     this.setState({view: 'signup'});
   };
 
+  resetView = () => {
+    if (this.state.view === 'login') {
+      this.setState({view: 'signup'});
+    } else {
+      this.setState({view: 'login'});
+    }
+
+  };
+
 
 
   handleChange = (e) => {
@@ -75,6 +84,11 @@ class Index extends React.Component {
   render = () => {
     return (
       <div>
+        <div>{this.state.view === 'login' ? 'Please enter your username and password'
+             :this.state.view === 'signup' ? 'Create a new username'
+             : ''
+      }
+        </div>
         {this.state.view === 'choice' && <a onClick={this.handleLogin}>Login</a>}
         <br />
         {this.state.view === 'choice' && <a onClick={this.handleSignup}>Signup</a>}
@@ -83,6 +97,7 @@ class Index extends React.Component {
             type="text"
             placeholder="enter username"
             name="username"
+            autofocus='true'
           />
           <input
             type="password"
@@ -97,6 +112,13 @@ class Index extends React.Component {
         }
         `}
         </style>
+        {this.state.view !== 'choice' &&
+        <button
+          type='button'
+          onClick={this.resetView}
+        >{this.state.view === 'login' ? 'Signup instead' : 'Login Instead'}
+        </button>
+        }
         {this.state.loginError && <div>{this.state.errorMsg}</div>}
         {this.state.serverError && <div>Error connecting to server</div>}
       </div>

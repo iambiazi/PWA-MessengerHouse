@@ -19,12 +19,12 @@ class Browser extends React.Component {
     // script_Top.async = true;
     // document.body.appendChild(script_Top);
 
-    // const script = document.createElement("script");
-    //
-    // script.src = "https://s3-us-west-1.amazonaws.com/housing-hr/PWAbundle.js";
-    // script.async = true;
-    //
-    // document.body.appendChild(script);
+    const script = document.createElement("script");
+
+    script.src = "https://s3-us-west-1.amazonaws.com/elasticbeanstalk-us-west-1-658824784294/bundle.js";
+    script.async = true;
+
+    document.body.appendChild(script);
 
     // const delayForRender = () => {
     //   const favoriteButton = document.getElementById('add-favorites');
@@ -64,8 +64,6 @@ class Browser extends React.Component {
         <style>
           {`
             #main {
-              margin-left: -105px;
-              transform: scale(.5);
             }
             #browse-homes {
               max-width: 100%;

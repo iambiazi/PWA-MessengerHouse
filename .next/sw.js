@@ -1,4 +1,4 @@
-importScripts("precache-manifest.63289f14978673fb3d6e1118d83f83af.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("precache-manifest.8e078ea566cc46224dbee8f7ea252032.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 workbox.core.setCacheNameDetails({ prefix: 'next-ss' });
 
@@ -48,15 +48,13 @@ workbox.routing.registerRoute(
   'GET',
 );
 
-// browser portion currently not hosted
-
-// workbox.routing.registerRoute(
-//   '/browser',
-//   workbox.strategies.staleWhileRevalidate({
-//     cacheName: 'browser',
-//   }),
-//   'GET',
-// );
+workbox.routing.registerRoute(
+  '/browser',
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'browser',
+  }),
+  'GET',
+);
 
 workbox.routing.registerRoute(
   '/messenger',
@@ -92,7 +90,8 @@ self.addEventListener('notificationclick', event => {
           client.navigate(`/messenger/${notification.data.sender}`);
           client.postMessage({
             msg: notification.data.sender,
-          })
+          });
+          notification.close();
         } else {
           clients.openWindow(`/messenger/${notification.data.sender}`);
           notification.close();
@@ -101,14 +100,22 @@ self.addEventListener('notificationclick', event => {
     );
   }
 
+
+
   self.registration.getNotifications().then(notifications => {
+    console.log(notifications);
     notifications.forEach(notification => {
       notification.close();
     });
   });
 });
 
+self.addEventListener('notificationclose', event => {
+  const notification = event.notification;
+  const primaryKey = notification.data.primaryKey;
 
+  console.log('Closed notification: ' + primaryKey);
+});
 
 
 

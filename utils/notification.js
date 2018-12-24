@@ -15,7 +15,6 @@ export const messageAlert = (msgBody, sender = 'MessengerHouse App') => {
         navigator.serviceWorker.getRegistration().then(reg => {
           const options = {
             body: msgBody,
-            tag: 'id1',
             icon: 'static/img/apple-touch-icon-120x120.png',
             vibrate: [100, 50, 100],
             data: {

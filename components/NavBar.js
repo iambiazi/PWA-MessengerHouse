@@ -2,14 +2,17 @@ import React from 'react';
 import Link from 'next/link'
 
 const NavBar = ({
-  getConvo,
+  switchConvo,
   friends,
   newMessage,
   changeHome,
   changeMessage,
   addConvo,
-  currentChat
+  currentChat,
+  newMessageCount,
 }) => {
+  const newMessageNum = Object.values(newMessageCount).reduce((total, cur) => { return total + cur}, 0);
+
   return (
     <div id="navbar-container">
       <div id='convo-status'>
@@ -17,19 +20,25 @@ const NavBar = ({
         {currentChat}
       </div>
       <Link href='/browser' prefetch>
-        <a id="house-button2"><i className="fa fa-home"> Home</i></a>
+        <a id="house-button2"><i className="fa fa-home"> Browse</i></a>
 
       </Link>
       <span>
-        <div id='new-message-badge'>{newMessage ? 'New message' : ''}</div>
+        {newMessage && <div id='new-message-badge' className='msg-count-badge'>{newMessage ? newMessageNum : ''}</div>}
     </span>
       <div className="dropdown">
         <button className="dropbtn"
         ><i className="fas fa-bars"> Menu</i></button>
         <div className="dropdown-content">
           <a onClick={addConvo}>Start a new convo</a>
+          {/*gets the 5 most recent convos, not sure if it makes sense to have a giant list of
+           people*/}
           {friends.slice(-5).map((friend, i) => (
-            <a key={i} onClick={() => getConvo(`${friend}`)}>
+            <a key={i} onClick={() => switchConvo(`${friend}`)}>
+              {newMessageCount[friend] &&
+              <div className='msg-count-badge'>
+                {newMessageCount[friend]}
+              </div>}
               {friend}
             </a>
           ))}
@@ -37,13 +46,23 @@ const NavBar = ({
       </div>
       <style>
         {`
-        #new-message-badge {
+        .msg-count-badge {
           background: red;
           color: white;
-          position: absolute;
+          margin-right: 1em;
           font-size: .75em;
           z-index: 1;
-          left: 18em;
+          border-radius: 100%;
+          line-height: 1.2em;
+          height: 1.2em;
+          width: 1.2em;
+          text-align: center;
+          display: inline-block;
+        }
+        #new-message-badge {
+          position: absolute;
+          left: 25em;
+          margin-right: 0;
         }
         #convo-status {
           color: white;
@@ -80,7 +99,7 @@ const NavBar = ({
             border: none;
             cursor: pointer;
             width: 120px;
-            margin: .5em .2em;
+            margin: .3em .2em;
             text-align: end;
         }
         .dropdown {
@@ -99,7 +118,7 @@ const NavBar = ({
         }
         .dropdown-content a {
             color: black;
-             padding: 12px 16px;
+             padding: .5em 16px;
             text-decoration: none;
             display: block;
         }
