@@ -10,7 +10,7 @@ class Index extends React.Component {
     password: '',
     serverError: false,
     loginError: false,
-    view: 'choice',
+    view: 'login',
     errorMsg: '',
   };
 
@@ -83,40 +83,83 @@ class Index extends React.Component {
 
   render = () => {
     return (
-      <div>
+      <div className="mdl-card mdl-shadow--2dp" id="login-signup-container">
+        <div id='login-image-container'>
+          <img src='../static/img/login.png'
+               id='login-image'
+               alt='' />
+        </div>
+      <br />
         <div>{this.state.view === 'login' ? 'Please enter your username and password'
              :this.state.view === 'signup' ? 'Create a new username'
              : ''
       }
         </div>
-        {this.state.view === 'choice' && <a onClick={this.handleLogin}>Login</a>}
-        <br />
-        {this.state.view === 'choice' && <a onClick={this.handleSignup}>Signup</a>}
+        {/*{this.state.view === 'choice' && <a*/}
+          {/*onClick={this.handleLogin}*/}
+          {/*id='login-link'>Login</a>}*/}
+        {/*<br />*/}
+        {/*{this.state.view === 'choice' && <a*/}
+          {/*onClick={this.handleSignup}*/}
+          {/*id='signup-link'>Signup</a>}*/}
         {this.state.view !== 'choice' && <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
           <input
+            className='login-input'
             type="text"
             placeholder="enter username"
             name="username"
             autofocus='true'
           />
           <input
+            className='login-input'
             type="password"
             placeholder="enter password"
             name="password"
           />
-          <input type="submit" />
+          <br />
+          <input id='login-submit' type="submit" />
         </form>}
         <style>{`
+        #login-image-container {
+          margin-top: 5em;
+        }
+        #login-image {
+          height: 10em;
+          margin: auto;
+          display: block;
+        }
+        .login-input {
+          display: block;
+          margin: auto;
+        }
+        #login-submit {
+          margin: auto;
+          display: block;
+        }
         a {
-        cursor: pointer;
+          cursor: pointer;
+          margin: auto;
+        }
+        #login-signup-container {
+          width: 320px;
+          height: 568px;
+          margin: auto;
+        }
+        #toggle-signup-login {
+          margin-top: 20em;
+          margin: auto;
+          width: 10em;
+          border: none;
+          color: #009CE5;
         }
         `}
         </style>
         {this.state.view !== 'choice' &&
         <button
+          id='toggle-signup-login'
           type='button'
           onClick={this.resetView}
-        >{this.state.view === 'login' ? 'Signup instead' : 'Login Instead'}
+        >{this.state.view === 'login' ? 'Create New User' : 'Login Instead'}
         </button>
         }
         {this.state.loginError && <div>{this.state.errorMsg}</div>}

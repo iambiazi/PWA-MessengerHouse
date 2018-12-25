@@ -53,7 +53,7 @@ class Messenger extends React.Component {
   componentDidMount() {
     const connectSocket = () => {
       const { username, password } = this.props.user;
-      this.socket = io('http://localhost:3000');
+      this.socket = io('https://brian-louie.online');
       this.socket.on('connect', () => {
         this.socket.emit('authentication', { username, password })
       });
