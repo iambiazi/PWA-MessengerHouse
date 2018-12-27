@@ -5,6 +5,9 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const jwtKey = require('./jwtpw');
+const apiai = require('apiai');
+const API_KEY = require('./botapikey');
+const appai = apiai(API_KEY);
 
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -170,7 +173,9 @@ io.on('connection', (socket) => {
             result.unread = [...result.unread, JSON.stringify(data)];
             result.save(result);
           } else {
-            socket.emit('noexist', 'user does not exist');
+            if(data.username !== 'AgentDemo') {
+              socket.emit('noexist', 'user does not exist');
+            }
           }
         });
       }
@@ -181,6 +186,38 @@ io.on('connection', (socket) => {
     data.recipients.forEach(person => {
       io.to(`${socketIds[person]}`).emit('typing', data.username);
     });
+  });
+
+  socket.on('botMsg', data => {
+    const request = appai.textRequest(data.text, {sessionId: Math.floor(Math.random() * 36).toString('8')});
+
+    request.on('response', res => {
+      console.log(res.result.fulfillment.speech);
+      const response = {
+        username: 'AgentDemo',
+        text: res.result.fulfillment.speech,
+        sent: new Date().getTime(),
+        messageType: 'text',
+        recipients: data.username,
+      };
+      const backup = {
+        username: 'botAgent',
+        text: "Sorry, I'm not quite sure what you mean by that. Could your try rephrasing?",
+        sent: new Date().getTime(),
+      };
+      if (res.result.fulfillment.speech !== '') {
+        //TODO only goes to the sender right now
+        io.to(`${socketIds[data.username]}`).emit('typing', 'AgentDemo');
+        setTimeout(() => socket.emit('message', response), 2500);
+      } else {
+        socket.emit('message', backup)
+      }
+    });
+
+    request.on('error', err => {
+      console.error(err);
+    });
+    request.end();
   });
 
   socket.on('disconnect', () => {

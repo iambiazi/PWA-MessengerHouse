@@ -46,6 +46,7 @@ privatekey.pem
 csr.pem
 server.crt
 ssl.ca-bundle
+botapikey.js
 
 #---------------------------------------#
 # IDEs & Editors Ignores                #

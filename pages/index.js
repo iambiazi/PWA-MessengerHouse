@@ -125,7 +125,6 @@ class Index extends React.Component {
         body {
           height: 100%;
           width: auto;
-          max-width: 1280px;
         }
         #login-image-container {
           margin-top: 25%;
@@ -176,8 +175,18 @@ class Index extends React.Component {
           color: white;
           background: none;
         }
+        #error-msg {
+          color: red;
+          text-align: center;
+          font-weight: 700;
+        }
         `}
       </style>
+      <div id='error-msg'>
+        {this.state.loginError && <div>{this.state.errorMsg}</div>}
+        {this.state.serverError && <div>Error connecting to server</div>}
+      </div>
+      <br />
       {this.state.view !== 'choice' && (
       <button
         id="toggle-signup-login"
@@ -187,8 +196,6 @@ class Index extends React.Component {
         {this.state.view === 'login' ? 'Create New User' : 'Login Instead'}
       </button>
         )}
-      {this.state.loginError && <div>{this.state.errorMsg}</div>}
-      {this.state.serverError && <div>Error connecting to server</div>}
     </div>
     );
 }

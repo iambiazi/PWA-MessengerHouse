@@ -6,6 +6,7 @@
   "dependencies": {
     "@redux-offline/redux-offline": "^2.5.1",
     "@zeit/next-css": "^1.0.1",
+    "apiai": "^4.0.3",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.1.3",

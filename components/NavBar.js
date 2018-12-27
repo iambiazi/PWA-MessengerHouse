@@ -10,7 +10,7 @@ const NavBar = ({
   addConvo,
   currentChat,
   newMessageCount,
-  addAgent
+  agentChat
 }) => {
   const newMessageNum = Object.values(newMessageCount).reduce(
     (total, cur) => total + cur,
@@ -25,7 +25,7 @@ const NavBar = ({
       </div>
       <Link href="/browser" prefetch>
         <a id="house-button2">
-          <i className="fa fa-home"> Browse</i>
+          <i className="fa fa-home"> Browse Homes</i>
         </a>
       </Link>
       <span>
@@ -52,8 +52,8 @@ const NavBar = ({
             </a>
           ))}
           <a id='add-agent-button'
-          onClick={addAgent}>
-            Add an agent
+          onClick={agentChat}>
+            Chat with an agent
           </a>
         </div>
       </div>
@@ -74,7 +74,7 @@ const NavBar = ({
         }
         #new-message-badge {
           position: absolute;
-          left: 25em;
+          right: 1em;
           margin-right: 0;
         }
         #convo-status {
@@ -84,6 +84,7 @@ const NavBar = ({
         }
         a {
           font-size: 12px;
+          cursor: pointer;
         }
         #navbar-container {
           display: flex;
@@ -104,6 +105,7 @@ const NavBar = ({
           left: 1.5em;
           top: 20%;
           font-size:1em;
+          margin-top: .6em
         }
         .dropbtn {
             background-color: #0069E0;

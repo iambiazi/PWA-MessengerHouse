@@ -106,8 +106,10 @@ class Messenger extends React.Component {
   };
 
   noUserExists = () => {
+    if (this.state.currentConvo !== 'AgentDemo') {
+      alert('User by that name does not exist');
+    }
     // TODO placeholder, not for actual use
-    alert('User by that name does not exist');
   };
 
   typingStatus = data => {
@@ -189,6 +191,10 @@ class Messenger extends React.Component {
 
       this.socket.emit('message', message);
 
+      if(this.state.currentConvo === 'AgentDemo') {
+        this.socket.emit('botMsg', message);
+      }
+
       this.props.addMessage(
         this.state.text,
         'text',
@@ -235,8 +241,8 @@ class Messenger extends React.Component {
   };
 
   addAgent = () => {
-
-  }
+    this.setState({currentConvo: 'AgentDemo'});
+  };
 
   render() {
     const sameUser = (msg, i, arr) =>
@@ -258,7 +264,7 @@ class Messenger extends React.Component {
           newMessageCount={this.state.unread}
           currentChat={this.state.currentConvo}
           addConvo={this.addConversation}
-          addAgent={this.addAgent}
+          agentChat={this.addAgent}
           switchConvo={this.getCurrentConvo}
           friends={[...this.state.friends].filter(
             notUser =>
@@ -286,8 +292,10 @@ class Messenger extends React.Component {
           <i>{typingStatusMessage}</i>
         </div>
         <form onSubmit={this.handleSubmit} autoComplete="off">
-          <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
-               id='msg-input-container'>
+          <div
+            className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+            id='msg-input-container'
+          >
             <input
               type="text"
               value={this.state.text}
