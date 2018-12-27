@@ -10,6 +10,7 @@ const NavBar = ({
   addConvo,
   currentChat,
   newMessageCount,
+  addAgent
 }) => {
   const newMessageNum = Object.values(newMessageCount).reduce(
     (total, cur) => total + cur,
@@ -50,6 +51,10 @@ const NavBar = ({
               {friend}
             </a>
           ))}
+          <a id='add-agent-button'
+          onClick={addAgent}>
+            Add an agent
+          </a>
         </div>
       </div>
       <style>
@@ -84,7 +89,7 @@ const NavBar = ({
           display: flex;
           justify-content: space-around; /* changed to space-around from flex-end */
           background-color: #0069E0;
-          height: 10%;
+          height: 3em%;
         }
         #house-button {
           margin-right: 12px;

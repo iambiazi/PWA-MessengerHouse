@@ -146,11 +146,13 @@ io.on('connection', (socket) => {
         if (err) {
           console.error(err);
         }
-        result.unread.forEach(msg => {
-          io.to(`${socketIds[username]}`).emit('message', JSON.parse(msg));
-        });
-        result.unread = [];
-        result.save(result);
+        if (result !== null) {
+          result.unread.forEach(msg => {
+            io.to(`${socketIds[username]}`).emit('message', JSON.parse(msg));
+          });
+          result.unread = [];
+          result.save(result);
+        }
       });
     }
   });

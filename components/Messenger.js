@@ -234,6 +234,10 @@ class Messenger extends React.Component {
     );
   };
 
+  addAgent = () => {
+
+  }
+
   render() {
     const sameUser = (msg, i, arr) =>
       i > 0 && msg.username === arr[i - 1].username;
@@ -254,6 +258,7 @@ class Messenger extends React.Component {
           newMessageCount={this.state.unread}
           currentChat={this.state.currentConvo}
           addConvo={this.addConversation}
+          addAgent={this.addAgent}
           switchConvo={this.getCurrentConvo}
           friends={[...this.state.friends].filter(
             notUser =>
