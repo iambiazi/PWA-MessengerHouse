@@ -1,7 +1,7 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import Link from 'next/link'
-import { DragDropContainer } from 'react-drag-drop-container'
+import React from 'react';
+import {connect} from 'react-redux';
+import Link from 'next/link';
+import {DragDropContainer} from 'react-drag-drop-container';
 
 const Favorites = props => (
   <div id="favorites-container">
@@ -19,9 +19,9 @@ const Favorites = props => (
               alt="house-image"
             />
           </Link>
-          )}
+        )}
       />
-      ))}
+    ))}
 
     <style>
       {`
@@ -44,6 +44,6 @@ const Favorites = props => (
       `}
     </style>
   </div>
-  );
+);
 
-export default connect(({ houses }) => ({ houses }))(Favorites)
+export default connect(({houses}) => ({houses}))(Favorites);

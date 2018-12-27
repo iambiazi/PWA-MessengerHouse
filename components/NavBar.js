@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link'
+import Link from 'next/link';
 
 const NavBar = ({
   switchConvo,
@@ -11,34 +11,42 @@ const NavBar = ({
   currentChat,
   newMessageCount,
 }) => {
-  const newMessageNum = Object.values(newMessageCount).reduce((total, cur) => { return total + cur}, 0);
+  const newMessageNum = Object.values(newMessageCount).reduce(
+    (total, cur) => total + cur,
+    0,
+  );
 
   return (
     <div id="navbar-container">
-      <div id='convo-status'>
-        Chatting with <br/>
+      <div id="convo-status">
+        Chatting with <br />
         {currentChat}
       </div>
-      <Link href='/browser' prefetch>
-        <a id="house-button2"><i className="fa fa-home"> Browse</i></a>
-
+      <Link href="/browser" prefetch>
+        <a id="house-button2">
+          <i className="fa fa-home"> Browse</i>
+        </a>
       </Link>
       <span>
-        {newMessage && <div id='new-message-badge' className='msg-count-badge'>{newMessage ? newMessageNum : ''}</div>}
-    </span>
+        {newMessage && (
+          <div id="new-message-badge" className="msg-count-badge">
+            {newMessage ? newMessageNum : ''}
+          </div>
+        )}
+      </span>
       <div className="dropdown">
-        <button className="dropbtn"
-        ><i className="fas fa-bars"> Menu</i></button>
+        <button className="dropbtn">
+          <i className="fas fa-bars"> Menu</i>
+        </button>
         <div className="dropdown-content">
           <a onClick={addConvo}>Start a new convo</a>
-          {/*gets the 5 most recent convos, not sure if it makes sense to have a giant list of
-           people*/}
+          {/* gets the 5 most recent convos, not sure if it makes sense to have a giant list of
+           people */}
           {friends.slice(-5).map((friend, i) => (
             <a key={i} onClick={() => switchConvo(`${friend}`)}>
-              {newMessageCount[friend] &&
-              <div className='msg-count-badge'>
-                {newMessageCount[friend]}
-              </div>}
+              {newMessageCount[friend] && (
+                <div className="msg-count-badge">{newMessageCount[friend]}</div>
+              )}
               {friend}
             </a>
           ))}
@@ -76,7 +84,7 @@ const NavBar = ({
           display: flex;
           justify-content: space-around; /* changed to space-around from flex-end */
           background-color: #0069E0;
-          height: 3em; /*  */
+          height: 10%;
         }
         #house-button {
           margin-right: 12px;
@@ -99,7 +107,7 @@ const NavBar = ({
             border: none;
             cursor: pointer;
             width: 120px;
-            margin: .3em .2em;
+            margin: .5em .2em;
             text-align: end;
         }
         .dropdown {

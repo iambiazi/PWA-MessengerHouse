@@ -8,7 +8,7 @@ export default class MyDocument extends Document {
         <Head>
           <meta
             name="viewport"
-            content="width=device-width,initial-scale=1,maximum-scale=1.8,user-scalable=yes,minimal-ui"
+            content="width=device-width, initial-scale=1"
           />
           <meta name="theme-color" content="#673ab7" />
           <link rel="manifest" href="/static/manifest.json" />

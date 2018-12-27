@@ -1,11 +1,11 @@
-import React from 'react'
-import dayjs from 'dayjs'
-import Link from 'next/link'
+import React from 'react';
+import dayjs from 'dayjs';
+import Link from 'next/link';
 
-export default ({ message, username, firstMessage }) => {
+export default ({message, username, firstMessage}) => {
   const ownMessage = username === message.username;
   return (
-    <li style={{ listStyle: 'none' }}>
+    <li style={{listStyle: 'none'}}>
       <div className="message-container">
         <div className={ownMessage ? 'my-subcontainer' : 'your-subcontainer'}>
           {ownMessage && (
@@ -56,5 +56,5 @@ export default ({ message, username, firstMessage }) => {
         `}
       </style>
     </li>
-  )
-}
+  );
+};

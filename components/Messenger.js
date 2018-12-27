@@ -1,13 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import io from 'socket.io-client';
-import { DropTarget } from 'react-drag-drop-container';
-import { addMessage } from '../actions/message';
+import {DropTarget} from 'react-drag-drop-container';
+import {addMessage} from '../actions/message';
 import Message from './Message';
 import NavBar from './NavBar';
 import Favorites from './Favorites';
-import { messageAlert } from '../utils/notification';
-import isomorphicFetch from "isomorphic-fetch";
+import {messageAlert} from '../utils/notification';
 
 class Messenger extends React.Component {
   constructor(props) {
@@ -21,7 +20,25 @@ class Messenger extends React.Component {
       typing: [],
       otherNewMessage: false,
       unread: {},
-    }
+    };
+  }
+
+  componentDidMount() {
+    const connectSocket = () => {
+      const {username, password} = this.props.user;
+      this.socket = io('localhost:3000');
+      this.socket.on('connect', () => {
+        this.socket.emit('authentication', {username, password});
+      });
+      this.socket.on('message', this.handleMessage);
+      this.socket.on('typing', this.typingStatus);
+      this.socket.on('noexist', this.noUserExists);
+      this.socket.emit('login', username);
+      this.socket.emit('unread', username);
+    };
+
+    setTimeout(connectSocket, 100);
+    setTimeout(this.scrollToBottom, 100);
   }
 
   componentDidUpdate() {
@@ -31,7 +48,7 @@ class Messenger extends React.Component {
       this.setState(state => {
         const setCopy = new Set(state.friends);
         this.props.messages.forEach(msg => {
-          setCopy.add(msg.username)
+          setCopy.add(msg.username);
         });
         return {friends: setCopy};
       });
@@ -46,41 +63,15 @@ class Messenger extends React.Component {
       this.setState({
         messages: filtered,
         updated: true,
-      })
-    }
-  }
-
-  componentDidMount() {
-    const connectSocket = () => {
-      const { username, password } = this.props.user;
-      this.socket = io('https://brian-louie.online');
-      this.socket.on('connect', () => {
-        this.socket.emit('authentication', { username, password })
       });
-      this.socket.on('message', this.handleMessage);
-      this.socket.on('typing', this.typingStatus);
-      this.socket.on('noexist', this.noUserExists);
-      this.socket.emit('login', username);
-      this.socket.emit('unread', username);
-    };
-
-    setTimeout(connectSocket, 100);
-    setTimeout(this.scrollToBottom, 100);
-  }
-
-  componentWillUnmount() {
-    // TODO do I want this to shut off when you navigate away from messenger?
-    // this works current if user goes back to browser
-    // TODO seems like I want to receive messages still
-    // this.socket.off('message', this.handleMessage);
-    // this.socket.close();
+    }
   }
 
   handleMessage = message => {
     messageAlert(message.text, message.username);
     this.setState(state => ({
       typing: state.typing.filter(
-        ({ username }) => username !== message.username,
+        ({username}) => username !== message.username,
       ),
     }));
     this.setState(state => {
@@ -89,7 +80,7 @@ class Messenger extends React.Component {
       return {friends: setCopy};
     });
     if (message.username === this.state.currentConvo) {
-      this.setState(state => ({ messages: state.messages.concat(message) }))
+      this.setState(state => ({messages: state.messages.concat(message)}));
     } else {
       this.setState(state => {
         const updated = {...state.unread};
@@ -101,8 +92,8 @@ class Messenger extends React.Component {
         return {
           otherNewMessage: true,
           unread: updated,
-        }
-      })
+        };
+      });
     }
     this.props.addMessage(
       message.text,
@@ -116,7 +107,7 @@ class Messenger extends React.Component {
 
   noUserExists = () => {
     // TODO placeholder, not for actual use
-    alert('User by that name does not exist')
+    alert('User by that name does not exist');
   };
 
   typingStatus = data => {
@@ -124,16 +115,16 @@ class Messenger extends React.Component {
       const notIncluded = this.state.typing.filter(el => el.username !== data);
       for (let i = 0, len = this.state.typing.length; i < len; ++i) {
         if (this.state.typing[i].username === data) {
-          clearTimeout(this.state.typing[i].timeoutId)
+          clearTimeout(this.state.typing[i].timeoutId);
         }
       }
       const timeoutId = setTimeout(() => {
         this.setState(state => ({
           typing: state.typing.filter(el => el.username !== data),
-        }))
+        }));
       }, 3000);
-      const status = { username: data, timeoutId };
-      this.setState(state => ({ typing: [...notIncluded, status] }))
+      const status = {username: data, timeoutId};
+      this.setState(state => ({typing: [...notIncluded, status]}));
     }
   };
 
@@ -143,7 +134,7 @@ class Messenger extends React.Component {
         message =>
           message.username === newConvo ||
           (message.username === this.username &&
-            message.recipients.includes(newConvo))
+            message.recipients.includes(newConvo)),
       );
       const newUnread = {...state.unread};
       delete newUnread[newConvo];
@@ -152,12 +143,12 @@ class Messenger extends React.Component {
         messages: filtered,
         unread: newUnread,
         otherNewMessage: false,
-      }
-    })
+      };
+    });
   };
 
   addConversation = async () => {
-    //TODO placeholder prompt
+    // TODO placeholder prompt
     const username = await prompt('enter a username');
     this.setState(
       state => {
@@ -167,12 +158,12 @@ class Messenger extends React.Component {
         return {
           currentConvo: username,
           friends: setCopy,
-        }
+        };
       },
       () => {
-        this.getCurrentConvo(username)
+        this.getCurrentConvo(username);
       },
-    )
+    );
   };
 
   showTypingStatus = e => {
@@ -181,7 +172,7 @@ class Messenger extends React.Component {
       recipients: [this.state.currentConvo],
     };
     this.socket.emit('typing', typingStatus);
-    this.setState({ text: e.target.value })
+    this.setState({text: e.target.value});
   };
 
   handleSubmit = e => {
@@ -208,13 +199,13 @@ class Messenger extends React.Component {
       this.setState(state => ({
         text: '',
         messages: this.state.messages.concat(message),
-      }))
+      }));
     }
   };
 
   scrollToBottom = () => {
     if (this.el) {
-      this.el.scrollIntoView({ behavior: 'instant' })
+      this.el.scrollIntoView({behavior: 'instant'});
     }
   };
 
@@ -238,11 +229,10 @@ class Messenger extends React.Component {
       message.recipients,
     );
     this.setState(
-      state => ({messages: [...this.state.messages, message]}),
+      state => ({messages: [...state.messages, message]}),
       () => this.scrollToBottom(),
-    )
+    );
   };
-
 
   render() {
     const sameUser = (msg, i, arr) =>
@@ -291,7 +281,8 @@ class Messenger extends React.Component {
           <i>{typingStatusMessage}</i>
         </div>
         <form onSubmit={this.handleSubmit} autoComplete="off">
-          <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+               id='msg-input-container'>
             <input
               type="text"
               value={this.state.text}
@@ -310,12 +301,21 @@ class Messenger extends React.Component {
         </form>
         <style>
           {`
+            #__next {
+              height: 100%;
+              width: auto;
+            }
+            body {
+              height: 100%;
+              width: auto;
+              max-width: 1280px;
+            }
             .droptarget {
-              height: 440px;
+              height: 80%;
             }
             #chatview {
-              width: 320px;
-              height: 568px;
+              width: auto;
+              height: 100%;
             }
             #typing-status {
               margin-top: .5em;
@@ -344,6 +344,9 @@ class Messenger extends React.Component {
             ul li {
               padding: 1px;
               background: #FFF;
+            }
+            #msg-input-container {
+              width: 100%;
             }
             .mdl-card {
               margin: auto;
@@ -406,11 +409,11 @@ class Messenger extends React.Component {
           `}
         </style>
       </div>
-    )
+    );
   }
 }
 
 export default connect(
-  ({ messages, houses, user }) => ({ messages, houses, user }),
-  { addMessage },
-)(Messenger)
+  ({messages, houses, user}) => ({messages, houses, user}),
+  {addMessage},
+)(Messenger);

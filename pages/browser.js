@@ -1,12 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { addHouse } from '../actions/message';
+import {connect} from 'react-redux';
+import {addHouse} from '../actions/message';
 import offerNotifications from '../utils/notification';
 
 class Browser extends React.Component {
   constructor(props) {
     super(props);
-
   }
 
   componentDidMount() {
@@ -19,9 +18,10 @@ class Browser extends React.Component {
     // script_Top.async = true;
     // document.body.appendChild(script_Top);
 
-    const script = document.createElement("script");
+    const script = document.createElement('script');
 
-    script.src = "https://s3-us-west-1.amazonaws.com/elasticbeanstalk-us-west-1-658824784294/bundle.js";
+    script.src =
+      'https://s3-us-west-1.amazonaws.com/elasticbeanstalk-us-west-1-658824784294/bundle.js';
     script.async = true;
 
     document.body.appendChild(script);
@@ -32,7 +32,6 @@ class Browser extends React.Component {
     // };
     //
     // setTimeout(delayForRender, 2000);
-
   }
 
   componentWillUnmount() {
@@ -41,7 +40,9 @@ class Browser extends React.Component {
   }
 
   addFavorite = () => {
-    const imgUrl = document.querySelector('.home-profile-image').getAttribute('src');
+    const imgUrl = document
+      .querySelector('.home-profile-image')
+      .getAttribute('src');
     let houseNum = 0;
     const houseId = Number(window.location.pathname.replace(/\/browser\//, ''));
     if (houseId && houseId >= 0 && houseId < 100) {
@@ -52,39 +53,30 @@ class Browser extends React.Component {
         return;
       }
     }
-    this.props.addHouse(houseNum, this.props.user.username, imgUrl)
+    this.props.addHouse(houseNum, this.props.user.username, imgUrl);
   };
 
   render() {
     return (
       <div id="browse-homes">
-        <a href='/messenger'>Messenger</a>
+        <a href="/messenger">Messenger</a>
         <div id="top-app" />
         <div id="main" />
         <style>
           {`
-            #main {
-            }
-            #browse-homes {
-              max-width: 100%;
-              max-height: 100%;
-            }
             html.mdl-js {
               background: white !important;
+              height: 100%;
+              width: auto;
             }
-          @media (max-width: 320px) {
-
-            }
-
           `}
         </style>
       </div>
-     );
+    );
   }
-  }
-
+}
 
 export default connect(
-  ({houses, user }) => ({houses, user}),
-  { addHouse }
-  )(Browser);
+  ({houses, user}) => ({houses, user}),
+  {addHouse},
+)(Browser);

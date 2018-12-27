@@ -161,8 +161,15 @@ io.on('connection', (socket) => {
         io.to(`${socketIds[person]}`).emit('message', data);
       } else {
         User.findById({_id: person}, (err, result) => {
-          result.unread = [...result.unread, JSON.stringify(data)];
-          result.save(result);
+          if (err) {
+            return console.error(err);
+          }
+          if (result !== null) {
+            result.unread = [...result.unread, JSON.stringify(data)];
+            result.save(result);
+          } else {
+            socket.emit('noexist', 'user does not exist');
+          }
         });
       }
     });
