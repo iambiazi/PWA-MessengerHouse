@@ -90,7 +90,7 @@ const NavBar = ({
           display: flex;
           justify-content: space-around; /* changed to space-around from flex-end */
           background-color: #0069E0;
-          height: 3em%;
+          height: 2.5vh;
         }
         #house-button {
           margin-right: 12px;
@@ -103,9 +103,8 @@ const NavBar = ({
           color: white;
           position: relative;
           left: 1.5em;
-          top: 20%;
           font-size:1em;
-          margin-top: .6em
+          margin-top: .34em
         }
         .dropbtn {
             background-color: #0069E0;
@@ -114,8 +113,8 @@ const NavBar = ({
             border: none;
             cursor: pointer;
             width: 120px;
-            margin: .5em .2em;
             text-align: end;
+            margin-top: .34em;
         }
         .dropdown {
             position: relative;
@@ -123,7 +122,6 @@ const NavBar = ({
             float: right;
         }
         .dropdown-content {
-            margin-top: -.15em;
             display: none;
             position: absolute;
             background-color: #f9f9f9;

@@ -26,7 +26,7 @@ class Messenger extends React.Component {
   componentDidMount() {
     const connectSocket = () => {
       const {username, password} = this.props.user;
-      this.socket = io('localhost:3000');
+      this.socket = io('https://www.brian-louie.online');
       this.socket.on('connect', () => {
         this.socket.emit('authentication', {username, password});
       });
@@ -320,7 +320,6 @@ class Messenger extends React.Component {
             }
             body {
               height: 100%;
-              width: auto;
               max-width: 1280px;
             }
             .droptarget {
@@ -347,7 +346,7 @@ class Messenger extends React.Component {
             ul {
               position: relative;
               top:0.5em;
-              height: 350px;
+              height: 100%;
               margin: 0;
               padding: 0;
               text-align: left;

@@ -127,7 +127,7 @@ class Index extends React.Component {
           width: auto;
         }
         #login-image-container {
-          margin-top: 25%;
+          margin-top: 10vh;
 
         }
         #login-image {
