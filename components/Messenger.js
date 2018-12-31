@@ -6,6 +6,7 @@ import {addMessage} from '../actions/message';
 import Message from './Message';
 import NavBar from './NavBar';
 import Favorites from './Favorites';
+import Welcome from './Welcome';
 import {messageAlert} from '../utils/notification';
 
 class Messenger extends React.Component {
@@ -20,6 +21,7 @@ class Messenger extends React.Component {
       typing: [],
       otherNewMessage: false,
       unread: {},
+      welcome: true,
     };
   }
 
@@ -39,6 +41,12 @@ class Messenger extends React.Component {
 
     setTimeout(connectSocket, 100);
     setTimeout(this.scrollToBottom, 100);
+
+    // if (!this.state.currentConvo) {
+    //   setTimeout(this.hideWelcome, 5000);
+    // } else {
+    //   this.hideWelcome();
+    // }
   }
 
   componentDidUpdate() {
@@ -66,6 +74,10 @@ class Messenger extends React.Component {
       });
     }
   }
+
+  hideWelcome = () => {
+    this.setState({welcome: false});
+  };
 
   handleMessage = message => {
     messageAlert(message.text, message.username);
@@ -215,13 +227,13 @@ class Messenger extends React.Component {
     }
   };
 
-  shareFavorite = arrayIdx => {
+  shareFavorite = houseObj => {
     const message = {
       created_at: new Date().getTime(),
       username: this.username,
       text: [
-        this.props.houses[arrayIdx].house_id,
-        this.props.houses[arrayIdx].imgUrl,
+        houseObj.house_id,
+        houseObj.imgUrl,
       ],
       messageType: 'link',
       recipients: [this.state.currentConvo],
@@ -259,6 +271,7 @@ class Messenger extends React.Component {
     return (
       <div className="mdl-card mdl-shadow--2dp" id="chatview">
         <Favorites shareFavorite={this.shareFavorite} />
+        {this.state.welcome && <Welcome/>}
         <NavBar
           newMessage={this.state.otherNewMessage}
           newMessageCount={this.state.unread}
@@ -323,11 +336,12 @@ class Messenger extends React.Component {
               max-width: 1280px;
             }
             .droptarget {
-              height: 80%;
+              height: 63vh;;
             }
             #chatview {
               width: auto;
               height: 100%;
+              max-width: 800px;
             }
             #typing-status {
               margin-top: .5em;
@@ -346,7 +360,7 @@ class Messenger extends React.Component {
             ul {
               position: relative;
               top:0.5em;
-              height: 100%;
+              height: 63vh;
               margin: 0;
               padding: 0;
               text-align: left;
@@ -417,6 +431,14 @@ class Messenger extends React.Component {
             }
             .mdl-textfield__label:after{
               background-color: #0069E0;
+            }
+            @media only screen and (min-width: 320px) and (max-width: 374px){
+              .droptarget {
+                height: 23em;
+              }
+              ul {
+                height: 23em;
+              }
             }
           `}
         </style>

@@ -7,7 +7,9 @@ if (
     .register('/sw.js')
     .then((reg) => {
       console.log('Service worker registered (0-0) ');
-      reg.pushManager.subscribe({userVisibleOnly: true});
+      // pushManger if needed
+      // reg.pushManager.subscribe({userVisibleOnly: true}).then(() => {})
+      //   .catch(e => console.error(e));
     })
     .catch((e) => {
       console.error('Error during service worker registration:', e);

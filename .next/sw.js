@@ -1,4 +1,4 @@
-importScripts("precache-manifest.4772f3102d47141c1d1c7f542dcbe955.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("precache-manifest.5c7b962e243c5364d49be1322198cab1.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 workbox.core.setCacheNameDetails({ prefix: 'next-ss' });
 
@@ -21,16 +21,16 @@ workbox.precaching.precacheAndRoute(
   {},
 );
 
-workbox.routing.registerRoute(
-  /[.](png|jpg|css)/,
-  workbox.strategies.cacheFirst({
-    cacheName: 'assets-cache',
-    cacheableResponse: {
-      statuses: [0, 200],
-    },
-  }),
-  'GET',
-);
+// workbox.routing.registerRoute(
+//   /[.](png|jpg|css)/,
+//   workbox.strategies.cacheFirst({
+//     cacheName: 'assets-cache',
+//     cacheableResponse: {
+//       statuses: [0, 200],
+//     },
+//   }),
+//   'GET',
+// );
 
 workbox.routing.registerRoute(
   /^https:\/\/code\.getmdl\.io.*/,
@@ -64,13 +64,13 @@ workbox.routing.registerRoute(
   'GET',
 );
 
-workbox.routing.registerRoute(
-  /^http.*/,
-  workbox.strategies.networkFirst({
-    cacheName: 'http-cache',
-  }),
-  'GET',
-);
+// workbox.routing.registerRoute(
+//   /^http.*/,
+//   workbox.strategies.networkFirst({
+//     cacheName: 'http-cache',
+//   }),
+//   'GET',
+// );
 
 self.addEventListener('notificationclick', event => {
   const notification = event.notification;

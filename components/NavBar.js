@@ -25,7 +25,7 @@ const NavBar = ({
       </div>
       <Link href="/browser" prefetch>
         <a id="house-button2">
-          <i className="fa fa-home"> Browse Homes</i>
+          <i className="fa fa-home"> Browse</i>
         </a>
       </Link>
       <span>
@@ -87,10 +87,12 @@ const NavBar = ({
           cursor: pointer;
         }
         #navbar-container {
+          height: 2.3em;
+          margin-top: .5em;
           display: flex;
           justify-content: space-around; /* changed to space-around from flex-end */
           background-color: #0069E0;
-          height: 2.5vh;
+          z-index: 1;
         }
         #house-button {
           margin-right: 12px;
@@ -104,7 +106,7 @@ const NavBar = ({
           position: relative;
           left: 1.5em;
           font-size:1em;
-          margin-top: .34em
+          margin-top: .37em
         }
         .dropbtn {
             background-color: #0069E0;
@@ -114,7 +116,8 @@ const NavBar = ({
             cursor: pointer;
             width: 120px;
             text-align: end;
-            margin-top: .34em;
+            margin-top: .27em;
+            z-index: 1;
         }
         .dropdown {
             position: relative;

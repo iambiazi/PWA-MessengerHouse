@@ -64,6 +64,9 @@ class Browser extends React.Component {
         <div id="main" />
         <style>
           {`
+            #main {
+              margin-left: .5em;
+            }
             html.mdl-js {
               background: white !important;
             }
