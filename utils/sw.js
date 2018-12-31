@@ -62,13 +62,13 @@ workbox.routing.registerRoute(
   'GET',
 );
 
-// workbox.routing.registerRoute(
-//   /^http.*/,
-//   workbox.strategies.networkFirst({
-//     cacheName: 'http-cache',
-//   }),
-//   'GET',
-// );
+workbox.routing.registerRoute(
+  /^http.*(?<!\.jpg)$/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'http-cache',
+  }),
+  'GET',
+);
 
 self.addEventListener('notificationclick', event => {
   const notification = event.notification;

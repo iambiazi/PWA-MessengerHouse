@@ -1,4 +1,4 @@
-importScripts("precache-manifest.5c7b962e243c5364d49be1322198cab1.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("precache-manifest.5ed7d3a477034d6176138760079dcc90.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 workbox.core.setCacheNameDetails({ prefix: 'next-ss' });
 
@@ -64,13 +64,13 @@ workbox.routing.registerRoute(
   'GET',
 );
 
-// workbox.routing.registerRoute(
-//   /^http.*/,
-//   workbox.strategies.networkFirst({
-//     cacheName: 'http-cache',
-//   }),
-//   'GET',
-// );
+workbox.routing.registerRoute(
+  /^http.*(?<!\.jpg)$/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'http-cache',
+  }),
+  'GET',
+);
 
 self.addEventListener('notificationclick', event => {
   const notification = event.notification;

@@ -80,7 +80,7 @@ class Index extends React.Component {
   };
 
   render = () => (
-    <div className="mdl-card mdl-shadow--2dp" id="login-signup-container">
+    <div id="login-signup-container">
       <div id="login-image-container">
         <img src="../static/img/house-xxl.png" id="login-image" alt="" />
       </div>
@@ -95,6 +95,7 @@ class Index extends React.Component {
       <br />
       {this.state.view !== 'choice' && (
       <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
+        <label htmlFor="username" />
         <input
           className="login-input"
           type="text"
@@ -102,6 +103,7 @@ class Index extends React.Component {
           name="username"
           autoFocus="true"
         />
+        <label htmlFor='password' />
         <input
           className="login-input"
           type="password"
@@ -114,6 +116,9 @@ class Index extends React.Component {
         )}
       <style>
         {`
+        html {
+          height: 100%;
+        }
         #__next {
           height: 100%;
           width: auto;
@@ -127,12 +132,13 @@ class Index extends React.Component {
           width: auto;
         }
         #login-image-container {
-          margin-top: 10vh;
-
+          display: inline-block;
+          width: 100%;
         }
         #login-image {
           height: 10em;
           margin: auto;
+          margin-top: 20vh;
           display: block;
         }
         .login-input {
@@ -169,8 +175,7 @@ class Index extends React.Component {
         }
         #toggle-signup-login {
           margin-top: 20em;
-          margin: auto;
-          width: 10em;
+          width: 100%;
           border: none;
           color: white;
           background: none;

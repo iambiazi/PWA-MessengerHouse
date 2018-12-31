@@ -252,10 +252,6 @@ class Messenger extends React.Component {
     );
   };
 
-  addAgent = () => {
-    this.setState({currentConvo: 'AgentDemo'});
-  };
-
   render() {
     const sameUser = (msg, i, arr) =>
       i > 0 && msg.username === arr[i - 1].username;
@@ -269,7 +265,7 @@ class Messenger extends React.Component {
             } are typing...`
           : 'several people are typing';
     return (
-      <div className="mdl-card mdl-shadow--2dp" id="chatview">
+      <div  id="chatview">
         <Favorites shareFavorite={this.shareFavorite} />
         {this.state.welcome && <Welcome/>}
         <NavBar
@@ -277,7 +273,6 @@ class Messenger extends React.Component {
           newMessageCount={this.state.unread}
           currentChat={this.state.currentConvo}
           addConvo={this.addConversation}
-          agentChat={this.addAgent}
           switchConvo={this.getCurrentConvo}
           friends={[...this.state.friends].filter(
             notUser =>
@@ -306,29 +301,38 @@ class Messenger extends React.Component {
         </div>
         <form onSubmit={this.handleSubmit} autoComplete="off">
           <div
-            className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+            className="msg-input-class"
             id='msg-input-container'
           >
             <input
               type="text"
               value={this.state.text}
               onChange={this.showTypingStatus}
-              className="mdl-textfield__input"
+              className="msg-input-class"
               id="message-input"
               placeholder="Send a message"
             />
 
-            <span onClick={this.handleSubmit}>
+            <span onClick={this.handleSubmit}
+            id='send-msg-button'>
               <i className="far fa-comment" />
             </span>
 
-            <label className="mdl-textfield__label" htmlFor="message-input" />
+            <label htmlFor="message-input" />
           </div>
         </form>
         <style>
           {`
+            html {
+              height: 100%;
+            }
+            #send-msg-button {
+              margin-left: .5em;
+              font-size: 1.3em;
+            }
             #__next {
               height: 100%;
+              min-height: 876px;
               width: auto;
             }
             body {
@@ -374,11 +378,7 @@ class Messenger extends React.Component {
             #msg-input-container {
               width: 100%;
             }
-            .mdl-card {
-              margin: auto;
-              transition: all .3s;
-            }
-            .mdl-textfield__input {
+            .msg-input-class {
               display:inline-block;
               width: 90%;
               padding-top: .5em;
@@ -429,15 +429,23 @@ class Messenger extends React.Component {
             .send-msg-btn {
               cursor:pointer;
             }
-            .mdl-textfield__label:after{
-              background-color: #0069E0;
-            }
             @media only screen and (min-width: 320px) and (max-width: 374px){
+              #__next {
+                min-height: 0px;
+              }
               .droptarget {
                 height: 23em;
               }
               ul {
                 height: 23em;
+              }
+            }
+            @media only screen and (min-width: 700px) and (max-width: 1080px){
+              .droptarget {
+                height: 72vh;
+              }
+              ul {
+                height: 72vh;
               }
             }
           `}

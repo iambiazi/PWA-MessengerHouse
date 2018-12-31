@@ -8,7 +8,7 @@ const Welcome = () => (
         {/*position: absolute;*/}
         {/*font-size: 5vw;*/}
         {/*background: rgba(4,105,224,1);*/}
-        {/*z-index: 1;*/}
+        {/*z-index: 2;*/}
         {/*left: 10%;*/}
         {/*top: 10%;*/}
         {/*height: 80%;*/}

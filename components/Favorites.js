@@ -46,6 +46,7 @@ const Favorites = props => {
         background-color: white;
         height: 6.5em;
         justify-content: space-around;
+        overflow: hidden;
         overflow-x: scroll;
       }
       #favorites-scrollable {

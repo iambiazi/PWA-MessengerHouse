@@ -59,7 +59,9 @@ class Browser extends React.Component {
   render() {
     return (
       <div id="browse-homes">
-        <a href="/messenger">Messenger</a>
+        <a
+          id='temp-messenger-button'
+          href="/messenger">Messenger Placeholder Button</a>
         <div id="top-app" />
         <div id="main" />
         <style>
@@ -69,6 +71,11 @@ class Browser extends React.Component {
             }
             html.mdl-js {
               background: white !important;
+            }
+            #temp-messenger-button {
+              background: solid #337ab7;
+              padding: 1em;
+              border-radius: 10%;
             }
           `}
         </style>

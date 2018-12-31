@@ -9,8 +9,7 @@ const NavBar = ({
   changeMessage,
   addConvo,
   currentChat,
-  newMessageCount,
-  agentChat
+  newMessageCount
 }) => {
   const newMessageNum = Object.values(newMessageCount).reduce(
     (total, cur) => total + cur,
@@ -28,17 +27,17 @@ const NavBar = ({
           <i className="fa fa-home"> Browse</i>
         </a>
       </Link>
-      <span>
+      <div className="dropdown">
+        <button className="dropbtn">
+          <i className="fas fa-bars"> Menu</i>
+        </button>
+        <span>
         {newMessage && (
           <div id="new-message-badge" className="msg-count-badge">
             {newMessage ? newMessageNum : ''}
           </div>
         )}
       </span>
-      <div className="dropdown">
-        <button className="dropbtn">
-          <i className="fas fa-bars"> Menu</i>
-        </button>
         <div className="dropdown-content">
           <a onClick={addConvo}>Start a new convo</a>
           {/* gets the 5 most recent convos, not sure if it makes sense to have a giant list of
@@ -52,7 +51,7 @@ const NavBar = ({
             </a>
           ))}
           <a id='add-agent-button'
-          onClick={agentChat}>
+          onClick={() => switchConvo('AgentDemo')}>
             Chat with an agent
           </a>
         </div>
@@ -74,7 +73,6 @@ const NavBar = ({
         }
         #new-message-badge {
           position: absolute;
-          right: 1em;
           margin-right: 0;
         }
         #convo-status {
@@ -114,7 +112,7 @@ const NavBar = ({
             font-size: 1em; /* changed to 1em from 16px */
             border: none;
             cursor: pointer;
-            width: 120px;
+            width: 80px;
             text-align: end;
             margin-top: .27em;
             z-index: 1;
