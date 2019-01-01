@@ -9,7 +9,6 @@ const apiai = require('apiai');
 const API_KEY = require('./botapikey');
 const appai = apiai(API_KEY);
 
-
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dir: '.', dev });
 const handle = app.getRequestHandler();

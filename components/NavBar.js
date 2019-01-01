@@ -1,5 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
+import { Tooltip } from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NavBar = ({
   switchConvo,
@@ -9,7 +11,9 @@ const NavBar = ({
   changeMessage,
   addConvo,
   currentChat,
-  newMessageCount
+  newMessageCount,
+  tooltip,
+  closeTooltip,
 }) => {
   const newMessageNum = Object.values(newMessageCount).reduce(
     (total, cur) => total + cur,
@@ -19,7 +23,9 @@ const NavBar = ({
   return (
     <div id="navbar-container">
       <div id="convo-status">
-        Chatting with <br />
+        Chatting with
+        {' '}
+        <br />
         {currentChat}
       </div>
       <Link href="/browser" prefetch>
@@ -27,17 +33,27 @@ const NavBar = ({
           <i className="fa fa-home"> Browse</i>
         </a>
       </Link>
-      <div className="dropdown">
+      <div
+        className="dropdown"
+        id='dropdown-tooltip'>
+        <Tooltip
+          placement='bottom'
+          isOpen={tooltip}
+          target={'dropdown-tooltip'}
+          onClick={closeTooltip}
+        >
+          Hover here to see the menu. You can add a new conversation by username or chat with our Agent bot to demo the messenger!
+        </Tooltip>
         <button className="dropbtn">
           <i className="fas fa-bars"> Menu</i>
         </button>
         <span>
-        {newMessage && (
+          {newMessage && (
           <div id="new-message-badge" className="msg-count-badge">
             {newMessage ? newMessageNum : ''}
           </div>
         )}
-      </span>
+        </span>
         <div className="dropdown-content">
           <a onClick={addConvo}>Start a new convo</a>
           {/* gets the 5 most recent convos, not sure if it makes sense to have a giant list of
@@ -50,8 +66,10 @@ const NavBar = ({
               {friend}
             </a>
           ))}
-          <a id='add-agent-button'
-          onClick={() => switchConvo('AgentDemo')}>
+          <a
+            id='add-agent-button'
+            onClick={() => switchConvo('AgentDemo')}
+          >
             Chat with an agent
           </a>
         </div>

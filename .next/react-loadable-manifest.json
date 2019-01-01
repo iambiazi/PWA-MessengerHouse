@@ -7,7 +7,7 @@
       "publicPath": "static/chunks/commons.55e7c6680238e15df167.js"
     }
   ],
-  "../modules/_core": [
+  "../../modules/_core": [
     {
       "id": 1,
       "name": "./node_modules/core-js/library/modules/_core.js",
@@ -1579,6 +1579,22 @@
       "name": "./node_modules/webpack/buildin/harmony-module.js",
       "file": "static/chunks/commons.55e7c6680238e15df167.js",
       "publicPath": "static/chunks/commons.55e7c6680238e15df167.js"
+    }
+  ],
+  "bootstrap/dist/css/bootstrap.min.css": [
+    {
+      "id": 351,
+      "name": "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+      "file": "static/chunks/styles.ddaefd94bd20fa2f5e0e.js",
+      "publicPath": "static/chunks/styles.ddaefd94bd20fa2f5e0e.js"
+    }
+  ],
+  "undefined": [
+    {
+      "id": 352,
+      "name": null,
+      "file": "static/chunks/styles.ddaefd94bd20fa2f5e0e.js",
+      "publicPath": "static/chunks/styles.ddaefd94bd20fa2f5e0e.js"
     }
   ]
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Link from 'next/link';
 import {DragDropContainer} from 'react-drag-drop-container';
+import { Tooltip } from "reactstrap";
 
 const Favorites = props => {
   const houses = [...props.houses];
@@ -26,6 +27,7 @@ const Favorites = props => {
           render={() => (
             <Link href={`/browser/${obj.house_id}`} >
               <img
+                id={`favorite-${i}`}
                 className="fav-image-prev"
                 key={i}
                 src={obj.imgUrl}
@@ -35,6 +37,14 @@ const Favorites = props => {
           )}
         />
       ))}
+        <Tooltip
+          placement='right'
+          isOpen={props.tooltip}
+          target={'favorite-0'}
+          onClick={props.closeTooltip}
+        >
+          Here you can view your favorites that you've added from the browser. Drag a favorite into the chat area to share!
+        </Tooltip>
 
       <style>
         {`

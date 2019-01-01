@@ -42,11 +42,14 @@ class Messenger extends React.Component {
     setTimeout(connectSocket, 100);
     setTimeout(this.scrollToBottom, 100);
 
-    // if (!this.state.currentConvo) {
-    //   setTimeout(this.hideWelcome, 5000);
-    // } else {
-    //   this.hideWelcome();
-    // }
+    if (typeof Storage !== 'undefined') {
+      if (!localStorage.getItem('firstTime')) {
+        localStorage.setItem('firstTime', 'true');
+        setTimeout(this.hideWelcome, 15000);
+      } else {
+        this.hideWelcome();
+      }
+    }
   }
 
   componentDidUpdate() {
@@ -265,15 +268,21 @@ class Messenger extends React.Component {
             } are typing...`
           : 'several people are typing';
     return (
-      <div  id="chatview">
-        <Favorites shareFavorite={this.shareFavorite} />
-        {this.state.welcome && <Welcome/>}
+      <div id="chatview">
+        <Favorites
+          shareFavorite={this.shareFavorite}
+          tooltip={this.state.welcome}
+          closeTooltip={this.hideWelcome}
+        />
+        {this.state.welcome && <Welcome />}
         <NavBar
           newMessage={this.state.otherNewMessage}
           newMessageCount={this.state.unread}
           currentChat={this.state.currentConvo}
           addConvo={this.addConversation}
           switchConvo={this.getCurrentConvo}
+          tooltip={this.state.welcome}
+          closeTooltip={this.hideWelcome}
           friends={[...this.state.friends].filter(
             notUser =>
               notUser !== this.username && notUser !== this.state.currentConvo,
@@ -313,8 +322,10 @@ class Messenger extends React.Component {
               placeholder="Send a message"
             />
 
-            <span onClick={this.handleSubmit}
-            id='send-msg-button'>
+            <span
+              onClick={this.handleSubmit}
+              id='send-msg-button'
+            >
               <i className="far fa-comment" />
             </span>
 
@@ -325,6 +336,7 @@ class Messenger extends React.Component {
           {`
             html {
               height: 100%;
+              background: white;
             }
             #send-msg-button {
               margin-left: .5em;
@@ -337,7 +349,6 @@ class Messenger extends React.Component {
             }
             body {
               height: 100%;
-              max-width: 1280px;
             }
             .droptarget {
               height: 63vh;;
@@ -346,6 +357,8 @@ class Messenger extends React.Component {
               width: auto;
               height: 100%;
               max-width: 800px;
+              border: solid lightgrey 1px;
+              margin: auto;
             }
             #typing-status {
               margin-top: .5em;
@@ -440,12 +453,26 @@ class Messenger extends React.Component {
                 height: 23em;
               }
             }
-            @media only screen and (min-width: 700px) and (max-width: 1080px){
+            @media only screen and (min-width: 375px) and (max-width: 699px){
+              #__next {
+                min-height: 0px;
+              }
               .droptarget {
-                height: 72vh;
+                height: 67vh;
               }
               ul {
-                height: 72vh;
+                height: 67vh;
+              }
+            }
+            @media only screen and (min-width: 700px) and (max-width: 3600px){
+              .droptarget {
+                height: 78vh;
+              }
+              ul {
+                height: 78vh;
+              }
+              #__next {
+                font-size: 16px;
               }
             }
           `}
