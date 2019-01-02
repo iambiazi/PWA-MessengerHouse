@@ -28,7 +28,7 @@ const NavBar = ({
         <br />
         {currentChat}
       </div>
-      <Link href="/browser" prefetch>
+      <Link href="/browser" >
         <a id="house-button2">
           <i className="fa fa-home"> Browse</i>
         </a>
@@ -160,6 +160,9 @@ const NavBar = ({
         }
         .dropdown:hover .dropbtn {
             background-color: #0069E0;
+        }
+        .fas {
+          padding: 0;
         }
       `}
       </style>

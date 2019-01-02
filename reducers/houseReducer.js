@@ -1,4 +1,5 @@
 import { ADD_HOUSE } from '../actions';
+import { REMOVE_HOUSE } from '../actions';
 
 export default function (state = [], action) {
   const {
@@ -14,6 +15,8 @@ export default function (state = [], action) {
         },
         ...state,
       ];
+    case REMOVE_HOUSE:
+      return state.filter(el => el.house_id !== house_id);
     default:
       return state;
   }

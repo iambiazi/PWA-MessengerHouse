@@ -14,7 +14,7 @@ export default class MyDocument extends Document {
           <link rel="manifest" href="../static/manifest.json" />
           <link rel="icon" href="../static/img/favicon.ico" />
           <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossOrigin="anonymous" />
-          <link rel="stylesheet" href="https://s3-us-west-1.amazonaws.com/elasticbeanstalk-us-west-1-658824784294/style.css" />
+          <link rel="stylesheet" href="https://s3-us-west-1.amazonaws.com/pwamobileimggallery/styles.css" />
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous" />
           <link rel="stylesheet" href="../static/style.css" />
         </Head>

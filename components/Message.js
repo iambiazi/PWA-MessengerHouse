@@ -22,7 +22,7 @@ export default ({message, username, firstMessage}) => {
             {message.messageType === 'text' ? (
               message.text
             ) : (
-              <Link href={`/browser/${message.text[0]}`}>
+              <Link href={`/browser/${message.text[0]}`} prefetch>
                 <img
                   className="shared-fav"
                   src={message.text[1]}

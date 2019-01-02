@@ -15,7 +15,7 @@ export const messageAlert = (msgBody, sender = 'MessengerHouse App') => {
         navigator.serviceWorker.getRegistration().then(reg => {
           const options = {
             body: msgBody,
-            icon: 'static/img/apple-touch-icon-120x120.png',
+            icon: 'static/img/icon-128x128.png',
             vibrate: [100, 50, 100],
             data: {
               dateOfArrival: Date.now(),
@@ -24,10 +24,10 @@ export const messageAlert = (msgBody, sender = 'MessengerHouse App') => {
             },
             actions: [
               {action: 'explore', title: 'Go to the site',
-                icon: 'static/img/apple-touch-icon-120x120.png'
+                icon: 'static/img/icon-128x128.png'
               },
               {action: 'close', title: 'Close the notification',
-                icon: 'static/img/apple-touch-icon-120x120.png'
+                icon: 'static/img/icon-128x128.png'
               },
             ]
           };

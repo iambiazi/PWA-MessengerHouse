@@ -191,7 +191,6 @@ io.on('connection', (socket) => {
     const request = appai.textRequest(data.text, {sessionId: Math.floor(Math.random() * 36).toString('8')});
 
     request.on('response', res => {
-      console.log(res.result.fulfillment.speech);
       const response = {
         username: 'AgentDemo',
         text: res.result.fulfillment.speech,
@@ -200,16 +199,22 @@ io.on('connection', (socket) => {
         recipients: data.username,
       };
       const backup = {
-        username: 'botAgent',
-        text: "Sorry, I'm not quite sure what you mean by that. Could your try rephrasing?",
+        username: 'AgentDemo',
+        text: [8, 'https://photos.zillowstatic.com/p_b/ISuoi34e4naf1j0000000000.jpg'],
+        messageType: 'link',
+        recipients: [data.username],
         sent: new Date().getTime(),
+
       };
       if (res.result.fulfillment.speech !== '') {
         //TODO only goes to the sender right now
         io.to(`${socketIds[data.username]}`).emit('typing', 'AgentDemo');
         setTimeout(() => socket.emit('message', response), 2500);
       } else {
-        socket.emit('message', backup)
+        socket.emit('message', backup);
+        backup.text = 'What do you think about this house?';
+        backup.messageType = 'text';
+        io.to(`${socketIds[data.username]}`).emit('message', backup);
       }
     });
 

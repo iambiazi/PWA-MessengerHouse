@@ -6,7 +6,6 @@ import {addMessage} from '../actions/message';
 import Message from './Message';
 import NavBar from './NavBar';
 import Favorites from './Favorites';
-import Welcome from './Welcome';
 import {messageAlert} from '../utils/notification';
 
 class Messenger extends React.Component {
@@ -28,7 +27,7 @@ class Messenger extends React.Component {
   componentDidMount() {
     const connectSocket = () => {
       const {username, password} = this.props.user;
-      this.socket = io('https://www.brian-louie.online');
+      this.socket = io('http://localhost:3000');
       this.socket.on('connect', () => {
         this.socket.emit('authentication', {username, password});
       });
@@ -195,7 +194,7 @@ class Messenger extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    if (this.state.text !== '' && this.state.currentConvo !== '') {
+    if (this.state.text.replace(/\s/g, '') !== '' && this.state.currentConvo !== '') {
       const message = {
         created_at: new Date().getTime(),
         username: this.username,
@@ -242,6 +241,13 @@ class Messenger extends React.Component {
       recipients: [this.state.currentConvo],
     };
     this.socket.emit('message', message);
+    if (this.props.sender === 'AgentDemo') {
+      const msg = {
+        username: this.username,
+        text: 'this is awesome',
+      };
+      this.socket.emit('botMsg', msg);
+    }
     this.props.addMessage(
       message.text,
       message.messageType,
@@ -274,7 +280,6 @@ class Messenger extends React.Component {
           tooltip={this.state.welcome}
           closeTooltip={this.hideWelcome}
         />
-        {this.state.welcome && <Welcome />}
         <NavBar
           newMessage={this.state.otherNewMessage}
           newMessageCount={this.state.unread}
@@ -472,7 +477,7 @@ class Messenger extends React.Component {
                 height: 78vh;
               }
               #__next {
-                font-size: 16px;
+                font-size: 18px;
               }
             }
           `}

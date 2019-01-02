@@ -629,7 +629,49 @@ input {
   }
 
   .zestimate-subexpand-container {
-    height: 116em;
+    height: 104em;
+  }
+
+  .zestimate-subexpand-explanation-container {
+    height: 12em;
+  }
+
+  .zestimate-subexpand-explanation {
+    height: 11em;
+  }
+
+  .zestimate-similar-image {
+    width: 7em;
+  }
+
+  .zestimate-similar-info-container {
+    transform: scale(.8, .8);
+    margin: -1em;
+  }
+
+  .tax-assessment {
+    margin: 0;
+  }
+
+  .zestimate-compare-before {
+    padding: 0;
+  }
+
+  #tax-expand-container {
+    height: 122em;
+  }
+
+  #mortgage-chart {
+    left: -16em;
+  }
+
+  .zest-chev {
+    margin-right: .2em;
+  }
+
+  .recharts-legend-wrapper {
+    transform: scale(.7, .7);
+    left: 0;
   }
 }
 
@@ -648,5 +690,11 @@ input {
 
   .zestimate-subexpand-container {
     height: 116em;
+  }
+
+  @media only screen and (min-width: 667px) and (max-width: 4000px) {
+    #main {
+      min-width: 760px;
+    }
   }
 }
