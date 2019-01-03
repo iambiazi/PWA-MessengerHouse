@@ -143,10 +143,10 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 
   socket.on('unread', (username) => {
-    if (username !== undefined) {
+    if (username !== undefined && username !== null) {
       User.findById({_id: username}, (err, result) => {
         if (err) {
-          console.error(err);
+          return console.error(err);
         }
         if (result !== null) {
           result.unread.forEach(msg => {
@@ -200,13 +200,29 @@ io.on('connection', (socket) => {
       };
       const backup = {
         username: 'AgentDemo',
-        text: [8, 'https://photos.zillowstatic.com/p_b/ISuoi34e4naf1j0000000000.jpg'],
+        text: [8, 'https://photos.zillowstatic.com/p_b/ISql1xrj9dx8k50000000000.jpg'],
         messageType: 'link',
         recipients: [data.username],
         sent: new Date().getTime(),
 
       };
-      if (res.result.fulfillment.speech !== '') {
+
+      if (data.text === 'first visit') {
+        backup.text = [9, 'https://photos.zillowstatic.com/p_b/IS6qjidjnk8dxo0000000000.jpg'];
+        const welcomeMessage = {
+          username: 'AgentDemo',
+          text: "Welcome to the messenger! To help you demo this, I've decided to send you a" +
+            " couple messages.",
+          sent: new Date().getTime(),
+          messageType: 'text',
+          recipients: data.username,
+        };
+        io.to(`${socketIds[data.username]}`).emit('message', welcomeMessage);
+        welcomeMessage.text = `Because this is a demo, notifications are delivered for each received message (including current conversations). Normally, these messages would be for when the user is on a different page or when the app is in the background.`;
+        io.to(`${socketIds[data.username]}`).emit('typing', 'AgentDemo');
+        io.to(`${socketIds[data.username]}`).emit('message', welcomeMessage);
+        setTimeout(() => socket.emit('message', backup), 2500);
+      } else if (res.result.fulfillment.speech !== '') {
         //TODO only goes to the sender right now
         io.to(`${socketIds[data.username]}`).emit('typing', 'AgentDemo');
         setTimeout(() => socket.emit('message', response), 2500);

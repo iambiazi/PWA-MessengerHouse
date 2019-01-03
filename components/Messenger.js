@@ -26,29 +26,43 @@ class Messenger extends React.Component {
 
   componentDidMount() {
     const connectSocket = () => {
-      const {username, password} = this.props.user;
+      const {username} = this.props.user;
       this.socket = io('https://www.brian-louie.online');
       this.socket.on('connect', () => {
-        this.socket.emit('authentication', {username, password});
+        this.socket.emit('authentication', {username});
       });
       this.socket.on('message', this.handleMessage);
       this.socket.on('typing', this.typingStatus);
       this.socket.on('noexist', this.noUserExists);
       this.socket.emit('login', username);
       this.socket.emit('unread', username);
+
+      if (typeof Storage !== 'undefined') {
+        if (!localStorage.getItem('firstTime')) {
+          localStorage.setItem('firstTime', 'true');
+          const botMessage = {
+            text: 'first visit',
+            username: username,
+          };
+          this.setState({currentConvo: 'AgentDemo'});
+          this.socket.emit('botMsg', botMessage);
+          setTimeout(this.hideWelcome, 20000);
+        } else {
+          this.hideWelcome();
+          if (this.props.messages.length) {
+            const lastConvo = this.props.messages.filter(el => el.username !== username);
+            if (lastConvo.length) {
+              this.getCurrentConvo(lastConvo[lastConvo.length - 1].username);
+            }
+          }
+        }
+      }
     };
 
-    setTimeout(connectSocket, 100);
+    setTimeout(connectSocket, 500);
     setTimeout(this.scrollToBottom, 100);
 
-    if (typeof Storage !== 'undefined') {
-      if (!localStorage.getItem('firstTime')) {
-        localStorage.setItem('firstTime', 'true');
-        setTimeout(this.hideWelcome, 20000);
-      } else {
-        this.hideWelcome();
-      }
-    }
+
   }
 
   componentDidUpdate() {
@@ -82,7 +96,12 @@ class Messenger extends React.Component {
   };
 
   handleMessage = message => {
-    messageAlert(message.text, message.username);
+    if (message.type === 'text') {
+      messageAlert(message.text, message.username);
+    } else {
+      messageAlert('Check out this house!', message.username);
+    }
+
     this.setState(state => ({
       typing: state.typing.filter(
         ({username}) => username !== message.username,
@@ -354,10 +373,18 @@ class Messenger extends React.Component {
               width: auto;
             }
             body {
-              height: 100%;
+                height: 100%;
+                background:
+                linear-gradient(
+                  rgba(0, 116, 228, 0.75),
+                  rgba(0, 116, 228, 0.75)
+                ),
+                center no-repeat
+                url(./static/img/house-background.jpg);
+                background-size: cover;
             }
             .droptarget {
-              height: 63vh;;
+              height: 63vh;
             }
             #chatview {
               width: auto;
@@ -365,6 +392,7 @@ class Messenger extends React.Component {
               max-width: 800px;
               border: solid lightgrey 1px;
               margin: auto;
+              background: white;
             }
             #typing-status {
               margin-top: .5em;

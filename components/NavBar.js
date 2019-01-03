@@ -31,7 +31,7 @@ const NavBar = ({
           id="house-button2"
           href='/browser'
         >
-          <i className="fa fa-home"> Browse</i>
+          <i className="fa fa-home"> <span className='fa-text'>Browse</span></i>
         </a>
       <div
         className="dropdown"
@@ -45,7 +45,7 @@ const NavBar = ({
           Hover here to see the menu. You can add a new conversation by username or chat with our Agent bot to demo the messenger!
         </Tooltip>
         <button className="dropbtn">
-          <i className="fas fa-bars"> Menu</i>
+          <i className="fas fa-bars"> <span className='fa-text'>Menu</span></i>
         </button>
         <span>
           {newMessage && (
@@ -76,6 +76,9 @@ const NavBar = ({
       </div>
       <style>
         {`
+        .fa-text {
+          font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
         .tooltip > .tooltip-inner {
           background: #3c00e0;
           border: solid 1px #3c00e0;

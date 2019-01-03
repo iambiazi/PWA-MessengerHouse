@@ -33,7 +33,7 @@ class Index extends React.Component {
         .then(res => res.json())
         .then(stringified => {
           if (stringified.status === 'logged in') {
-            this.props.addUser(userInfo.username, userInfo.password);
+            this.props.addUser(userInfo.username);
             Router.push('/browser');
           } else {
             this.setState({
@@ -174,6 +174,7 @@ class Index extends React.Component {
               rgba(0, 116, 228, 0.75)
             ),
             url(./static/img/house-background.jpg);
+          background-position: center;
           background-size: cover;
         }
         #toggle-signup-login {
@@ -187,6 +188,11 @@ class Index extends React.Component {
           color: red;
           text-align: center;
           font-weight: 700;
+        }
+        @media only screen and (min-width: 700px) and (max-width: 3600px){
+          #login-signup-container {
+            font-size: 20px;
+          }
         }
         `}
       </style>
