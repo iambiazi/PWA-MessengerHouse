@@ -95,20 +95,22 @@ class Index extends React.Component {
       <br />
       {this.state.view !== 'choice' && (
       <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
-        <label htmlFor="username" />
         <input
           className="login-input"
           type="text"
           placeholder="enter username"
           name="username"
           autoFocus="true"
+          id='username-input'
+          aria-label='username'
         />
-        <label htmlFor='password' />
         <input
           className="login-input"
           type="password"
           placeholder="enter password"
           name="password"
+          id='password-input'
+          aria-label='password'
         />
         <br />
         <input id="login-submit" type="submit" />
@@ -130,6 +132,7 @@ class Index extends React.Component {
         body {
           height: 100%;
           width: auto;
+          margin: 0;
         }
         #login-image-container {
           display: inline-block;

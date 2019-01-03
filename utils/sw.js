@@ -19,16 +19,16 @@ workbox.precaching.precacheAndRoute(
   {},
 );
 
-// workbox.routing.registerRoute(
-//   /[.](png|jpg|css)/,
-//   workbox.strategies.cacheFirst({
-//     cacheName: 'assets-cache',
-//     cacheableResponse: {
-//       statuses: [0, 200],
-//     },
-//   }),
-//   'GET',
-// );
+workbox.routing.registerRoute(
+  /[.](png|jpg|css)/,
+  workbox.strategies.cacheFirst({
+    cacheName: 'assets-cache',
+    cacheableResponse: {
+      statuses: [0, 200],
+    },
+  }),
+  'GET',
+);
 
 workbox.routing.registerRoute(
   /^https:\/\/code\.getmdl\.io.*/,
@@ -63,7 +63,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /^http.*(?<!\.jpg)$/,
+  /^http.*/,
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'http-cache',
   }),

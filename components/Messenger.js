@@ -27,7 +27,7 @@ class Messenger extends React.Component {
   componentDidMount() {
     const connectSocket = () => {
       const {username, password} = this.props.user;
-      this.socket = io('http://localhost:3000');
+      this.socket = io('https://www.brian-louie.online');
       this.socket.on('connect', () => {
         this.socket.emit('authentication', {username, password});
       });
@@ -44,7 +44,7 @@ class Messenger extends React.Component {
     if (typeof Storage !== 'undefined') {
       if (!localStorage.getItem('firstTime')) {
         localStorage.setItem('firstTime', 'true');
-        setTimeout(this.hideWelcome, 15000);
+        setTimeout(this.hideWelcome, 20000);
       } else {
         this.hideWelcome();
       }
@@ -325,6 +325,7 @@ class Messenger extends React.Component {
               className="msg-input-class"
               id="message-input"
               placeholder="Send a message"
+              aria-label='message input'
             />
 
             <span
@@ -374,6 +375,7 @@ class Messenger extends React.Component {
               border-bottom: lightgray solid 1px;
               border-top: lightgray solid 1px;
               height: 3em;
+              border-radius: .5em;
             }
             form {
               background: #fff;
@@ -398,7 +400,7 @@ class Messenger extends React.Component {
             }
             .msg-input-class {
               display:inline-block;
-              width: 90%;
+              width: 87%;
               padding-top: .5em;
             }
             .timestamp{

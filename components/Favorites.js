@@ -60,7 +60,7 @@ const Favorites = props => {
         overflow-x: scroll;
       }
       #favorites-scrollable {
-        width: ${houses.length * 10}em;
+        width: ${houses.length * 13}em;
       }
       .fav-image-prev {
         display: inline-block;

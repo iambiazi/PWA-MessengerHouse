@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { Tooltip } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -28,11 +27,12 @@ const NavBar = ({
         <br />
         {currentChat}
       </div>
-      <Link href="/browser" >
-        <a id="house-button2">
+        <a
+          id="house-button2"
+          href='/browser'
+        >
           <i className="fa fa-home"> Browse</i>
         </a>
-      </Link>
       <div
         className="dropdown"
         id='dropdown-tooltip'>
@@ -76,6 +76,14 @@ const NavBar = ({
       </div>
       <style>
         {`
+        .tooltip > .tooltip-inner {
+          background: #3c00e0;
+          border: solid 1px #3c00e0;
+        }
+        .tooltip .arrow::before {
+          border-bottom-color: #3c00e0;
+          border-right-color: #3c00e0;
+        }
         .msg-count-badge {
           background: red;
           color: white;
@@ -130,7 +138,7 @@ const NavBar = ({
             font-size: 1em; /* changed to 1em from 16px */
             border: none;
             cursor: pointer;
-            width: 80px;
+            width: 90px;
             text-align: end;
             margin-top: .27em;
             z-index: 1;

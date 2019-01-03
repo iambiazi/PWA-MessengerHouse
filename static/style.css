@@ -51,7 +51,7 @@ html {
   float: right;
 }
 
-#main-container-subexpand {
+.main-container-subexpand {
   width: 100%;
 }
 
@@ -110,7 +110,7 @@ html {
   width: 130.266px;
 }
 
-#zestimate-change-container {
+.zestimate-change-container {
   box-sizing: border-box;
   display: inline-block;
   height: 107px;
@@ -138,14 +138,14 @@ html {
   repeat scroll 0% 0% / 56px 56px padding-box border-box;
 }
 
-#zestimate-change-title-container {
+.zestimate-change-title-container {
   height: 51px;
   vertical-align: middle;
   width: 197.984px;
   padding: 10px 0px 0px 5px;
 }
 
-#zestimate-change-title {
+.zestimate-change-title {
   height: 19px;
   text-transform: uppercase;
   width: 192.984px;
@@ -153,7 +153,7 @@ html {
   sans-serif;
 }
 
-#zestimate-change-value {
+.zestimate-change-value {
   display: inline-block;
   height: 22px;
   width: 127.516px;
@@ -697,4 +697,12 @@ input {
       min-width: 760px;
     }
   }
+}
+
+.zestimate-change-image-container {
+  display: block;
+  height: 56px;
+  width: 4em;
+  margin: 0px 71px 0px 70.9844px;
+  background-repeat: no-repeat;
 }

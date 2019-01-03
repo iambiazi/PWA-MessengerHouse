@@ -12,7 +12,7 @@ class Browser extends React.Component {
     offerNotifications();
 
     const script_Top = document.createElement("script");
-    script_Top.src = "https://s3-us-west-1.amazonaws.com/pwamobileimggallery/bundle.js";
+    script_Top.src = "https://s3-us-west-1.amazonaws.com/pwamobileimggallery/bundleGz.js";
     script_Top.async = true;
     document.body.appendChild(script_Top);
 
@@ -31,6 +31,7 @@ class Browser extends React.Component {
       favoriteButton.addEventListener('click', this.addFavorite);
       messengerButton.addEventListener('click', this.handleMessengerClick);
       agentButton.addEventListener('click', this.handleAgent);
+      this.setState({isRendered: true});
     };
 
     setTimeout(delayForRender, 1000);
@@ -79,7 +80,6 @@ class Browser extends React.Component {
         <style>
           {`
             #main {
-              margin-left: .5em;
               overflow: hidden;
             }
           `}

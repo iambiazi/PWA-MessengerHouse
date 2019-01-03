@@ -1,4 +1,4 @@
-importScripts("precache-manifest.91c0d7436b729cd09ab1bf4786f01330.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("precache-manifest.b63c0cff3144e0a04d877e9857b3341c.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 workbox.core.setCacheNameDetails({ prefix: 'next-ss' });
 
@@ -21,16 +21,16 @@ workbox.precaching.precacheAndRoute(
   {},
 );
 
-// workbox.routing.registerRoute(
-//   /[.](png|jpg|css)/,
-//   workbox.strategies.cacheFirst({
-//     cacheName: 'assets-cache',
-//     cacheableResponse: {
-//       statuses: [0, 200],
-//     },
-//   }),
-//   'GET',
-// );
+workbox.routing.registerRoute(
+  /[.](png|jpg|css)/,
+  workbox.strategies.cacheFirst({
+    cacheName: 'assets-cache',
+    cacheableResponse: {
+      statuses: [0, 200],
+    },
+  }),
+  'GET',
+);
 
 workbox.routing.registerRoute(
   /^https:\/\/code\.getmdl\.io.*/,
@@ -65,7 +65,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /^http.*(?<!\.jpg)$/,
+  /^http.*/,
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'http-cache',
   }),
