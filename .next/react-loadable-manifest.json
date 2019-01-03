@@ -1580,21 +1580,5 @@
       "file": "static/chunks/commons.2ba0c2cb04c2347d8aa8.js",
       "publicPath": "static/chunks/commons.2ba0c2cb04c2347d8aa8.js"
     }
-  ],
-  "bootstrap/dist/css/bootstrap.min.css": [
-    {
-      "id": 351,
-      "name": "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-      "file": "static/chunks/styles.ddaefd94bd20fa2f5e0e.js",
-      "publicPath": "static/chunks/styles.ddaefd94bd20fa2f5e0e.js"
-    }
-  ],
-  "undefined": [
-    {
-      "id": 352,
-      "name": null,
-      "file": "static/chunks/styles.ddaefd94bd20fa2f5e0e.js",
-      "publicPath": "static/chunks/styles.ddaefd94bd20fa2f5e0e.js"
-    }
   ]
 }

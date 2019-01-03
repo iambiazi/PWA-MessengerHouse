@@ -1,6 +1,12 @@
 import React from 'react';
-import { Tooltip } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Link from 'next/link';
+import {OverlayTrigger, Tooltip } from 'react-bootstrap';
+
+const tooltipMenu = (
+  <Tooltip placement="bottom" className="tooltopMessenger" id="tooltip-menu">
+    Hover here to see the menu. You can add a new conversation by username or chat with our Agent bot to demo the messenger!
+  </Tooltip>
+);
 
 const NavBar = ({
   switchConvo,
@@ -11,8 +17,7 @@ const NavBar = ({
   addConvo,
   currentChat,
   newMessageCount,
-  tooltip,
-  closeTooltip,
+  tooltip
 }) => {
   const newMessageNum = Object.values(newMessageCount).reduce(
     (total, cur) => total + cur,
@@ -27,26 +32,32 @@ const NavBar = ({
         <br />
         {currentChat}
       </div>
-        <a
+        <Link
           id="house-button2"
           href='/browser'
+          prefetch
         >
+          <span id="house-button2">
           <i className="fa fa-home"> <span className='fa-text'>Browse</span></i>
-        </a>
+          </span>
+        </Link>
       <div
         className="dropdown"
         id='dropdown-tooltip'>
-        <Tooltip
-          placement='bottom'
-          isOpen={tooltip}
-          target={'dropdown-tooltip'}
-          onClick={closeTooltip}
+        {tooltip &&
+        <OverlayTrigger
+          placement="top"
+          defaultOverlayShown={true}
+          overlay={tooltipMenu}
         >
-          Hover here to see the menu. You can add a new conversation by username or chat with our Agent bot to demo the messenger!
-        </Tooltip>
         <button className="dropbtn">
           <i className="fas fa-bars"> <span className='fa-text'>Menu</span></i>
         </button>
+        </OverlayTrigger>}
+        {!tooltip &&
+        <button className="dropbtn">
+          <i className="fas fa-bars"> <span className='fa-text'>Menu</span></i>
+        </button>}
         <span>
           {newMessage && (
           <div id="new-message-badge" className="msg-count-badge">
@@ -78,14 +89,6 @@ const NavBar = ({
         {`
         .fa-text {
           font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-        }
-        .tooltip > .tooltip-inner {
-          background: #3c00e0;
-          border: solid 1px #3c00e0;
-        }
-        .tooltip .arrow::before {
-          border-bottom-color: #3c00e0;
-          border-right-color: #3c00e0;
         }
         .msg-count-badge {
           background: red;
@@ -133,7 +136,8 @@ const NavBar = ({
           position: relative;
           left: 1.5em;
           font-size:1em;
-          margin-top: .37em
+          margin-top: .37em;
+          cursor: pointer;
         }
         .dropbtn {
             background-color: #0069E0;

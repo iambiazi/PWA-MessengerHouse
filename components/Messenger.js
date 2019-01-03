@@ -21,10 +21,12 @@ class Messenger extends React.Component {
       otherNewMessage: false,
       unread: {},
       welcome: true,
+      rendered: false,
     };
   }
 
   componentDidMount() {
+    this.setState({rendered: true});
     const connectSocket = () => {
       const {username} = this.props.user;
       this.socket = io('https://www.brian-louie.online');
@@ -58,11 +60,8 @@ class Messenger extends React.Component {
         }
       }
     };
-
-    setTimeout(connectSocket, 500);
+    setTimeout(connectSocket, 100);
     setTimeout(this.scrollToBottom, 100);
-
-
   }
 
   componentDidUpdate() {
@@ -297,7 +296,6 @@ class Messenger extends React.Component {
         <Favorites
           shareFavorite={this.shareFavorite}
           tooltip={this.state.welcome}
-          closeTooltip={this.hideWelcome}
         />
         <NavBar
           newMessage={this.state.otherNewMessage}
@@ -306,7 +304,6 @@ class Messenger extends React.Component {
           addConvo={this.addConversation}
           switchConvo={this.getCurrentConvo}
           tooltip={this.state.welcome}
-          closeTooltip={this.hideWelcome}
           friends={[...this.state.friends].filter(
             notUser =>
               notUser !== this.username && notUser !== this.state.currentConvo,
@@ -359,6 +356,17 @@ class Messenger extends React.Component {
         </form>
         <style>
           {`
+            #tooltip-bottom {
+              display: none;
+            }
+            .tooltip > .tooltip-inner {
+            background: #3c00e0;
+            border: solid 1px #3c00e0;
+            }
+            .tooltip .arrow::before {
+              border-bottom-color: #3c00e0;
+              border-right-color: #3c00e0;
+            }
             html {
               height: 100%;
               background: white;

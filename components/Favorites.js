@@ -2,7 +2,12 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Link from 'next/link';
 import {DragDropContainer} from 'react-drag-drop-container';
-import { Tooltip } from "reactstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+
+const tooltipFav = (
+  <Tooltip placement="bottom" className="tooltipMessenger" id="tooltip-fav">
+    Here you can view your favorites that you've added from the browser. Drag a favorite into the chat area to share!
+  </Tooltip>);
 
 const Favorites = props => {
   const houses = [...props.houses];
@@ -18,6 +23,11 @@ const Favorites = props => {
   }
   return (
     <div id="favorites-container">
+      {props.tooltip &&
+      <OverlayTrigger
+        placement="bottom"
+        defaultOverlayShown={props.tooltip}
+        overlay={tooltipFav}>
       <div id='favorites-scrollable'>
       {houses.map((obj, i) => (
         <DragDropContainer
@@ -25,7 +35,10 @@ const Favorites = props => {
           targetKey="fav"
           dragClone
           render={() => (
-            <a href={`/browser/${obj.house_id}`}>
+            <Link
+              id={`link-${i}`}
+              href={`/browser/${obj.house_id}`}
+            >
               <img
                 id={`favorite-${i}`}
                 className="fav-image-prev"
@@ -33,19 +46,36 @@ const Favorites = props => {
                 src={obj.imgUrl}
                 alt="house-image"
               />
-            </a>
+            </Link>
           )}
         />
       ))}
-        <Tooltip
-          placement='right'
-          isOpen={props.tooltip}
-          target={'favorite-0'}
-          onClick={props.closeTooltip}
-        >
-          Here you can view your favorites that you've added from the browser. Drag a favorite into the chat area to share!
-        </Tooltip>
-
+      </div>
+      </OverlayTrigger>}
+      {!props.tooltip &&
+        <div id='favorites-scrollable'>
+          {houses.map((obj, i) => (
+            <DragDropContainer
+              onDrop={() => props.shareFavorite(obj)}
+              targetKey="fav"
+              dragClone
+              render={() => (
+                <Link
+                  id={`link-${i}`}
+                  href={`/browser/${obj.house_id}`}
+                >
+                  <img
+                    id={`favorite-${i}`}
+                    className="fav-image-prev"
+                    key={i}
+                    src={obj.imgUrl}
+                    alt="house-image"
+                  />
+                </Link>
+              )}
+            />
+          ))}
+        </div>}
       <style>
         {`
       img {
@@ -71,7 +101,6 @@ const Favorites = props => {
       }
       `}
       </style>
-      </div>
     </div>
   );
 };

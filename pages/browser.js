@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {addHouse, removeHouse} from '../actions/message';
 import offerNotifications from '../utils/notification';
+import Router from 'next/router';
 
 class Browser extends React.Component {
   constructor(props) {
@@ -65,7 +66,8 @@ class Browser extends React.Component {
   };
 
   handleMessengerClick = () => {
-    window.location.pathname = 'messenger';
+    // window.location.pathname = 'messenger';
+    Router.push('/messenger');
   };
 
   handleAgent = () => {
