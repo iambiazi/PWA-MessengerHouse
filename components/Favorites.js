@@ -25,7 +25,7 @@ const Favorites = props => {
           targetKey="fav"
           dragClone
           render={() => (
-            <Link href={`/browser/${obj.house_id}`} >
+            <a href={`/browser/${obj.house_id}`}>
               <img
                 id={`favorite-${i}`}
                 className="fav-image-prev"
@@ -33,7 +33,7 @@ const Favorites = props => {
                 src={obj.imgUrl}
                 alt="house-image"
               />
-            </Link>
+            </a>
           )}
         />
       ))}

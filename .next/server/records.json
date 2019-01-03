@@ -3428,16 +3428,22 @@
       "static/se_sW5Yycq8zcx5Gr_QtT/pages/browser.js": 2,
       "static/se_sW5Yycq8zcx5Gr_QtT/pages/index.js": 3,
       "static/se_sW5Yycq8zcx5Gr_QtT/pages/messenger.js": 4,
-      "static/se_sW5Yycq8zcx5Gr_QtT/pages/_error.js": 5
+      "static/se_sW5Yycq8zcx5Gr_QtT/pages/_error.js": 5,
+      "static/L~0UK~71qQHWUCUIRR2wy/pages/_app.js": 6,
+      "static/L~0UK~71qQHWUCUIRR2wy/pages/_document.js": 7,
+      "static/L~0UK~71qQHWUCUIRR2wy/pages/browser.js": 8,
+      "static/L~0UK~71qQHWUCUIRR2wy/pages/index.js": 9,
+      "static/L~0UK~71qQHWUCUIRR2wy/pages/messenger.js": 10,
+      "static/L~0UK~71qQHWUCUIRR2wy/pages/_error.js": 11
     },
     "bySource": {},
     "usedIds": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5
+      10,
+      11,
+      6,
+      7,
+      8,
+      9
     ]
   }
 }

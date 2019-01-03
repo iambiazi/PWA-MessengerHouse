@@ -3831,19 +3831,24 @@
       "static/se_sW5Yycq8zcx5Gr_QtT/pages/browser.js": 4,
       "static/se_sW5Yycq8zcx5Gr_QtT/pages/index.js": 5,
       "static/se_sW5Yycq8zcx5Gr_QtT/pages/messenger.js": 6,
-      "static/se_sW5Yycq8zcx5Gr_QtT/pages/_error.js": 7
+      "static/se_sW5Yycq8zcx5Gr_QtT/pages/_error.js": 7,
+      "static/L~0UK~71qQHWUCUIRR2wy/pages/_app.js": 8,
+      "static/L~0UK~71qQHWUCUIRR2wy/pages/browser.js": 9,
+      "static/L~0UK~71qQHWUCUIRR2wy/pages/index.js": 10,
+      "static/L~0UK~71qQHWUCUIRR2wy/pages/messenger.js": 11,
+      "static/L~0UK~71qQHWUCUIRR2wy/pages/_error.js": 12
     },
     "bySource": {},
     "usedIds": [
       0,
       1,
+      10,
+      11,
+      12,
       13,
       2,
-      3,
-      4,
-      5,
-      6,
-      7
+      8,
+      9
     ]
   },
   "mini-css-extract-plugin node_modules/css-loader/index.js??ref--5-1!static/style.css": [
