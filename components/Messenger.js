@@ -48,7 +48,7 @@ class Messenger extends React.Component {
           };
           this.setState({currentConvo: 'AgentDemo'});
           this.socket.emit('botMsg', botMessage);
-          setTimeout(this.hideWelcome, 20000);
+          setTimeout(this.hideWelcome, 15000);
         } else {
           this.hideWelcome();
           if (this.props.messages.length) {
@@ -95,7 +95,7 @@ class Messenger extends React.Component {
   };
 
   handleMessage = message => {
-    if (message.type === 'text') {
+    if (message.messageType === 'text') {
       messageAlert(message.text, message.username);
     } else {
       messageAlert('Check out this house!', message.username);
@@ -184,20 +184,23 @@ class Messenger extends React.Component {
   addConversation = async () => {
     // TODO placeholder prompt
     const username = await prompt('enter a username');
-    this.setState(
-      state => {
-        // TODO currently no confirmation for friends
-        const setCopy = new Set(state.friends);
-        setCopy.add(username);
-        return {
-          currentConvo: username,
-          friends: setCopy,
-        };
-      },
-      () => {
-        this.getCurrentConvo(username);
-      },
-    );
+    if (username && username.replace(/\s/g, '')) {
+      this.setState(
+        state => {
+          // TODO currently no confirmation for friends
+          const setCopy = new Set(state.friends);
+          setCopy.add(username);
+          return {
+            currentConvo: username,
+            friends: setCopy,
+          };
+        },
+        () => {
+          this.getCurrentConvo(username);
+        },
+      );
+    }
+
   };
 
   showTypingStatus = e => {
@@ -248,6 +251,7 @@ class Messenger extends React.Component {
   };
 
   shareFavorite = houseObj => {
+    console.log('ran');
     const message = {
       created_at: new Date().getTime(),
       username: this.username,
@@ -259,7 +263,8 @@ class Messenger extends React.Component {
       recipients: [this.state.currentConvo],
     };
     this.socket.emit('message', message);
-    if (this.props.sender === 'AgentDemo') {
+    if (this.state.currentConvo === 'AgentDemo') {
+      console.log('got into here');
       const msg = {
         username: this.username,
         text: 'this is awesome',
