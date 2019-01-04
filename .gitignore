@@ -38,6 +38,7 @@ v3.ext
 *.log
 .flooignore
 .floo
+/.next
 .next
 config.js
 jwtpw.js
