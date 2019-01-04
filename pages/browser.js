@@ -66,12 +66,11 @@ class Browser extends React.Component {
   };
 
   handleMessengerClick = () => {
-    // window.location.pathname = 'messenger';
     Router.push('/messenger');
   };
 
   handleAgent = () => {
-    window.location.pathname = 'messenger/AgentDemo';
+    Router.push('messenger/AgentDemo');
   };
 
   render() {
