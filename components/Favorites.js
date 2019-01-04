@@ -90,12 +90,14 @@ const Favorites = props => {
         justify-content: space-around;
         overflow: hidden;
         overflow-x: scroll;
+        border-radius: 20px;
       }
       #favorites-scrollable {
         width: ${houses.length * 13}em;
       }
       .fav-image-prev {
         display: inline-block;
+        border-radius: 10px;
         width: auto;
         height: 5em;
         margin: .5em 1em;

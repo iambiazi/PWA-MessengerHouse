@@ -47,6 +47,7 @@ export default ({message, username, firstMessage}) => {
         {`
           .shared-fav {
           width: 6em;
+          border-radius: 10px;
           display: block;
           height: auto;
           margin: .2em auto -.8em auto;

@@ -26,6 +26,7 @@ class Messenger extends React.Component {
   }
 
   componentDidMount() {
+    window.scroll(0,0);
     this.setState({
       rendered: true,
     });
@@ -50,7 +51,7 @@ class Messenger extends React.Component {
           };
           this.setState({welcome: true});
           this.setState({currentConvo: 'AgentDemo'});
-          this.socket.emit('botMsg', botMessage);
+          setTimeout(() => this.socket.emit('botMsg', botMessage), 15500);
           setTimeout(this.hideWelcome, 15000);
         } else {
           this.hideWelcome();
@@ -64,7 +65,6 @@ class Messenger extends React.Component {
       }
     };
     setTimeout(connectSocket, 100);
-    setTimeout(this.scrollToBottom, 100);
   }
 
   componentDidUpdate() {
@@ -346,7 +346,7 @@ class Messenger extends React.Component {
               onChange={this.showTypingStatus}
               className="msg-input-class"
               id="message-input"
-              placeholder="Send a message"
+              placeholder="  Send a message"
               aria-label='message input'
             />
 
@@ -362,6 +362,9 @@ class Messenger extends React.Component {
         </form>
         <style>
           {`
+            input {
+              font-size: initial;
+            }
             #tooltip-bottom {
               display: none;
             }
@@ -407,6 +410,7 @@ class Messenger extends React.Component {
               border: solid lightgrey 1px;
               margin: auto;
               background: white;
+              border-radius: 20px;
             }
             #typing-status {
               margin-top: .5em;

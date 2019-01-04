@@ -109,6 +109,7 @@ const NavBar = ({
         }
         #convo-status {
           color: white;
+          font-weight: 550;
           font-size: .8em;
           position: relative; /*  */
         }
