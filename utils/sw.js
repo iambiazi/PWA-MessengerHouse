@@ -24,7 +24,7 @@ workbox.routing.registerRoute(
   workbox.strategies.cacheFirst({
     cacheName: 'assets-cache',
     cacheableResponse: {
-      statuses: [0, 200],
+      statuses: [200],
     },
   }),
   'GET',
@@ -62,13 +62,13 @@ workbox.routing.registerRoute(
   'GET',
 );
 
-workbox.routing.registerRoute(
-  /^http.*/,
-  workbox.strategies.staleWhileRevalidate({
-    cacheName: 'http-cache',
-  }),
-  'GET',
-);
+// workbox.routing.registerRoute(
+//   /^http.*/,
+//   workbox.strategies.staleWhileRevalidate({
+//     cacheName: 'http-cache',
+//   }),
+//   'GET',
+// );
 
 self.addEventListener('notificationclick', event => {
   const notification = event.notification;
