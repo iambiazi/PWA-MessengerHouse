@@ -11,6 +11,7 @@ class Browser extends React.Component {
 
   componentDidMount() {
     offerNotifications();
+    window.scroll(0, 0);
 
     const script_Top = document.createElement("script");
     script_Top.src = "https://s3-us-west-1.amazonaws.com/pwamobileimggallery/bundleGz.js";
@@ -35,7 +36,7 @@ class Browser extends React.Component {
       this.setState({isRendered: true});
     };
 
-    setTimeout(delayForRender, 1000);
+    setTimeout(delayForRender, 1500);
   }
 
   componentWillUnmount() {

@@ -20,13 +20,15 @@ class Messenger extends React.Component {
       typing: [],
       otherNewMessage: false,
       unread: {},
-      welcome: true,
+      welcome: false,
       rendered: false,
     };
   }
 
   componentDidMount() {
-    this.setState({rendered: true});
+    this.setState({
+      rendered: true,
+    });
     const connectSocket = () => {
       const {username} = this.props.user;
       this.socket = io('https://www.brian-louie.online');
@@ -46,6 +48,7 @@ class Messenger extends React.Component {
             text: 'first visit',
             username: username,
           };
+          this.setState({welcome: true});
           this.setState({currentConvo: 'AgentDemo'});
           this.socket.emit('botMsg', botMessage);
           setTimeout(this.hideWelcome, 15000);

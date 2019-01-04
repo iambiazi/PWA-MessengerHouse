@@ -218,7 +218,7 @@ io.on('connection', (socket) => {
           recipients: data.username,
         };
         io.to(`${socketIds[data.username]}`).emit('message', welcomeMessage);
-        welcomeMessage.text = `Because this is a demo, notifications are delivered for each received message (including current conversations). Normally, these messages would be for when the user is on a different page or when the app is in the background.`;
+        welcomeMessage.text = `Because this is a demo, notifications are delivered for each received message (not supported on iOS). Normally, these messages would be for when the user is on a different page or when the app is in the background.`;
         io.to(`${socketIds[data.username]}`).emit('typing', 'AgentDemo');
         io.to(`${socketIds[data.username]}`).emit('message', welcomeMessage);
         setTimeout(() => socket.emit('message', backup), 2500);
