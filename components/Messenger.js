@@ -251,7 +251,6 @@ class Messenger extends React.Component {
   };
 
   shareFavorite = houseObj => {
-    console.log('ran');
     const message = {
       created_at: new Date().getTime(),
       username: this.username,
@@ -264,7 +263,6 @@ class Messenger extends React.Component {
     };
     this.socket.emit('message', message);
     if (this.state.currentConvo === 'AgentDemo') {
-      console.log('got into here');
       const msg = {
         username: this.username,
         text: 'this is awesome',

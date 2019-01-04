@@ -45,6 +45,7 @@ const Favorites = props => {
                 key={i}
                 src={obj.imgUrl}
                 alt="house-image"
+                crossorigin='anonymous'
               />
             </Link>
           )}
@@ -70,6 +71,7 @@ const Favorites = props => {
                     key={i}
                     src={obj.imgUrl}
                     alt="house-image"
+                    crossorigin='anonymous'
                   />
                 </Link>
               )}

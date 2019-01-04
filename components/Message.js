@@ -27,6 +27,7 @@ export default ({message, username, firstMessage}) => {
                   className="shared-fav"
                   src={message.text[1]}
                   alt="house-preview"
+                  crossorigin='anonymous'
                 />
               </Link>
             )}
