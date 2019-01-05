@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import Router from 'next/router';
+import Head from 'next/head';
 import {addHouse, removeHouse} from '../actions/message';
 import offerNotifications from '../utils/notification';
-import Router from 'next/router';
 
 class Browser extends React.Component {
   constructor(props) {
@@ -77,6 +78,11 @@ class Browser extends React.Component {
   render() {
     return (
       <div id="browse-homes">
+        <Head>
+          <title>Browse Homes</title>
+          <link rel="stylesheet" href="https://s3-us-west-1.amazonaws.com/pwamobileimggallery/styles.css" />
+          <link rel="stylesheet" href="../static/style.css" />
+        </Head>
         <div id="app" />
         <div id="main" />
         <style>

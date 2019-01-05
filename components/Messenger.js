@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import io from 'socket.io-client';
 import {DropTarget} from 'react-drag-drop-container';
+import Head from 'next/head';
 import {addMessage} from '../actions/message';
 import Message from './Message';
 import NavBar from './NavBar';
@@ -47,7 +48,7 @@ class Messenger extends React.Component {
           localStorage.setItem('firstTime', 'true');
           const botMessage = {
             text: 'first visit',
-            username: username,
+            username,
           };
           this.setState({welcome: true});
           this.setState({currentConvo: 'AgentDemo'});
@@ -299,6 +300,11 @@ class Messenger extends React.Component {
           : 'several people are typing';
     return (
       <div id="chatview">
+        <Head>
+          <title>Messenger</title>
+          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossOrigin="anonymous" />
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous" />
+        </Head>
         <Favorites
           shareFavorite={this.shareFavorite}
           tooltip={this.state.welcome}

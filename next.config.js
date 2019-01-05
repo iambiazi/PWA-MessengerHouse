@@ -6,11 +6,11 @@ module.exports = withCSS({
   webpack: (config, { buildId, dev }) => {
     const oldEntry = config.entry;
 
-    config.entry = () => oldEntry().then((entry) => {
-      entry['main.js']
-					&& entry['main.js'].push(path.resolve('./utils/offline'));
-      return entry;
-    });
+    config.entry = () => oldEntry()
+      .then(entry => {
+      entry['main.js'] && entry['main.js'].push(path.resolve('./utils/offline'));
+      return entry
+    }).catch(err => console.error(err));
 
     if (!dev) {
       config.plugins.push(

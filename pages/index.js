@@ -35,11 +35,17 @@ class Index extends React.Component {
           if (stringified.status === 'logged in') {
             this.props.addUser(userInfo.username);
             Router.push('/browser');
+          } else if (stringified.status === 'user already exists') {
+            this.setState({
+              loginError: true,
+              errorMsg:
+                'User by that name already exists.',
+            });
           } else {
             this.setState({
               loginError: true,
               errorMsg:
-                'Error logging in. Please try again',
+                'Error logging in. Please try again.',
             });
           }
         })

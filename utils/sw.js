@@ -30,13 +30,6 @@ workbox.routing.registerRoute(
   'GET',
 );
 
-workbox.routing.registerRoute(
-  /^https:\/\/code\.getmdl\.io.*/,
-  workbox.strategies.cacheFirst({
-    cacheName: 'lib-cache',
-  }),
-  'GET',
-);
 
 workbox.routing.registerRoute(
   '/',
@@ -62,13 +55,13 @@ workbox.routing.registerRoute(
   'GET',
 );
 
-// workbox.routing.registerRoute(
-//   /^http.*/,
-//   workbox.strategies.staleWhileRevalidate({
-//     cacheName: 'http-cache',
-//   }),
-//   'GET',
-// );
+workbox.routing.registerRoute(
+  /(bundle\.js|bundleGz\.js)$/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'http-cache',
+  }),
+  'GET',
+);
 
 self.addEventListener('notificationclick', event => {
   const notification = event.notification;
