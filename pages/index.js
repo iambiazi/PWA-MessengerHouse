@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import isomorphicFetch from 'isomorphic-fetch';
 import Router from 'next/router';
 import {addUser} from '../actions/message';
+import Head from 'next/head';
 
 class Index extends React.Component {
   state = {
@@ -87,6 +88,11 @@ class Index extends React.Component {
 
   render = () => (
     <div id="login-signup-container">
+      <Head>
+        <title>Messenger House Login/Signup</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous" />
+      </Head>
       <div id="login-image-container">
         <img src="../static/img/house-xxl.png" id="login-image" alt="" />
       </div>
