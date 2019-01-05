@@ -57,7 +57,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /(bundle\.js|bundleGz\.js)$/,
-  workbox.strategies.staleWhileRevalidate({
+  workbox.strategies.cacheFirst({
     cacheName: 'http-cache',
   }),
   'GET',

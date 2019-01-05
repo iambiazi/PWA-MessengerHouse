@@ -145,7 +145,6 @@ class Messenger extends React.Component {
     if (this.state.currentConvo !== 'AgentDemo') {
       alert('User by that name does not exist');
     }
-    // TODO placeholder, not for actual use
   };
 
   typingStatus = data => {
@@ -186,7 +185,6 @@ class Messenger extends React.Component {
   };
 
   addConversation = async () => {
-    // TODO placeholder prompt
     const username = await prompt('enter a username');
     if (username && username.replace(/\s/g, '')) {
       this.setState(
@@ -331,7 +329,7 @@ class Messenger extends React.Component {
                 firstMessage={sameUser(message, i, array)}
               />
             ))}
-            <div
+            <li
               ref={el => {
                 this.el = el;
               }}
