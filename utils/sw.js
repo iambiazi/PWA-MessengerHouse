@@ -24,7 +24,7 @@ workbox.routing.registerRoute(
   workbox.strategies.cacheFirst({
     cacheName: 'assets-cache',
     cacheableResponse: {
-      statuses: [200],
+      statuses: [0, 200],
     },
   }),
   'GET',
@@ -56,8 +56,8 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /(bundle\.js|bundleGz\.js)$/,
-  workbox.strategies.cacheFirst({
+  /^http*/,
+  workbox.strategies.staleWhileRevalidate({
     cacheName: 'http-cache',
   }),
   'GET',

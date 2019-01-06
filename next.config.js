@@ -19,13 +19,12 @@ module.exports = withCSS({
           swDest: path.join(__dirname, '.next', 'sw.js'),
           globDirectory: __dirname,
           globPatterns: [
-            'static/**/*.{png,jpg,ico}',
+            'static/**/*.{js, css, html}',
           ],
         }),
       );
     }
-
-
+    
     return config;
   },
 });

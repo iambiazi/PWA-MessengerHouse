@@ -352,6 +352,7 @@ class Messenger extends React.Component {
               id="message-input"
               placeholder="  Send a message"
               aria-label='message input'
+              autofocus='true'
             />
 
             <span
