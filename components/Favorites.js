@@ -86,6 +86,7 @@ const Favorites = props => {
       #favorites-container {
         margin: 0 .3em 0 .3em;
         background-color: white;
+        min-height: 6.5em;
         height: 6.5em;
         justify-content: space-around;
         overflow: hidden;

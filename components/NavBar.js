@@ -119,6 +119,7 @@ const NavBar = ({
         }
         #navbar-container {
           height: 2.3em;
+          min-height: 2.3em;
           margin-top: .5em;
           display: flex;
           justify-content: space-around; /* changed to space-around from flex-end */

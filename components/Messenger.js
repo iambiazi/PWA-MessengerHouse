@@ -339,7 +339,11 @@ class Messenger extends React.Component {
         <div id="typing-status">
           <i>{typingStatusMessage}</i>
         </div>
-        <form onSubmit={this.handleSubmit} autoComplete="off">
+        <form
+          onSubmit={this.handleSubmit}
+          autoComplete="off"
+          id='message-submit-form'
+        >
           <div
             className="msg-input-class"
             id='msg-input-container'
@@ -352,7 +356,7 @@ class Messenger extends React.Component {
               id="message-input"
               placeholder="  Send a message"
               aria-label='message input'
-              autofocus='true'
+              autoFocus='true'
             />
 
             <span
@@ -367,6 +371,9 @@ class Messenger extends React.Component {
         </form>
         <style>
           {`
+            #message-submit-form {
+              border-radius: 25px
+            }
             input {
               font-size: initial;
             }
@@ -391,7 +398,6 @@ class Messenger extends React.Component {
             }
             #__next {
               height: 100%;
-              min-height: 876px;
               width: auto;
             }
             body {
@@ -412,15 +418,19 @@ class Messenger extends React.Component {
               width: auto;
               height: 100%;
               max-width: 800px;
-              border: solid lightgrey 1px;
+              border: solid black 1px;
               margin: auto;
               background: white;
               border-radius: 20px;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
             }
             #typing-status {
               margin-top: .5em;
               height: 2.4em;
               font-size: .7em;
+              min-height: 2.4em;
             }
             #message-input {
               border-bottom: lightgray solid 1px;
@@ -452,7 +462,6 @@ class Messenger extends React.Component {
             .msg-input-class {
               display:inline-block;
               width: 87%;
-              padding-top: .5em;
             }
             .timestamp{
               font-size:10px;
@@ -524,10 +533,10 @@ class Messenger extends React.Component {
             }
             @media only screen and (min-width: 700px) and (max-width: 3600px){
               .droptarget {
-                height: 78vh;
+                height: 70vh;
               }
               ul {
-                height: 78vh;
+                height: 70vh;
               }
               #__next {
                 font-size: 18px;
